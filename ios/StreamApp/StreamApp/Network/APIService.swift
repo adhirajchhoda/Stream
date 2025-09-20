@@ -280,6 +280,23 @@ struct APIErrorResponse: Codable {
     let message: String
 }
 
+struct EmployerRegistrationRequest: Codable {
+    let name: String
+    let walletAddress: String
+    let industry: String
+    let contactEmail: String
+    let website: String?
+}
+
+struct EmployerResponse: Codable {
+    let id: String
+    let name: String
+    let walletAddress: String
+    let industry: String
+    let isVerified: Bool
+    let createdAt: Date
+}
+
 struct NullifierStatus: Codable {
     let hash: String
     let isUsed: Bool

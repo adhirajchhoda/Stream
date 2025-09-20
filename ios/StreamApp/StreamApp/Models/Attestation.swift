@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 struct AttestationRequest: Codable {
     let employerId: String
@@ -64,7 +65,7 @@ struct AttestationResponse: Codable, Identifiable {
             }
         }
 
-        var color: StreamColors {
+        var color: Color {
             switch self {
             case .pending: return StreamColors.warning
             case .verified: return StreamColors.success

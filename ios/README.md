@@ -1,219 +1,246 @@
-# Stream Protocol - iOS App
+# Stream iOS App
 
-A beautiful, privacy-first iOS application for accessing earned wages instantly using zero-knowledge proofs.
+A comprehensive iOS application for the Stream payroll protocol, built with SwiftUI and featuring zero-knowledge proof integration, wallet connectivity, and secure wage attestations.
 
-## 🎨 App Design Highlights
+## 🚀 Features
 
-### Beautiful UI/UX
-- **Clean, Modern Design**: Professional design system with carefully crafted colors, typography, and spacing
-- **Intuitive Navigation**: Tab-based navigation with smooth transitions and animations
-- **Scenario-Based Colors**: Dynamic theming based on work scenarios (Starbucks green, Amazon orange, Uber cyan)
-- **Progressive Disclosure**: Complex information presented in digestible, user-friendly formats
+### Core Functionality
+- **Wallet Integration**: Connect and manage Ethereum wallets
+- **Work Session Tracking**: Track work hours across different scenarios (Starbucks, Amazon, Uber)
+- **Zero-Knowledge Proofs**: Generate and verify ZK proofs for wage attestations
+- **Secure Storage**: Biometric-protected keychain storage for sensitive data
+- **Real-time Updates**: Live dashboard with earnings and claim status
 
-### Key Features
+### Security Features
+- **Biometric Authentication**: Face ID/Touch ID integration
+- **Secure Keychain Storage**: Encrypted storage for private keys and sensitive data
+- **Anti-replay Protection**: Nullifier hash system to prevent double-spending
+- **End-to-end Encryption**: Secure communication with backend services
 
-#### 🔐 **Privacy-First Authentication**
-- **Biometric Security**: Face ID, Touch ID, or passcode authentication
-- **Secure Storage**: Keychain integration for sensitive data protection
-- **Zero-Knowledge Architecture**: Private keys never leave the device
+### User Experience
+- **Modern SwiftUI Design**: Clean, intuitive interface with custom components
+- **Dark/Light Mode Support**: Adaptive UI design
+- **Smooth Animations**: Polished transitions and micro-interactions
+- **Offline Support**: Local data caching and sync capabilities
 
-#### 💼 **Work Session Tracking**
-- **Real-Time Tracking**: Live work session monitoring with earnings calculation
-- **Multiple Scenarios**: Support for Starbucks, Amazon, Uber, and custom work types
-- **Session Management**: Pause, resume, and end sessions with detailed statistics
+## 📱 App Architecture
 
-#### 🔬 **ZK-Proof Generation**
-- **Animated Process**: Beautiful, step-by-step proof generation visualization
-- **Progress Tracking**: Real-time progress indicators for witness generation, proof computation, and verification
-- **Technical Details**: Collapsible technical information for power users
-- **Error Handling**: Graceful error states with recovery suggestions
-
-#### 🏦 **Wallet Integration**
-- **Multi-Wallet Support**: MetaMask, WalletConnect, Coinbase Wallet, and demo wallet
-- **Blockchain Interaction**: Smart contract integration for wage claims
-- **Transaction Monitoring**: Real-time transaction status tracking
-
-#### 📊 **Dashboard & Analytics**
-- **Earnings Overview**: Clear display of available wages and pending claims
-- **Activity Feed**: Recent attestations and proof generation history
-- **Quick Actions**: Fast access to common tasks
-- **Performance Stats**: Personal metrics and achievement tracking
-
-## 🏗️ Architecture
-
-### MVVM + Coordinator Pattern
+### MVVM Pattern
 ```
-Views ↔ ViewModels ↔ Services
-  ↓         ↓         ↓
-Navigation  Business  Data/Network
-Coordinator Logic    Layer
+StreamApp/
+├── App/                    # App entry point and main views
+├── Core/                   # App coordination and navigation
+├── Models/                 # Data models and business logic
+├── ViewModels/            # View models for MVVM architecture
+├── Views/                 # SwiftUI views and components
+├── Network/               # API services and networking
+├── Security/              # Wallet, crypto, and security services
+└── Resources/             # Colors, fonts, and styling
 ```
 
 ### Key Components
 
-#### **Services Layer**
-- `APIService`: RESTful API integration with the attestation service
-- `ZKProofService`: Zero-knowledge proof generation and verification
-- `WalletManager`: Wallet connection and transaction management
-- `BiometricAuthService`: Biometric authentication management
-- `SecureStorage`: Keychain-based secure data storage
+#### 🎯 **Dashboard**
+- Real-time earnings display
+- Work scenario cards with claim buttons
+- Recent activity feed
+- Quick action buttons
 
-#### **ViewModels**
-- `DashboardViewModel`: Dashboard data and business logic
-- `ZKProofGenerationViewModel`: Proof generation state management
-- `WorkSessionViewModel`: Work session tracking and statistics
-- `ProofsViewModel`: ZK-proof history and management
+#### 💼 **Work Sessions**
+- Multiple work scenarios (Starbucks, Amazon, Uber)
+- Time tracking and wage calculation
+- Difficulty-based scenarios
+- Employer-specific theming
 
-#### **Core Views**
-- **Onboarding Flow**: Welcome, education, and wallet connection
-- **Authentication**: Biometric and passcode authentication
-- **Dashboard**: Main earnings overview and quick actions
-- **Work Session**: Real-time work tracking and management
-- **ZK-Proof Generation**: Animated proof creation process
-- **Proofs History**: Generated proofs with detailed information
-- **Profile**: User settings, wallet details, and app configuration
+#### 🔐 **Zero-Knowledge Proofs**
+- ZK proof generation for wage attestations
+- Verification system
+- Privacy-preserving claims
+- Blockchain integration
+
+#### 👤 **Profile & Settings**
+- Wallet management
+- Security settings
+- Biometric authentication setup
+- App preferences
+
+## 🛠 Technical Stack
+
+### Frameworks & Libraries
+- **SwiftUI**: Modern declarative UI framework
+- **Combine**: Reactive programming for data flow
+- **CryptoKit**: Cryptographic operations
+- **Security Framework**: Keychain and biometric authentication
+- **Foundation**: Core system services
+
+### Architecture Patterns
+- **MVVM**: Model-View-ViewModel architecture
+- **Protocol-Oriented**: Dependency injection and testability
+- **Async/Await**: Modern concurrency handling
+- **Combine Publishers**: Reactive data binding
+
+### Security Implementation
+- **Keychain Services**: Secure credential storage
+- **Biometric Authentication**: Face ID/Touch ID integration
+- **Secure Enclave**: Hardware-backed key storage
+- **Certificate Pinning**: API security (production ready)
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Xcode 15.0 or later
+- iOS 17.0 or later
+- macOS 14.0 or later for development
+
+### Installation
+1. Clone the repository
+2. Open `StreamApp.xcodeproj` in Xcode
+3. Select your target device or simulator
+4. Build and run (⌘+R)
+
+### Configuration
+The app includes mock data and services for development:
+- **Mock Wallet**: Automatically generates demo wallet
+- **Sample Scenarios**: Pre-configured work scenarios
+- **Local Storage**: Uses UserDefaults and Keychain for demo
+
+## 📋 App Flow
+
+### 1. Onboarding
+- Welcome screens
+- Wallet connection setup
+- Biometric authentication setup
+- Permissions and privacy
+
+### 2. Authentication
+- Biometric verification
+- Wallet connection status
+- Security checks
+
+### 3. Main Dashboard
+- Earnings overview
+- Available claims
+- Work scenarios
+- Recent activity
+
+### 4. Work Session
+- Scenario selection
+- Time tracking
+- Wage calculation
+- Session completion
+
+### 5. ZK Proof Generation
+- Proof creation process
+- Verification steps
+- Blockchain submission
+- Claim confirmation
+
+## 🔧 Development Features
+
+### Mock Services
+- **APIService**: Simulated backend responses
+- **WalletManager**: Demo wallet with mock transactions
+- **ZKProofService**: Simulated proof generation
+- **BiometricAuth**: Mock authentication for simulator
+
+### Sample Data
+- Pre-configured work scenarios
+- Mock attestation responses
+- Demo wallet addresses
+- Test transaction data
+
+### Error Handling
+- Comprehensive error types
+- User-friendly error messages
+- Recovery suggestions
+- Logging and debugging
 
 ## 🎨 Design System
 
-### Color Palette
-```swift
-// Primary Brand Colors
-streamBlue: #2196F3      // Primary actions and accents
-streamGreen: #4CAF50     // Success states and confirmations
-streamOrange: #FF9800    // Warnings and secondary actions
-streamRed: #F44336       // Errors and destructive actions
-
-// Scenario Theme Colors
-starbucksGreen: #00704A  // Starbucks work scenarios
-amazonOrange: #FF9900    // Amazon work scenarios
-uberCyan: #00BCD4        // Uber work scenarios
-
-// Neutral Colors
-background: #F8FAFB      // App background
-surface: #FFFFFF         // Card and component backgrounds
-textPrimary: #1A1A1A     // Primary text content
-textSecondary: #666666   // Secondary text content
-```
+### Colors
+- **Brand Colors**: Stream blue, green, orange
+- **Scenario Colors**: Starbucks green, Amazon orange, Uber cyan
+- **System Colors**: Success, warning, error states
+- **Neutral Palette**: Background, surface, text colors
 
 ### Typography
-- **System Fonts**: iOS system fonts with `.rounded` design for headers
-- **Monospace**: For addresses, hashes, and technical data
-- **Hierarchical Scale**: From `.largeTitle` to `.caption2` with consistent spacing
+- **Display Fonts**: Large titles with rounded design
+- **Body Text**: System fonts with proper hierarchy
+- **Monospace**: For addresses and hashes
+- **Custom Weights**: Emphasis and hierarchy
 
 ### Components
-- **WageCard**: Beautiful earnings display with scenario theming
-- **ZKProofProgress**: Animated circular progress with status icons
-- **StreamButton**: Consistent button styling with multiple variants
-- **StatusBadge**: Status indicators with appropriate colors
-- **ScenarioIcon**: Work scenario icons with themed backgrounds
+- **WageCard**: Scenario display with claim functionality
+- **StatCard**: Dashboard statistics
+- **QuickActionButton**: Dashboard shortcuts
+- **Custom Modifiers**: Consistent styling
 
-## 🔒 Security Features
+## 🔒 Security Considerations
 
-### Data Protection
-- **Keychain Storage**: All sensitive data stored in iOS Keychain
-- **Biometric Protection**: Optional biometric protection for sensitive operations
-- **Zero-Knowledge Architecture**: No sensitive data transmitted to servers
-- **Local Proof Generation**: ZK-proofs generated entirely on-device
+### Production Readiness
+- Replace mock services with real implementations
+- Implement proper key management
+- Add certificate pinning
+- Enable app transport security
+- Implement proper error handling
 
-### Privacy Considerations
-- **Minimal Data Collection**: Only necessary data for app functionality
-- **No Analytics**: No user tracking or analytics collection
-- **Secure Communication**: All network requests use HTTPS with certificate pinning
-- **Data Encryption**: All stored data encrypted at rest
+### Privacy
+- No sensitive data in logs
+- Secure data transmission
+- Local data encryption
+- User consent management
 
-## 📱 User Experience
+## 🧪 Testing
 
-### Onboarding Flow
-1. **Welcome Screen**: Introduction to Stream Protocol
-2. **Education Carousel**: Privacy-first technology explanation
-3. **Wallet Connection**: Multiple wallet integration options
-4. **Biometric Setup**: Optional security enhancement
+### Unit Tests
+- ViewModel logic testing
+- Service layer testing
+- Model validation
+- Crypto operations
 
-### Main App Flow
-1. **Dashboard**: Overview of available wages and recent activity
-2. **Work Session**: Start and track work sessions
-3. **Proof Generation**: Create ZK-proofs for wage claims
-4. **Transaction Monitoring**: Track blockchain submissions
-5. **History & Analytics**: Review past activity and earnings
+### UI Tests
+- User flow testing
+- Accessibility testing
+- Performance testing
+- Error state testing
 
-### Error Handling
-- **Graceful Degradation**: App functions with limited connectivity
-- **User-Friendly Messages**: Clear, actionable error descriptions
-- **Recovery Suggestions**: Helpful guidance for error resolution
-- **Offline Support**: Core functionality available without network
+## 📦 Deployment
 
-## 🚀 Performance Optimizations
+### App Store Preparation
+1. Update bundle identifier
+2. Configure signing certificates
+3. Add app icons and launch screens
+4. Update Info.plist permissions
+5. Test on physical devices
+6. Submit for review
 
-### Responsive Design
-- **Async Operations**: All network calls and heavy computations are asynchronous
-- **Lazy Loading**: Views and data loaded on-demand
-- **Memory Management**: Proper cleanup of resources and retain cycles
-- **Background Processing**: ZK-proof generation in background threads
+### Backend Integration
+1. Replace mock API endpoints
+2. Configure real wallet providers
+3. Implement ZK circuit integration
+4. Set up blockchain connections
+5. Configure push notifications
 
-### Caching Strategy
-- **Smart Caching**: Appropriate caching of API responses and user data
-- **Cache Invalidation**: Automatic cache refresh based on data age
-- **Offline Storage**: Critical data available without network access
+## 🤝 Contributing
 
-## 🔄 Integration Points
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
 
-### Backend Services
-- **Attestation API**: Full integration with Stream Protocol attestation service
-- **ZK-Circuit Integration**: Wrapper around existing JavaScript proof generation
-- **Smart Contract Interaction**: Direct integration with StreamCore contract
-- **Real-time Updates**: WebSocket support for live transaction monitoring
+## 📄 License
 
-### External Services
-- **Wallet Providers**: MetaMask, WalletConnect, and Coinbase Wallet integration
-- **Blockchain Networks**: Ethereum mainnet, testnets, and local development
-- **Push Notifications**: Transaction status and important app updates
+This project is part of the Stream Protocol ecosystem. See the main repository for license information.
 
-## 📈 Future Enhancements
+## 🆘 Support
 
-### Planned Features
-- **Multi-Chain Support**: Polygon, Arbitrum, and other L2 solutions
-- **Enhanced Analytics**: Detailed earnings analytics and predictions
-- **Social Features**: Share achievements and milestones
-- **Widget Support**: iOS 14+ widget for quick wage overview
-- **Siri Shortcuts**: Voice integration for common actions
-
-### Technical Roadmap
-- **Core Data Integration**: Local database for improved performance
-- **Background App Refresh**: Automatic updates when app is backgrounded
-- **Apple Pay Integration**: Streamlined payment and withdrawal options
-- **HealthKit Integration**: Wellness tracking for work-life balance
-
-## 🧪 Testing Strategy
-
-### Unit Testing
-- **ViewModel Testing**: Comprehensive business logic testing
-- **Service Testing**: API service and utility function testing
-- **Model Testing**: Data model validation and transformation testing
-
-### UI Testing
-- **User Flow Testing**: End-to-end user journey validation
-- **Accessibility Testing**: VoiceOver and accessibility compliance
-- **Performance Testing**: Memory usage and responsiveness validation
-
-### Security Testing
-- **Penetration Testing**: Security vulnerability assessment
-- **Data Protection Testing**: Keychain and encryption validation
-- **Privacy Audit**: Data flow and privacy compliance verification
-
-## 🎯 Success Metrics
-
-### Technical KPIs
-- **App Launch Time**: < 3 seconds cold start
-- **ZK-Proof Generation**: < 30 seconds average generation time
-- **API Response Time**: < 500ms average response time
-- **Crash-Free Rate**: > 99.9% crash-free sessions
-
-### User Experience KPIs
-- **Onboarding Completion**: > 90% completion rate
-- **Feature Adoption**: > 80% of users try ZK-proof generation
-- **Session Length**: > 5 minutes average session time
-- **User Retention**: > 70% 7-day retention rate
+For technical support or questions:
+- Check the main Stream Protocol documentation
+- Review the API documentation
+- Submit issues through the main repository
+- Join the developer community
 
 ---
 
-**Stream Protocol iOS App** - Redefining earned wage access with privacy, security, and beautiful design. 🌊💼📱
+**Note**: This is a development version with mock services. For production deployment, replace all mock implementations with real backend services and proper security measures.
