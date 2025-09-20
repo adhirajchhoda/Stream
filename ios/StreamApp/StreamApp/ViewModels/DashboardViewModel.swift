@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Combine
 
 @MainActor
@@ -87,19 +88,5 @@ class DashboardViewModel: ObservableObject {
 
         // Calculate pending claims
         pendingClaims = recentAttestations.filter { $0.status == .pending }.count
-    }
-}
-
-// MARK: - Supporting Types
-
-extension AttestationResponse.AttestationStatus {
-    var color: Color {
-        switch self {
-        case .pending: return StreamColors.warning
-        case .verified: return StreamColors.success
-        case .claimed: return StreamColors.info
-        case .expired: return StreamColors.textSecondary
-        case .revoked: return StreamColors.error
-        }
     }
 }
