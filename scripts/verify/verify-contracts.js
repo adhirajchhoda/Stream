@@ -20,12 +20,12 @@ async function verifyContract(address, constructorArgs = [], contractName = "") 
       constructorArguments: constructorArgs,
     });
 
-    console.log(`✅ ${contractName} verified successfully`);
+    console.log(` ${contractName} verified successfully`);
   } catch (error) {
     if (error.message.includes("Already Verified")) {
-      console.log(`✅ ${contractName} already verified`);
+      console.log(` ${contractName} already verified`);
     } else {
-      console.error(`❌ Failed to verify ${contractName}:`, error.message);
+      console.error(` Failed to verify ${contractName}:`, error.message);
     }
   }
 }
@@ -34,7 +34,7 @@ async function main() {
   const networkName = hre.network.name;
 
   if (networkName === "localhost" || networkName === "hardhat") {
-    console.log("❌ Cannot verify contracts on local network");
+    console.log(" Cannot verify contracts on local network");
     return;
   }
 
@@ -133,12 +133,12 @@ async function main() {
     "EmployerRegistry Proxy"
   );
 
-  console.log("\n✅ Contract verification completed!");
+  console.log("\n Contract verification completed!");
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error("❌ Verification failed:", error);
+    console.error(" Verification failed:", error);
     process.exit(1);
   });

@@ -9,7 +9,7 @@
 ## 🎯 DEMO OVERVIEW
 
 This hackathon demo showcases a **working ZK proof system** for wage verification that's:
-- ⚡ **Fast**: <5 second proof generation
+-  **Fast**: <5 second proof generation
 - 🔒 **Private**: No personal data revealed
 - 🎭 **Judge-friendly**: Clear narrative and visual presentation
 - 🛡️ **Reliable**: Multiple fallback mechanisms for live demo
@@ -77,11 +77,11 @@ npm run test:demo
 ### Simplified ZK Circuit (`wage_proof.circom`)
 ```
 HACKATHON OPTIMIZATIONS:
-✅ Removed ECDSA for speed (<5s proof generation)
-✅ Simplified signature verification (Poseidon hash)
-✅ Reduced constraints: ~150 (vs production ~50k)
-✅ 32-bit wage fields (faster range checks)
-✅ Mock trusted setup (dev-friendly)
+ Removed ECDSA for speed (<5s proof generation)
+ Simplified signature verification (Poseidon hash)
+ Reduced constraints: ~150 (vs production ~50k)
+ 32-bit wage fields (faster range checks)
+ Mock trusted setup (dev-friendly)
 ```
 
 ### Demo Proof Service (`zkp_demo.js`)
@@ -109,11 +109,11 @@ function verifyWageProof(
 
 | Component | Target | Achieved | Status |
 |-----------|--------|----------|--------|
-| Proof Generation | <5s | ~2-3s | ✅ FAST |
-| Contract Verification | <3s | ~1s | ✅ INSTANT |
-| Total Demo Flow | <60s | ~30-45s | ✅ QUICK |
-| Gas Usage | <100k | ~85k | ✅ EFFICIENT |
-| Circuit Constraints | <500 | ~150 | ✅ MINIMAL |
+| Proof Generation | <5s | ~2-3s |  FAST |
+| Contract Verification | <3s | ~1s |  INSTANT |
+| Total Demo Flow | <60s | ~30-45s |  QUICK |
+| Gas Usage | <100k | ~85k |  EFFICIENT |
+| Circuit Constraints | <500 | ~150 |  MINIMAL |
 
 ---
 
@@ -130,7 +130,7 @@ function verifyWageProof(
 
 ### Key Talking Points
 - 🎯 **Privacy**: "Zero knowledge means ZERO data leaked"
-- ⚡ **Speed**: "Proof generated in under 5 seconds"
+-  **Speed**: "Proof generated in under 5 seconds"
 - 🌍 **Scale**: "Ready for millions of users"
 - 💡 **Innovation**: "First working ZK wage verification system"
 
@@ -159,10 +159,10 @@ if (blockchainFails) {
 ### Health Monitoring
 ```bash
 # Real-time component status
-✅ ZK Circuit: Ready
-✅ Demo Data: 18 scenarios loaded
-✅ Blockchain: Connected
-✅ Fallbacks: 3 available
+ ZK Circuit: Ready
+ Demo Data: 18 scenarios loaded
+ Blockchain: Connected
+ Fallbacks: 3 available
 ```
 
 ---
@@ -238,11 +238,11 @@ npm run demo:starbucks  # Use simplest scenario
 ## 🏆 HACKATHON SUCCESS METRICS
 
 ### Judge Appeal Factors
-- ✅ **Working Demo**: Real ZK proofs generated live
-- ✅ **Clear Narrative**: Easy to understand problem/solution
-- ✅ **Technical Innovation**: Novel ZK circuit optimizations
-- ✅ **Real-world Impact**: Immediate practical applications
-- ✅ **Professional Presentation**: Polished, reliable demo
+-  **Working Demo**: Real ZK proofs generated live
+-  **Clear Narrative**: Easy to understand problem/solution
+-  **Technical Innovation**: Novel ZK circuit optimizations
+-  **Real-world Impact**: Immediate practical applications
+-  **Professional Presentation**: Polished, reliable demo
 
 ### Competitive Advantages
 - **First working implementation** of ZK wage verification

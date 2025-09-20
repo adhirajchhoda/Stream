@@ -146,15 +146,15 @@ class DemoOrchestrator {
   }
 
   success(message) {
-    this.log(`✅ ${message}`, colors.green);
+    this.log(` ${message}`, colors.green);
   }
 
   error(message) {
-    this.log(`❌ ${message}`, colors.red);
+    this.log(` ${message}`, colors.red);
   }
 
   warning(message) {
-    this.log(`⚠️  ${message}`, colors.yellow);
+    this.log(`  ${message}`, colors.yellow);
   }
 
   info(message) {

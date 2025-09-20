@@ -3,18 +3,18 @@
 ## 📋 Pre-Demo Setup (30 minutes before presentation)
 
 ### Environment Check
-- [ ] ✅ Node.js installed (v16+ recommended)
-- [ ] ✅ Terminal/command prompt ready
-- [ ] ✅ Dependencies installed (`npm install`)
-- [ ] ✅ Demo components tested (`npm run test:demo`)
-- [ ] ✅ Backup terminal window ready
-- [ ] ✅ Screen sharing software tested
+- [ ]  Node.js installed (v16+ recommended)
+- [ ]  Terminal/command prompt ready
+- [ ]  Dependencies installed (`npm install`)
+- [ ]  Demo components tested (`npm run test:demo`)
+- [ ]  Backup terminal window ready
+- [ ]  Screen sharing software tested
 
 ### Demo Files Ready
-- [ ] ✅ `stream_hackathon_demo.js` - Main demo script
-- [ ] ✅ `HACKATHON_DEMO.md` - Judge instructions
-- [ ] ✅ `test_demo.js` - Component validation
-- [ ] ✅ `run_demo.sh` / `run_demo.bat` - Easy runners
+- [ ]  `stream_hackathon_demo.js` - Main demo script
+- [ ]  `HACKATHON_DEMO.md` - Judge instructions
+- [ ]  `test_demo.js` - Component validation
+- [ ]  `run_demo.sh` / `run_demo.bat` - Easy runners
 
 ### Quick Test Run
 ```bash

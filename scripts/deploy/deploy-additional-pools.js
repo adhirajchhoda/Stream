@@ -76,18 +76,18 @@ async function main() {
 
       saveDeployment(networkName, deployment);
 
-      console.log(`✅ USDT Pool deployed to: ${usdtPoolAddress}`);
+      console.log(` USDT Pool deployed to: ${usdtPoolAddress}`);
     } catch (error) {
-      console.error("❌ USDT Pool deployment failed:", error.message);
+      console.error(" USDT Pool deployment failed:", error.message);
     }
   }
 
-  console.log("\n✅ Additional pool deployment completed!");
+  console.log("\n Additional pool deployment completed!");
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error("❌ Additional pool deployment failed:", error);
+    console.error(" Additional pool deployment failed:", error);
     process.exit(1);
   });

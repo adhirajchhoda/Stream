@@ -19,16 +19,16 @@ echo ""
 # Function to check if Docker is available
 check_docker() {
     if ! command -v docker >/dev/null 2>&1; then
-        echo -e "${RED}❌ Docker not found. Please install Docker first.${NC}"
+        echo -e "${RED} Docker not found. Please install Docker first.${NC}"
         exit 1
     fi
 
     if ! command -v docker-compose >/dev/null 2>&1; then
-        echo -e "${RED}❌ Docker Compose not found. Please install Docker Compose first.${NC}"
+        echo -e "${RED} Docker Compose not found. Please install Docker Compose first.${NC}"
         exit 1
     fi
 
-    echo -e "${GREEN}✅ Docker and Docker Compose available${NC}"
+    echo -e "${GREEN} Docker and Docker Compose available${NC}"
 }
 
 # Function to create required directories
@@ -38,7 +38,7 @@ create_directories() {
     mkdir -p docker-data/{postgres,redis,logs,grafana}
     mkdir -p demo_data/{fallback_proofs,fallback_contracts}
 
-    echo -e "${GREEN}✅ Directories created${NC}"
+    echo -e "${GREEN} Directories created${NC}"
 }
 
 # Function to build Docker images
@@ -52,10 +52,10 @@ build_images() {
     if [[ -f "attestation-service/Dockerfile" ]]; then
         docker build -t stream-attestation-service:latest ./attestation-service
     else
-        echo -e "${YELLOW}⚠️  Attestation service Dockerfile not found, will use Node.js base image${NC}"
+        echo -e "${YELLOW}  Attestation service Dockerfile not found, will use Node.js base image${NC}"
     fi
 
-    echo -e "${GREEN}✅ Docker images built${NC}"
+    echo -e "${GREEN} Docker images built${NC}"
 }
 
 # Function to start services
@@ -71,7 +71,7 @@ start_services() {
     # Start remaining services
     docker-compose -f docker-compose.demo.yml up -d
 
-    echo -e "${GREEN}✅ All services started${NC}"
+    echo -e "${GREEN} All services started${NC}"
 }
 
 # Function to check service health
@@ -83,10 +83,10 @@ check_services() {
 
     for service in "${services[@]}"; do
         if docker-compose -f docker-compose.demo.yml ps "$service" | grep -q "healthy\|Up"; then
-            echo -e "${GREEN}✅ $service: Healthy${NC}"
+            echo -e "${GREEN} $service: Healthy${NC}"
             healthy_count=$((healthy_count + 1))
         else
-            echo -e "${RED}❌ $service: Unhealthy${NC}"
+            echo -e "${RED} $service: Unhealthy${NC}"
         fi
     done
 
@@ -97,7 +97,7 @@ check_services() {
         echo -e "${GREEN}🎉 Demo environment ready!${NC}"
         return 0
     else
-        echo -e "${YELLOW}⚠️  Some services are unhealthy but demo may still work${NC}"
+        echo -e "${YELLOW}  Some services are unhealthy but demo may still work${NC}"
         return 1
     fi
 }
@@ -109,7 +109,7 @@ run_demo() {
     # Interactive demo
     docker-compose -f docker-compose.demo.yml exec stream-demo-app node stream_hackathon_demo.js
 
-    echo -e "${GREEN}✅ Demo completed${NC}"
+    echo -e "${GREEN} Demo completed${NC}"
 }
 
 # Function to run auto demo
@@ -118,7 +118,7 @@ run_auto_demo() {
 
     docker-compose -f docker-compose.demo.yml exec stream-demo-app node stream_hackathon_demo.js --auto
 
-    echo -e "${GREEN}✅ Automated demo completed${NC}"
+    echo -e "${GREEN} Automated demo completed${NC}"
 }
 
 # Function to show logs
@@ -134,7 +134,7 @@ stop_services() {
 
     docker-compose -f docker-compose.demo.yml down
 
-    echo -e "${GREEN}✅ Services stopped${NC}"
+    echo -e "${GREEN} Services stopped${NC}"
 }
 
 # Function to clean up
@@ -144,7 +144,7 @@ cleanup() {
     docker-compose -f docker-compose.demo.yml down -v --remove-orphans
     docker system prune -f
 
-    echo -e "${GREEN}✅ Cleanup completed${NC}"
+    echo -e "${GREEN} Cleanup completed${NC}"
 }
 
 # Function to show service status
@@ -174,7 +174,7 @@ backup_state() {
     # Backup demo data
     cp -r demo_data "$backup_dir/"
 
-    echo -e "${GREEN}✅ Backup created: $backup_dir${NC}"
+    echo -e "${GREEN} Backup created: $backup_dir${NC}"
 }
 
 # Function to restore demo state
@@ -182,7 +182,7 @@ restore_state() {
     local backup_dir="$1"
 
     if [[ -z "$backup_dir" ]]; then
-        echo -e "${RED}❌ Please specify backup directory${NC}"
+        echo -e "${RED} Please specify backup directory${NC}"
         exit 1
     fi
 
@@ -191,13 +191,13 @@ restore_state() {
     # Restore database
     if [[ -f "$backup_dir/database.sql" ]]; then
         docker-compose -f docker-compose.demo.yml exec -T postgres psql -U stream_user -d stream_demo < "$backup_dir/database.sql"
-        echo -e "${GREEN}✅ Database restored${NC}"
+        echo -e "${GREEN} Database restored${NC}"
     fi
 
     # Restore demo data
     if [[ -d "$backup_dir/demo_data" ]]; then
         cp -r "$backup_dir/demo_data" ./
-        echo -e "${GREEN}✅ Demo data restored${NC}"
+        echo -e "${GREEN} Demo data restored${NC}"
     fi
 }
 
@@ -207,7 +207,7 @@ enable_monitoring() {
 
     docker-compose -f docker-compose.demo.yml --profile monitoring up -d grafana
 
-    echo -e "${GREEN}✅ Monitoring enabled at http://localhost:3002${NC}"
+    echo -e "${GREEN} Monitoring enabled at http://localhost:3002${NC}"
     echo -e "${BLUE}Login: admin / demo123${NC}"
 }
 
@@ -304,7 +304,7 @@ main() {
             show_help
             ;;
         *)
-            echo -e "${RED}❌ Unknown command: $1${NC}"
+            echo -e "${RED} Unknown command: $1${NC}"
             echo ""
             show_help
             exit 1

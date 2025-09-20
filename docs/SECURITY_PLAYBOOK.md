@@ -241,17 +241,17 @@ jobs:
         run: |
           # Detect common secret patterns
           if grep -r -E "(AIZ[0-9A-Za-z_-]{30,}|ghp_[A-Za-z0-9]{36}|sk-[a-zA-Z0-9]{48})" . --exclude-dir=.git; then
-            echo "❌ SECRETS DETECTED IN CODE"
+            echo " SECRETS DETECTED IN CODE"
             exit 1
           fi
 
           # Detect private keys
           if grep -r -E "(BEGIN.*PRIVATE.*KEY|0x[a-fA-F0-9]{64})" . --exclude-dir=.git; then
-            echo "❌ PRIVATE KEYS DETECTED"
+            echo " PRIVATE KEYS DETECTED"
             exit 1
           fi
 
-          echo "✅ No secrets detected"
+          echo " No secrets detected"
 
   dependency-scan:
     runs-on: ubuntu-latest
@@ -592,7 +592,7 @@ docker pull aquasec/trivy
 
 ---
 
-## ✅ **Security Checklist**
+##  **Security Checklist**
 
 ### **Daily**
 - [ ] Review security alerts and monitoring dashboards

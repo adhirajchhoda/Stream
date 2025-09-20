@@ -167,9 +167,9 @@ scan_secrets() {
   done
 
   if [ "$found_secrets" = false ]; then
-    log_success "✅ No secrets detected in codebase"
+    log_success " No secrets detected in codebase"
   else
-    log_error "❌ Potential secrets detected!"
+    log_error " Potential secrets detected!"
     echo ""
     echo "To fix these issues:"
     echo "1. Remove any real secrets from the files"
@@ -215,7 +215,7 @@ check_env_files() {
   env_files=$(find . -name ".env*" -not -name "*.template" -not -name "*.example" -not -path "./.git/*" -not -path "./node_modules/*" 2>/dev/null || true)
 
   if [ -n "$env_files" ]; then
-    log_error "❌ Found committed environment files:"
+    log_error " Found committed environment files:"
     echo "$env_files"
     echo ""
     echo "Environment files should not be committed. To fix:"
@@ -240,7 +240,7 @@ check_env_files() {
       fi
     fi
   else
-    log_success "✅ No unauthorized environment files found"
+    log_success " No unauthorized environment files found"
   fi
 }
 
@@ -255,12 +255,12 @@ check_hardcoded_credentials() {
   local cmd="grep -r -i $exclusions --include='*.js' --include='*.ts' --include='*.json' -E '(password|secret|key|token)\\s*[:=]\\s*['\\\"][^'\\\"]{8,}['\\\"]' ."
 
   if eval "$cmd" 2>/dev/null; then
-    log_error "❌ Found hardcoded credentials"
+    log_error " Found hardcoded credentials"
     echo ""
     echo "Please use environment variables or HashiCorp Vault instead"
     EXIT_CODE=1
   else
-    log_success "✅ No hardcoded credentials found"
+    log_success " No hardcoded credentials found"
   fi
 }
 
@@ -279,13 +279,13 @@ check_git_history() {
 
     # Check for patterns that might indicate secrets
     if git show "$commit_hash" 2>/dev/null | grep -E "(password|secret|key|token)" | grep -E "[:=].*['\"][^'\"]{8,}['\"]" >/dev/null 2>&1; then
-      log_warning "⚠️  Potential secret in commit: $commit_hash"
+      log_warning "  Potential secret in commit: $commit_hash"
       log_warning "   Message: $commit_msg"
       log_warning "   Please review this commit manually"
     fi
   done
 
-  log_success "✅ Git history scan complete"
+  log_success " Git history scan complete"
 }
 
 # Generate security report
@@ -305,7 +305,7 @@ Summary:
 - Hardcoded credentials: Checked
 - Git history: Scanned
 
-$([ $EXIT_CODE -eq 0 ] && echo "✅ All security checks passed" || echo "❌ Security issues detected")
+$([ $EXIT_CODE -eq 0 ] && echo " All security checks passed" || echo " Security issues detected")
 
 For detailed output, run with --verbose flag.
 

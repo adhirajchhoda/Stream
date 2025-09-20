@@ -67,7 +67,7 @@ class StreamDemo {
             throw error;
         }
 
-        console.log(chalk.green('\n✅ All systems ready!\n'));
+        console.log(chalk.green('\n All systems ready!\n'));
     }
 
     async loadContracts() {
@@ -281,10 +281,10 @@ class StreamDemo {
         });
 
         const duration = Date.now() - startTime;
-        console.log(chalk.green(`  ⚡ Proof generated in ${duration}ms (Target: <5000ms)`));
+        console.log(chalk.green(`   Proof generated in ${duration}ms (Target: <5000ms)`));
 
         if (duration > 5000) {
-            console.log(chalk.yellow('  ⚠️  Performance target missed - optimization needed'));
+            console.log(chalk.yellow('    Performance target missed - optimization needed'));
         }
 
         return proof;
@@ -312,7 +312,7 @@ class StreamDemo {
     }
 
     async showDemoResults() {
-        console.log(chalk.green.bold('\n✅ DEMO COMPLETED SUCCESSFULLY!\n'));
+        console.log(chalk.green.bold('\n DEMO COMPLETED SUCCESSFULLY!\n'));
 
         console.log(chalk.blue('📊 Performance Metrics:'));
         console.log(`  • ZK Proof Generation: ${this.currentProof.generationTime}ms`);
@@ -350,7 +350,7 @@ class StreamDemo {
             console.log(chalk.gray(`  Error: ${error.message.substring(0, 80)}...`));
         }
 
-        console.log(chalk.green('\n✅ Security validation complete!\n'));
+        console.log(chalk.green('\n Security validation complete!\n'));
         console.log(chalk.gray('Press any key to return to main menu...'));
         await inquirer.prompt([{ type: 'input', name: 'continue', message: '' }]);
     }
@@ -385,7 +385,7 @@ class StreamDemo {
             await tx.wait();
         });
 
-        console.log(chalk.green('✅ Employer registered successfully!'));
+        console.log(chalk.green(' Employer registered successfully!'));
     }
 
     async runEmployeeDemo() {
@@ -420,7 +420,7 @@ class StreamDemo {
             return await this.submitProofToContract(proof);
         });
 
-        console.log(chalk.green('\n✅ Wage advance completed!'));
+        console.log(chalk.green('\n Wage advance completed!'));
         console.log(`Transaction: ${result.transactionHash}`);
     }
 
@@ -453,7 +453,7 @@ if (require.main === module) {
     const demo = new StreamDemo();
 
     demo.runDemo().catch(error => {
-        console.error(chalk.red('\n❌ Demo failed:'), error.message);
+        console.error(chalk.red('\n Demo failed:'), error.message);
         process.exit(1);
     });
 }

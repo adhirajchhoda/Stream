@@ -41,11 +41,11 @@ class DemoTester {
       await testFn();
       const duration = Date.now() - startTime;
 
-      this.log(`✅ ${testName} - PASSED (${duration}ms)`, 'success');
+      this.log(` ${testName} - PASSED (${duration}ms)`, 'success');
       this.passedTests.push({ name: testName, duration });
       this.testResults.push({ name: testName, status: 'PASSED', duration });
     } catch (error) {
-      this.log(`❌ ${testName} - FAILED: ${error.message}`, 'error');
+      this.log(` ${testName} - FAILED: ${error.message}`, 'error');
       this.failedTests.push({ name: testName, error: error.message });
       this.testResults.push({ name: testName, status: 'FAILED', error: error.message });
     }
@@ -329,7 +329,7 @@ class DemoTester {
     console.log(`Failed: ${this.failedTests.length}`);
 
     if (this.failedTests.length > 0) {
-      console.log('\n❌ Failed Tests:');
+      console.log('\n Failed Tests:');
       this.failedTests.forEach(test => {
         console.log(`  - ${test.name}: ${test.error}`);
       });
@@ -341,7 +341,7 @@ class DemoTester {
     if (successRate >= 90) {
       console.log('\n🎉 Demo is ready for hackathon! All critical tests passed.');
     } else if (successRate >= 70) {
-      console.log('\n⚠️  Demo mostly ready, but some issues need attention.');
+      console.log('\n  Demo mostly ready, but some issues need attention.');
     } else {
       console.log('\n🚨 Demo needs significant work before hackathon.');
     }

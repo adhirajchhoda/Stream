@@ -10,7 +10,7 @@ The Stream Protocol Attestation Service enables employers to digitally sign wage
 
 - **🔐 ECDSA Signature Generation**: Secure employer key management with HSM simulation
 - **🛡️ Attestation Validation**: Comprehensive validation with anti-replay protection
-- **⚡ ZKP Circuit Compatibility**: Direct integration with zero-knowledge proof circuits
+- ** ZKP Circuit Compatibility**: Direct integration with zero-knowledge proof circuits
 - **🏭 Mock Employer Simulation**: Realistic testing with major employer profiles
 - **🔒 Security Features**: Rate limiting, input sanitization, and audit logging
 - **📊 JSON Canonicalization**: Consistent data representation for reliable signatures

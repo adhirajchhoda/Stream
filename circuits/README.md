@@ -296,10 +296,10 @@ const WageProofService = require('./src/zkproof_service');
 
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
-| Proof Generation | ~3.2s | <5s | ✅ |
-| Proof Verification | ~45ms | <100ms | ✅ |
-| Circuit Constraints | ~25k | <50k | ✅ |
-| Memory Usage | ~350MB | <500MB | ✅ |
+| Proof Generation | ~3.2s | <5s |  |
+| Proof Verification | ~45ms | <100ms |  |
+| Circuit Constraints | ~25k | <50k |  |
+| Memory Usage | ~350MB | <500MB |  |
 
 ### Optimization Strategies
 

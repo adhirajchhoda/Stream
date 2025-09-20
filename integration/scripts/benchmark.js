@@ -115,7 +115,7 @@ class StreamBenchmark {
                     targetMet: avgDuration < 5000
                 });
 
-                const status = avgDuration < 5000 ? '✅' : '❌';
+                const status = avgDuration < 5000 ? '' : '';
                 spinner.succeed(`${testCase.description}: ${avgDuration.toFixed(0)}ms avg ${status}`);
 
             } catch (error) {
@@ -270,7 +270,7 @@ class StreamBenchmark {
                     targetMet: avgDuration < 50 // 50ms target
                 });
 
-                const status = avgDuration < 50 ? '✅' : '❌';
+                const status = avgDuration < 50 ? '' : '';
                 spinner.succeed(`${operation.name}: ${avgDuration.toFixed(2)}ms avg ${status}`);
 
             } catch (error) {
@@ -376,7 +376,7 @@ class StreamBenchmark {
                     targetMet: totalDuration < 60000 // 60 seconds target
                 });
 
-                const status = totalDuration < 60000 ? '✅' : '❌';
+                const status = totalDuration < 60000 ? '' : '';
                 spinner.succeed(`${scenario.description}: ${totalDuration.toFixed(0)}ms total ${status}`);
 
                 // Reset for next test
@@ -404,7 +404,7 @@ class StreamBenchmark {
                 result.avgTime.toFixed(0),
                 result.minTime.toFixed(0),
                 result.maxTime.toFixed(0),
-                result.targetMet ? '✅' : '❌'
+                result.targetMet ? '' : ''
             ]);
         });
 
@@ -421,7 +421,7 @@ class StreamBenchmark {
                 result.testCase,
                 result.avgTime ? result.avgTime.toFixed(0) : 'N/A',
                 result.avgGas ? result.avgGas.toFixed(0) : 'N/A',
-                result.targetMet ? '✅' : '❌'
+                result.targetMet ? '' : ''
             ]);
         });
 
@@ -439,7 +439,7 @@ class StreamBenchmark {
                 result.count.toString(),
                 result.totalTime.toFixed(0),
                 result.avgTime.toFixed(2),
-                result.targetMet ? '✅' : '❌'
+                result.targetMet ? '' : ''
             ]);
         });
 
@@ -458,7 +458,7 @@ class StreamBenchmark {
                 result.attestationTime.toFixed(0),
                 result.proofTime.toFixed(0),
                 result.contractTime.toFixed(0),
-                result.targetMet ? '✅' : '❌'
+                result.targetMet ? '' : ''
             ]);
         });
 
@@ -515,7 +515,7 @@ class StreamBenchmark {
         });
 
         const overallPassed = assessments.every(a => a.status === 'PASS');
-        const overallStatus = overallPassed ? '✅ ALL TARGETS MET' : '❌ SOME TARGETS MISSED';
+        const overallStatus = overallPassed ? ' ALL TARGETS MET' : ' SOME TARGETS MISSED';
         const overallColor = overallPassed ? chalk.green.bold : chalk.red.bold;
 
         console.log(`\n${overallColor(overallStatus)}\n`);
@@ -523,7 +523,7 @@ class StreamBenchmark {
         if (overallPassed) {
             console.log(chalk.green('🎉 Stream Protocol is ready for production deployment!'));
         } else {
-            console.log(chalk.yellow('⚠️  Some performance optimizations needed before production.'));
+            console.log(chalk.yellow('  Some performance optimizations needed before production.'));
         }
     }
 
@@ -557,7 +557,7 @@ if (require.main === module) {
     const benchmark = new StreamBenchmark();
 
     benchmark.run().catch(error => {
-        console.error(chalk.red('\n❌ Benchmark failed:'), error.message);
+        console.error(chalk.red('\n Benchmark failed:'), error.message);
         process.exit(1);
     });
 }
