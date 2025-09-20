@@ -182,7 +182,7 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=stream_demo
 DB_USER=stream_user
-DB_PASSWORD=stream_demo_password
+DB_PASSWORD=REPLACE_WITH_DB_PASSWORD
 
 # Redis Configuration
 REDIS_HOST=localhost
@@ -191,7 +191,7 @@ REDIS_PASSWORD=
 
 # Blockchain Configuration
 BLOCKCHAIN_RPC_URL=http://localhost:8545
-PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+PRIVATE_KEY=REPLACE_WITH_YOUR_PRIVATE_KEY_FOR_DEMO
 
 # Demo Configuration
 DEMO_MODE=true
@@ -232,7 +232,7 @@ services:
     environment:
       POSTGRES_DB: stream_demo
       POSTGRES_USER: stream_user
-      POSTGRES_PASSWORD: stream_demo_password
+      POSTGRES_PASSWORD: REPLACE_WITH_DB_PASSWORD
     ports:
       - "5432:5432"
     volumes:
@@ -391,7 +391,7 @@ seed_demo_data() {
         if [[ -f "sample_data.sql" ]]; then
             # Try to load sample data
             if command -v psql >/dev/null 2>&1; then
-                PGPASSWORD=stream_demo_password psql -h localhost -U stream_user -d stream_demo -f sample_data.sql 2>/dev/null || {
+                PGPASSWORD=REPLACE_WITH_DB_PASSWORD psql -h localhost -U stream_user -d stream_demo -f sample_data.sql 2>/dev/null || {
                     echo -e "${YELLOW}  Database seeding failed, using in-memory data${NC}"
                 }
             fi

@@ -13,7 +13,7 @@ class DemoDataGenerator {
         this.employers = {
             "amazon": {
                 id: 2001,
-                secret: "amazon_secret_key_demo_2024_v1_0x1",
+                secret: "PLACEHOLDER_AMAZON_DEMO_KEY",
                 name: "Amazon",
                 logo: "🛒",
                 avgSalary: 95000,
@@ -21,7 +21,7 @@ class DemoDataGenerator {
             },
             "starbucks": {
                 id: 2002,
-                secret: "starbucks_secret_key_demo_2024_v1",
+                secret: "PLACEHOLDER_STARBUCKS_DEMO_KEY",
                 name: "Starbucks",
                 logo: "☕",
                 avgSalary: 35000,
@@ -29,7 +29,7 @@ class DemoDataGenerator {
             },
             "uber": {
                 id: 2003,
-                secret: "uber_secret_key_demo_2024_v1_xyz",
+                secret: "PLACEHOLDER_UBER_DEMO_KEY",
                 name: "Uber",
                 logo: "🚗",
                 avgSalary: 48000,
@@ -37,7 +37,7 @@ class DemoDataGenerator {
             },
             "google": {
                 id: 2004,
-                secret: "google_secret_key_demo_2024_v1_ai",
+                secret: "PLACEHOLDER_GOOGLE_DEMO_KEY",
                 name: "Google",
                 logo: "🔍",
                 avgSalary: 120000,
@@ -45,7 +45,7 @@ class DemoDataGenerator {
             },
             "mcdonalds": {
                 id: 2005,
-                secret: "mcdonalds_secret_key_demo_24_abc",
+                secret: "PLACEHOLDER_MCDONALDS_DEMO_KEY",
                 name: "McDonald's",
                 logo: "🍟",
                 avgSalary: 28000,
@@ -53,7 +53,7 @@ class DemoDataGenerator {
             },
             "microsoft": {
                 id: 2006,
-                secret: "microsoft_secret_key_demo_24_xyz",
+                secret: "PLACEHOLDER_MICROSOFT_DEMO_KEY",
                 name: "Microsoft",
                 logo: "💻",
                 name: "Microsoft",
