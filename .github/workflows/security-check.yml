@@ -1,0 +1,307 @@
+name: Security Check
+
+on:
+  push:
+    branches: [ main, develop, 'release/*' ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: '0 6 * * *'
+
+jobs:
+  secret-detection:
+    name: Secret Detection (BLOCKING)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history for secret detection in commits
+          fetch-depth: 0
+
+      - name: Secret Scan - Current Files
+        run: |
+          echo "🔍 Scanning for exposed secrets in current files..."
+
+          # Define secret patterns (from original task)
+          SECRET_PATTERNS=(
+            "AIZ[0-9A-Za-z_-]{30,}"                    # Google API keys
+            "ghp_[A-Za-z0-9]{36}"                      # GitHub Personal Access Tokens
+            "sk-[a-zA-Z0-9]{48}"                       # OpenAI API keys
+            "xoxb-[0-9a-zA-Z-]+"                       # Slack bot tokens
+            "AKIA[0-9A-Z]{16}"                         # AWS Access Keys
+            "-----BEGIN.*PRIVATE.*KEY-----"            # Private keys
+            "0x[a-fA-F0-9]{64}"                        # Ethereum private keys
+            "['\"][0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}['\"]"  # UUIDs in quotes
+            "postgresql://[^\\s]+:[^\\s]+@[^\\s]+"     # PostgreSQL connection strings
+            "mongodb://[^\\s]+:[^\\s]+@[^\\s]+"        # MongoDB connection strings
+            "redis://[^\\s]*:[^\\s]+@[^\\s]+"          # Redis connection strings
+          )
+
+          FOUND_SECRETS=false
+
+          for pattern in "${SECRET_PATTERNS[@]}"; do
+            echo "Checking pattern: $pattern"
+            if grep -r -E "$pattern" . \
+              --exclude-dir=.git \
+              --exclude-dir=node_modules \
+              --exclude-dir=.github \
+              --exclude-dir=demo_data \
+              --exclude-dir=test \
+              --exclude-dir=tests \
+              --exclude="*.md" \
+              --exclude="*.template" \
+              --exclude="*.example" \
+              --exclude="*.test.js" \
+              --exclude="testData.js" \
+              --exclude="setup_demo.sh" \
+              --exclude="security-check.yml" \
+              --line-number; then
+              echo "❌ FOUND POTENTIAL SECRETS WITH PATTERN: $pattern"
+              FOUND_SECRETS=true
+            fi
+          done
+
+          if [ "$FOUND_SECRETS" = true ]; then
+            echo ""
+            echo "🚨 SECRET DETECTION FAILED"
+            echo "Potential secrets were found in the codebase."
+            echo "Please review the matches above and ensure no real secrets are committed."
+            echo ""
+            echo "To fix:"
+            echo "1. Remove any real secrets from the files"
+            echo "2. Add sensitive files to .gitignore"
+            echo "3. Use .env.template files for configuration examples"
+            echo "4. Store real secrets in HashiCorp Vault or environment variables"
+            exit 1
+          else
+            echo "✅ No secrets detected in current files"
+          fi
+
+      - name: Secret Scan - Git History
+        run: |
+          echo "🕵️ Scanning git history for leaked secrets..."
+
+          # Check last 10 commits for potential secrets
+          git log --pretty=format:"%H %s" -10 | while read commit_hash commit_msg; do
+            echo "Checking commit: $commit_hash - $commit_msg"
+
+            # Check for common secret patterns in commit diffs
+            if git show "$commit_hash" | grep -E "(password|secret|key|token)" | grep -E "[:=].*['\"][^'\"]{8,}['\"]"; then
+              echo "⚠️  Potential secret in commit: $commit_hash"
+              echo "   Message: $commit_msg"
+              echo "   Please review this commit manually"
+            fi
+          done
+
+          echo "✅ Git history scan complete"
+
+      - name: Environment File Check
+        run: |
+          echo "🔍 Checking for committed environment files..."
+
+          # Check for .env files that shouldn't be committed
+          ENV_FILES=$(find . -name ".env*" -not -name "*.template" -not -name "*.example" -not -path "./.git/*" -not -path "./node_modules/*")
+
+          if [ -n "$ENV_FILES" ]; then
+            echo "❌ FOUND COMMITTED ENVIRONMENT FILES:"
+            echo "$ENV_FILES"
+            echo ""
+            echo "Environment files should not be committed to git."
+            echo "Please:"
+            echo "1. Remove these files from git: git rm --cached <file>"
+            echo "2. Add them to .gitignore"
+            echo "3. Use .env.template files instead"
+            exit 1
+          else
+            echo "✅ No unauthorized environment files found"
+          fi
+
+      - name: Hardcoded Credential Check
+        run: |
+          echo "🔍 Checking for hardcoded credentials..."
+
+          # Check for hardcoded passwords/keys in code
+          if grep -r -i \
+            --include="*.js" \
+            --include="*.ts" \
+            --include="*.json" \
+            --exclude-dir=node_modules \
+            --exclude-dir=.git \
+            -E "(password|secret|key|token)\s*[:=]\s*['\"][^'\"]{8,}['\"]" .; then
+            echo "❌ FOUND HARDCODED CREDENTIALS"
+            echo "Please use environment variables or HashiCorp Vault instead"
+            exit 1
+          else
+            echo "✅ No hardcoded credentials found"
+          fi
+
+  dependency-security:
+    name: Dependency Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: |
+          echo "🔍 Running dependency security audit..."
+          if npm audit --audit-level=moderate --production; then
+            echo "✅ No security vulnerabilities found in dependencies"
+          else
+            echo "❌ Security vulnerabilities found in dependencies"
+            echo "Please run 'npm audit fix' to address these issues"
+            exit 1
+          fi
+
+      - name: Check for known vulnerable packages
+        run: |
+          echo "🔍 Checking for known vulnerable packages..."
+
+          # List of packages with known security issues
+          VULNERABLE_PACKAGES=(
+            "event-stream@3.3.6"
+            "flatmap-stream"
+            "eslint-scope@3.7.2"
+            "getcookies@1.0.0"
+          )
+
+          PACKAGE_JSON_CONTENT=$(cat package.json)
+
+          for package in "${VULNERABLE_PACKAGES[@]}"; do
+            if echo "$PACKAGE_JSON_CONTENT" | grep -q "$package"; then
+              echo "❌ FOUND VULNERABLE PACKAGE: $package"
+              echo "Please update or remove this package"
+              exit 1
+            fi
+          done
+
+          echo "✅ No known vulnerable packages found"
+
+  configuration-security:
+    name: Configuration Security Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check Docker security
+        run: |
+          echo "🔍 Checking Docker configuration security..."
+
+          # Check for insecure Docker configurations
+          if find . -name "Dockerfile*" -o -name "docker-compose*.yml" | xargs grep -l "privileged.*true\|user.*root\|--privileged"; then
+            echo "⚠️  Found potentially insecure Docker configurations"
+            echo "Please review Docker security settings"
+          else
+            echo "✅ Docker configurations look secure"
+          fi
+
+      - name: Check for debug configurations
+        run: |
+          echo "🔍 Checking for debug configurations in production files..."
+
+          if grep -r -i \
+            --include="*.js" \
+            --include="*.json" \
+            --include="*.yml" \
+            --exclude-dir=node_modules \
+            --exclude-dir=.git \
+            "debug.*true\|development.*true\|test.*true" .; then
+            echo "⚠️  Found debug configurations that might be enabled in production"
+            echo "Please ensure debug settings are properly configured for each environment"
+          else
+            echo "✅ No debug configurations found in production files"
+          fi
+
+      - name: SSL/TLS Configuration Check
+        run: |
+          echo "🔍 Checking SSL/TLS configurations..."
+
+          # Check for weak SSL/TLS configurations
+          if grep -r -i \
+            --include="*.js" \
+            --include="*.json" \
+            --include="*.yml" \
+            --exclude-dir=node_modules \
+            --exclude-dir=.git \
+            "ssl.*false\|tls.*false\|insecure.*true\|rejectUnauthorized.*false"; then
+            echo "⚠️  Found potentially insecure SSL/TLS configurations"
+            echo "Please ensure SSL/TLS is properly configured"
+          else
+            echo "✅ SSL/TLS configurations look secure"
+          fi
+
+  smart-contract-security:
+    name: Smart Contract Security (if applicable)
+    runs-on: ubuntu-latest
+    if: contains(github.repository, 'smart-contract') || contains(github.event.head_commit.message, 'contract')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Slither (Solidity Security Analyzer)
+        run: |
+          python3 -m pip install slither-analyzer
+
+      - name: Run Slither Analysis
+        run: |
+          echo "🔍 Running smart contract security analysis..."
+
+          if find . -name "*.sol" | head -1 | grep -q .; then
+            # Run slither on Solidity files
+            find . -name "*.sol" -exec slither {} \;
+          else
+            echo "No Solidity files found, skipping contract analysis"
+          fi
+
+  security-report:
+    name: Generate Security Report
+    runs-on: ubuntu-latest
+    needs: [secret-detection, dependency-security, configuration-security]
+    if: always()
+    steps:
+      - name: Security Summary
+        run: |
+          echo "📊 Security Check Summary"
+          echo "========================="
+          echo ""
+          echo "Secret Detection: ${{ needs.secret-detection.result }}"
+          echo "Dependency Security: ${{ needs.dependency-security.result }}"
+          echo "Configuration Security: ${{ needs.configuration-security.result }}"
+          echo ""
+
+          if [[ "${{ needs.secret-detection.result }}" == "failure" ||
+                "${{ needs.dependency-security.result }}" == "failure" ||
+                "${{ needs.configuration-security.result }}" == "failure" ]]; then
+            echo "❌ SECURITY CHECKS FAILED"
+            echo ""
+            echo "One or more security checks failed. Please review the errors above."
+            echo "The build has been blocked for security reasons."
+            echo ""
+            echo "Common fixes:"
+            echo "- Remove any exposed secrets from code"
+            echo "- Update vulnerable dependencies with 'npm audit fix'"
+            echo "- Review configuration files for security issues"
+            echo "- Use .env.template files instead of committing real configuration"
+            exit 1
+          else
+            echo "✅ ALL SECURITY CHECKS PASSED"
+            echo ""
+            echo "Your code has passed all security checks!"
+          fi
