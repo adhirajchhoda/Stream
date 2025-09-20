@@ -121,7 +121,7 @@ class DemoDataGenerator {
         // Generate edge case scenarios for robustness demo
         this.generateEdgeCaseScenarios();
 
-        console.log(`✅ Generated ${this.demoScenarios.length} demo scenarios`);
+        console.log(` Generated ${this.demoScenarios.length} demo scenarios`);
         return this.demoScenarios;
     }
 
@@ -546,7 +546,7 @@ if (require.main === module) {
             console.log(`  ${i + 1}. ${s.title} - ${s.useCase}`);
         });
 
-        console.log("\n✅ Demo Data Generation Complete!");
+        console.log("\n Demo Data Generation Complete!");
         console.log(`📁 Files exported to: ${exportResult.outputDir}`);
         console.log(`🎯 Ready for hackathon demo!`);
     }

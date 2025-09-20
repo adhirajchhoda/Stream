@@ -25,16 +25,16 @@ check_dependencies() {
     echo -e "${YELLOW}📋 Checking dependencies...${NC}"
 
     if ! command -v circom &> /dev/null; then
-        echo -e "${RED}❌ circom not found. Please install: npm install -g circom${NC}"
+        echo -e "${RED} circom not found. Please install: npm install -g circom${NC}"
         exit 1
     fi
 
     if ! command -v snarkjs &> /dev/null; then
-        echo -e "${RED}❌ snarkjs not found. Please install: npm install -g snarkjs${NC}"
+        echo -e "${RED} snarkjs not found. Please install: npm install -g snarkjs${NC}"
         exit 1
     fi
 
-    echo -e "${GREEN}✅ Dependencies OK${NC}"
+    echo -e "${GREEN} Dependencies OK${NC}"
 }
 
 # Download Powers of Tau file if not exists
@@ -42,9 +42,9 @@ download_ptau() {
     if [ ! -f "$PTAU_FILE" ]; then
         echo -e "${YELLOW}📥 Downloading Powers of Tau file...${NC}"
         curl -L "$PTAU_URL" -o "$PTAU_FILE"
-        echo -e "${GREEN}✅ Powers of Tau downloaded${NC}"
+        echo -e "${GREEN} Powers of Tau downloaded${NC}"
     else
-        echo -e "${GREEN}✅ Powers of Tau file already exists${NC}"
+        echo -e "${GREEN} Powers of Tau file already exists${NC}"
     fi
 }
 
@@ -56,7 +56,7 @@ compile_circuit() {
     circom ${CIRCUIT_NAME}.circom --r1cs --wasm --sym --c -o ../build/
     cd ../..
 
-    echo -e "${GREEN}✅ Circuit compiled successfully${NC}"
+    echo -e "${GREEN} Circuit compiled successfully${NC}"
 
     # Display circuit info
     echo -e "${YELLOW}📊 Circuit Statistics:${NC}"
@@ -82,7 +82,7 @@ generate_keys() {
     echo -e "${YELLOW}📋 Generating verification key...${NC}"
     snarkjs zkey export verificationkey ${BUILD_DIR}/${CIRCUIT_NAME}_final.zkey ${BUILD_DIR}/verification_key.json
 
-    echo -e "${GREEN}✅ Keys generated successfully${NC}"
+    echo -e "${GREEN} Keys generated successfully${NC}"
 }
 
 # Verify the setup
@@ -92,7 +92,7 @@ verify_setup() {
     # Verify the final zkey
     snarkjs zkey verify ${BUILD_DIR}/${CIRCUIT_NAME}.r1cs $PTAU_FILE ${BUILD_DIR}/${CIRCUIT_NAME}_final.zkey
 
-    echo -e "${GREEN}✅ Setup verification complete${NC}"
+    echo -e "${GREEN} Setup verification complete${NC}"
 }
 
 # Generate test proof
@@ -129,10 +129,10 @@ EOF
     time snarkjs groth16 prove ${BUILD_DIR}/${CIRCUIT_NAME}_final.zkey ${BUILD_DIR}/witness.wtns ${BUILD_DIR}/proof.json ${BUILD_DIR}/public.json
 
     # Verify proof
-    echo -e "${YELLOW}✅ Verifying proof...${NC}"
+    echo -e "${YELLOW} Verifying proof...${NC}"
     snarkjs groth16 verify ${BUILD_DIR}/verification_key.json ${BUILD_DIR}/public.json ${BUILD_DIR}/proof.json
 
-    echo -e "${GREEN}✅ Test proof generation and verification successful${NC}"
+    echo -e "${GREEN} Test proof generation and verification successful${NC}"
 }
 
 # Print build summary

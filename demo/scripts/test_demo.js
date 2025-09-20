@@ -41,11 +41,11 @@ class DemoTester {
       await testFn();
       const duration = Date.now() - startTime;
 
-      this.log(`✅ ${testName} - PASSED (${duration}ms)`, 'success');
+      this.log(` ${testName} - PASSED (${duration}ms)`, 'success');
       this.passedTests.push({ name: testName, duration });
       this.testResults.push({ name: testName, status: 'PASSED', duration });
     } catch (error) {
-      this.log(`❌ ${testName} - FAILED: ${error.message}`, 'error');
+      this.log(` ${testName} - FAILED: ${error.message}`, 'error');
       this.failedTests.push({ name: testName, error: error.message });
       this.testResults.push({ name: testName, status: 'FAILED', error: error.message });
     }
@@ -158,26 +158,26 @@ class DemoTester {
             const result = await test.test();
             if (result) {
                 passed++;
-                console.log(chalk.green(`✅ ${test.name} - PASSED`));
+                console.log(chalk.green(` ${test.name} - PASSED`));
             } else {
                 failed++;
-                console.log(chalk.red(`❌ ${test.name} - FAILED`));
+                console.log(chalk.red(` ${test.name} - FAILED`));
             }
         } catch (error) {
             failed++;
-            console.log(chalk.red(`❌ ${test.name} - ERROR: ${error.message}`));
+            console.log(chalk.red(` ${test.name} - ERROR: ${error.message}`));
         }
     }
 
     console.log(chalk.blue.bold(`\n📊 TEST RESULTS:`));
-    console.log(chalk.green(`✅ Passed: ${passed}`));
-    console.log(chalk.red(`❌ Failed: ${failed}`));
+    console.log(chalk.green(` Passed: ${passed}`));
+    console.log(chalk.red(` Failed: ${failed}`));
 
     if (failed === 0) {
         console.log(chalk.green.bold('\n🎉 ALL TESTS PASSED! Demo is ready for judges.\n'));
         return true;
     } else {
-        console.log(chalk.yellow.bold('\n⚠️  Some tests failed. Check dependencies with: npm install\n'));
+        console.log(chalk.yellow.bold('\n  Some tests failed. Check dependencies with: npm install\n'));
         return false;
     }
 }
@@ -198,24 +198,24 @@ async function testScenarios() {
 
             if (demo.scenarios[scenarioId]) {
                 const scenario = demo.scenarios[scenarioId];
-                console.log(chalk.green(`✅ ${scenario.name} - Data complete`));
+                console.log(chalk.green(` ${scenario.name} - Data complete`));
                 console.log(chalk.gray(`   Employee: ${scenario.employee.name}`));
                 console.log(chalk.gray(`   Work: ${scenario.work.hours}h @ $${scenario.work.rate}/hr`));
             } else {
-                console.log(chalk.red(`❌ ${scenarioId} - Missing data`));
+                console.log(chalk.red(` ${scenarioId} - Missing data`));
             }
         }
 
         // Test fallback data
         console.log(chalk.cyan('\nTesting fallback data...'));
         if (demo.fallbackData.proofs.starbucks && demo.fallbackData.transactions.starbucks) {
-            console.log(chalk.green('✅ Fallback data complete'));
+            console.log(chalk.green(' Fallback data complete'));
         } else {
-            console.log(chalk.red('❌ Fallback data incomplete'));
+            console.log(chalk.red(' Fallback data incomplete'));
         }
 
     } catch (error) {
-        console.log(chalk.red(`❌ Scenario test failed: ${error.message}`));
+        console.log(chalk.red(` Scenario test failed: ${error.message}`));
     }
 }
 

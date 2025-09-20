@@ -52,11 +52,11 @@ class ZKPDemo {
 
         // Check if circuit files exist, if not, create mock versions
         if (!fs.existsSync(this.circuitPath)) {
-            console.log("⚠️  Circuit files not found, using mock setup for demo");
+            console.log("  Circuit files not found, using mock setup for demo");
             await this.createMockSetup();
         }
 
-        console.log("✅ ZKP Demo System Ready!");
+        console.log(" ZKP Demo System Ready!");
         return true;
     }
 
@@ -112,7 +112,7 @@ class ZKPDemo {
             const endTime = Date.now();
             const duration = endTime - startTime;
 
-            console.log(`✅ Proof generated in ${duration}ms`);
+            console.log(` Proof generated in ${duration}ms`);
             console.log(`📊 Circuit constraints: ~${this.getConstraintCount()} (optimized for speed)`);
 
             return {
@@ -131,7 +131,7 @@ class ZKPDemo {
             };
 
         } catch (error) {
-            console.error("❌ Proof generation failed:", error.message);
+            console.error(" Proof generation failed:", error.message);
             throw new Error(`Proof generation failed: ${error.message}`);
         }
     }
@@ -227,11 +227,11 @@ class ZKPDemo {
             // In production, this would call snarkjs.groth16.verify
             const isValid = await this.simulateVerification(proof, publicSignals);
 
-            console.log(`${isValid ? '✅' : '❌'} Proof verification: ${isValid ? 'VALID' : 'INVALID'}`);
+            console.log(`${isValid ? '' : ''} Proof verification: ${isValid ? 'VALID' : 'INVALID'}`);
             return isValid;
 
         } catch (error) {
-            console.error("❌ Proof verification failed:", error.message);
+            console.error(" Proof verification failed:", error.message);
             return false;
         }
     }
@@ -367,7 +367,7 @@ if (require.main === module) {
             const isValid = await zkp.verifyProof(result.proof, result.publicSignals);
 
             console.log(`📊 Wage Range: ${result.attestation.wageRange}`);
-            console.log(`⚡ Generation Time: ${result.metadata.generationTime}ms`);
+            console.log(` Generation Time: ${result.metadata.generationTime}ms`);
             console.log(`🔗 Ready for blockchain: ${isValid ? 'YES' : 'NO'}`);
         }
 

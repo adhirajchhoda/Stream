@@ -304,7 +304,7 @@ async function main() {
   // Verify contracts on testnets/mainnet
   await verifyContracts(deployment, addresses, networkName);
 
-  console.log("\n✅ Deployment completed successfully!");
+  console.log("\n Deployment completed successfully!");
   console.log("\n📋 Deployment Summary:");
   console.log(`Factory: ${factory.address}`);
   console.log(`StreamCore: ${deployment.streamCoreProxy}`);
@@ -318,6 +318,6 @@ async function main() {
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error("❌ Deployment failed:", error);
+    console.error(" Deployment failed:", error);
     process.exit(1);
   });

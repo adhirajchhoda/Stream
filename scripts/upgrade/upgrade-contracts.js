@@ -36,12 +36,12 @@ async function upgradeContract(proxyAddress, contractName, currentImplAddress) {
     const tx = await proxy.upgradeTo(newImplementation.address);
     await tx.wait();
 
-    console.log(`✅ ${contractName} upgraded successfully`);
+    console.log(` ${contractName} upgraded successfully`);
     console.log(`Transaction hash: ${tx.hash}`);
 
     return newImplementation.address;
   } catch (error) {
-    console.error(`❌ Failed to upgrade ${contractName}:`, error.message);
+    console.error(` Failed to upgrade ${contractName}:`, error.message);
     throw error;
   }
 }
@@ -76,13 +76,13 @@ async function upgradeStablecoinPool(deployment) {
     const tx = await proxy.upgradeTo(newImplementation.address);
     await tx.wait();
 
-    console.log(`✅ StablecoinPool upgraded successfully`);
+    console.log(` StablecoinPool upgraded successfully`);
     console.log(`Transaction hash: ${tx.hash}`);
 
     deployment.contracts.stablecoinPool.implementation = newImplementation.address;
     return deployment;
   } catch (error) {
-    console.error(`❌ Failed to upgrade StablecoinPool:`, error.message);
+    console.error(` Failed to upgrade StablecoinPool:`, error.message);
     throw error;
   }
 }
@@ -128,9 +128,9 @@ async function validateUpgrade(deployment) {
       throw new Error("StreamCore -> EmployerRegistry reference mismatch");
     }
 
-    console.log("✅ Upgrade validation passed");
+    console.log(" Upgrade validation passed");
   } catch (error) {
-    console.error("❌ Upgrade validation failed:", error.message);
+    console.error(" Upgrade validation failed:", error.message);
     throw error;
   }
 }
@@ -159,7 +159,7 @@ async function main() {
   const upgradeRegistry = args.includes("--registry") || upgradeAll;
 
   if (!upgradeStreamCore && !upgradePool && !upgradeRegistry) {
-    console.log("\n❌ No contracts specified for upgrade");
+    console.log("\n No contracts specified for upgrade");
     console.log("Usage: npm run upgrade -- [--all|--stream-core|--pool|--registry]");
     return;
   }
@@ -184,7 +184,7 @@ async function main() {
     // Save updated deployment info
     saveDeployment(networkName, deployment);
 
-    console.log("\n✅ All upgrades completed successfully!");
+    console.log("\n All upgrades completed successfully!");
 
     // Summary
     console.log("\n📋 Updated implementations:");
@@ -199,7 +199,7 @@ async function main() {
     }
 
   } catch (error) {
-    console.error("\n❌ Upgrade failed:", error.message);
+    console.error("\n Upgrade failed:", error.message);
     process.exit(1);
   }
 }
@@ -207,6 +207,6 @@ async function main() {
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error("❌ Upgrade script failed:", error);
+    console.error(" Upgrade script failed:", error);
     process.exit(1);
   });

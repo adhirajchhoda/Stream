@@ -60,7 +60,7 @@ class GasAnalyzer {
     // Deploy contracts for analysis
     await this.deployContractsForAnalysis();
 
-    console.log("✅ Gas Analyzer initialized");
+    console.log(" Gas Analyzer initialized");
   }
 
   async deployContractsForAnalysis() {
@@ -122,7 +122,7 @@ class GasAnalyzer {
     // Setup test data
     await this.setupTestData();
 
-    console.log("✅ Contracts deployed for analysis");
+    console.log(" Contracts deployed for analysis");
   }
 
   async setupTestData() {
@@ -503,10 +503,10 @@ class GasAnalyzer {
     console.log(`   Within Target: ${summary.operationsWithinTarget}`);
     console.log(`   Success Rate: ${summary.successRate}%`);
 
-    console.log(`\n⚡ Average Gas Usage:`);
+    console.log(`\n Average Gas Usage:`);
     for (const [operation, gas] of Object.entries(summary.averageGasUsage)) {
       const target = GAS_TARGETS[operation] || "N/A";
-      const status = gas <= target ? "✅" : "❌";
+      const status = gas <= target ? "" : "";
       console.log(`   ${operation}: ${gas} gas ${status} (target: ${target})`);
     }
 
@@ -516,7 +516,7 @@ class GasAnalyzer {
         console.log(`   - ${issue}`);
       });
     } else {
-      console.log(`\n✅ No critical gas issues found!`);
+      console.log(`\n No critical gas issues found!`);
     }
 
     console.log("\n" + "=".repeat(50));
@@ -544,10 +544,10 @@ async function main() {
     // Print summary
     analyzer.printSummary();
 
-    console.log("\n✅ Gas analysis completed successfully!");
+    console.log("\n Gas analysis completed successfully!");
 
   } catch (error) {
-    console.error("❌ Gas analysis failed:", error);
+    console.error(" Gas analysis failed:", error);
     process.exit(1);
   }
 }

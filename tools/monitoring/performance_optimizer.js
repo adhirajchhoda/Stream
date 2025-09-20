@@ -42,12 +42,12 @@ class PerformanceOptimizer {
       await optimizationFn();
       const duration = Date.now() - startTime;
       this.metrics.set(name, { status: 'success', duration });
-      this.log(`✅ ${name} completed in ${duration}ms`, 'success');
+      this.log(` ${name} completed in ${duration}ms`, 'success');
       this.optimizations.push({ name, status: 'success', duration });
     } catch (error) {
       const duration = Date.now() - startTime;
       this.metrics.set(name, { status: 'failed', duration, error: error.message });
-      this.log(`❌ ${name} failed: ${error.message}`, 'error');
+      this.log(` ${name} failed: ${error.message}`, 'error');
       this.optimizations.push({ name, status: 'failed', duration, error: error.message });
     }
   }
@@ -108,9 +108,9 @@ class PerformanceOptimizer {
       `;
       await fs.writeFile('./circuits/build/wage_proof_js/witness_calculator.js', mockWitnessCalculator);
 
-      this.log('✅ ZK circuits pre-compiled for demo performance');
+      this.log(' ZK circuits pre-compiled for demo performance');
     } else {
-      this.log('✅ ZK circuits already compiled');
+      this.log(' ZK circuits already compiled');
     }
   }
 
@@ -146,7 +146,7 @@ class PerformanceOptimizer {
       }
     }
 
-    this.log('✅ Node.js modules warmed up');
+    this.log(' Node.js modules warmed up');
   }
 
   // Optimization 3: Pre-load and cache demo data
@@ -192,7 +192,7 @@ class PerformanceOptimizer {
       this.log(`  ⚠ Could not load contracts: ${error.message}`);
     }
 
-    this.log('✅ Demo data pre-loaded and cached');
+    this.log(' Demo data pre-loaded and cached');
   }
 
   // Optimization 4: Configure optimal memory settings
@@ -216,7 +216,7 @@ class PerformanceOptimizer {
     // Configure process settings
     process.setMaxListeners(20); // Allow more event listeners for demo components
 
-    this.log('✅ Memory settings optimized');
+    this.log(' Memory settings optimized');
   }
 
   // Optimization 5: Pre-generate crypto materials
@@ -254,7 +254,7 @@ class PerformanceOptimizer {
     this.log(`  ✓ Generated ${global._streamDemoCache.cryptoMaterials.signatures.length} signatures`);
     this.log(`  ✓ Generated ${global._streamDemoCache.cryptoMaterials.addresses.length} addresses`);
 
-    this.log('✅ Cryptographic materials pre-generated');
+    this.log(' Cryptographic materials pre-generated');
   }
 
   // Optimization 6: Configure network timeouts for reliability
@@ -286,7 +286,7 @@ class PerformanceOptimizer {
       this.log(`  ⚠ Network connectivity test failed: ${error.message}`);
     }
 
-    this.log('✅ Network settings configured');
+    this.log(' Network settings configured');
   }
 
   // Optimization 7: Optimize file system access
@@ -319,7 +319,7 @@ class PerformanceOptimizer {
       }
     }
 
-    this.log('✅ File system access optimized');
+    this.log(' File system access optimized');
   }
 
   // Optimization 8: Create performance monitoring
@@ -353,12 +353,12 @@ class PerformanceOptimizer {
       }
     };
 
-    this.log('✅ Performance monitoring configured');
+    this.log(' Performance monitoring configured');
   }
 
   // Run all optimizations
   async runAllOptimizations() {
-    console.log('⚡ Stream Protocol - Performance Optimizer');
+    console.log(' Stream Protocol - Performance Optimizer');
     console.log('=========================================\n');
 
     const optimizations = [
@@ -392,7 +392,7 @@ class PerformanceOptimizer {
     console.log(`Failed: ${failed}`);
 
     if (failed > 0) {
-      console.log('\n❌ Failed Optimizations:');
+      console.log('\n Failed Optimizations:');
       this.optimizations
         .filter(opt => opt.status === 'failed')
         .forEach(opt => {
@@ -406,9 +406,9 @@ class PerformanceOptimizer {
     if (successRate >= 90) {
       console.log('\n🚀 System fully optimized for blazing fast demo performance!');
     } else if (successRate >= 75) {
-      console.log('\n⚡ System well optimized for reliable demo performance!');
+      console.log('\n System well optimized for reliable demo performance!');
     } else {
-      console.log('\n⚠️  Some optimizations failed, but basic performance should be acceptable.');
+      console.log('\n  Some optimizations failed, but basic performance should be acceptable.');
     }
 
     // Performance tips

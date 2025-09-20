@@ -183,11 +183,11 @@ class USDCPolygonRail implements PaymentRail {
 ```
 
 **Advantages for Hackathon**:
-- ✅ **No external APIs required** - Direct smart contract interaction
-- ✅ **Instant settlement** - 15 seconds on Ethereum, 2 seconds on Polygon
-- ✅ **Global accessibility** - No geographic restrictions
-- ✅ **Low operational overhead** - No compliance integrations needed
-- ✅ **Perfect DeFi integration** - Native liquidity pool support
+-  **No external APIs required** - Direct smart contract interaction
+-  **Instant settlement** - 15 seconds on Ethereum, 2 seconds on Polygon
+-  **Global accessibility** - No geographic restrictions
+-  **Low operational overhead** - No compliance integrations needed
+-  **Perfect DeFi integration** - Native liquidity pool support
 
 ### 2. ACH RAILS (FUTURE IMPLEMENTATION)
 

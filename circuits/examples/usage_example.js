@@ -19,9 +19,9 @@ async function demonstrateWageProof() {
 
     try {
         await zkService.initialize();
-        console.log('✅ Service initialized successfully\n');
+        console.log(' Service initialized successfully\n');
     } catch (error) {
-        console.error('❌ Failed to initialize service. Make sure to run build_circuit.sh first.');
+        console.error(' Failed to initialize service. Make sure to run build_circuit.sh first.');
         console.error('Error:', error.message);
         process.exit(1);
     }
@@ -66,7 +66,7 @@ async function demonstrateWageProof() {
         }
 
         const totalTime = Date.now() - startTime;
-        console.log(`✅ Proof generated successfully in ${totalTime}ms\n`);
+        console.log(` Proof generated successfully in ${totalTime}ms\n`);
 
         // Display proof information
         console.log('5️⃣ Proof Information:');
@@ -80,7 +80,7 @@ async function demonstrateWageProof() {
         console.log('6️⃣ Verifying proof...');
         const verifyResult = await zkService.verifyProof(proofResult.proof);
 
-        console.log(`✅ Verification Result: ${verifyResult.isValid ? 'VALID' : 'INVALID'}`);
+        console.log(` Verification Result: ${verifyResult.isValid ? 'VALID' : 'INVALID'}`);
         console.log(`⏱️  Verification Time: ${verifyResult.verificationTime}ms\n`);
 
         // Demonstrate nullifier uniqueness
@@ -111,9 +111,9 @@ async function demonstrateWageProof() {
                 wageAmount: '100000000000000000' // 0.1 ETH (below minimum)
             };
             await zkService.createWageProof(lowWageAttestation, employeeSecret);
-            console.log('❌ Should have failed for low wage!');
+            console.log(' Should have failed for low wage!');
         } catch (error) {
-            console.log('✅ Correctly rejected wage below minimum');
+            console.log(' Correctly rejected wage below minimum');
         }
 
         try {
@@ -123,16 +123,16 @@ async function demonstrateWageProof() {
                 wageAmount: '10000000000000000000' // 10 ETH (above maximum)
             };
             await zkService.createWageProof(highWageAttestation, employeeSecret);
-            console.log('❌ Should have failed for high wage!');
+            console.log(' Should have failed for high wage!');
         } catch (error) {
-            console.log('✅ Correctly rejected wage above maximum');
+            console.log(' Correctly rejected wage above maximum');
         }
 
         // Performance summary
         console.log('\n📊 Performance Summary:');
         console.log(`   Total Proof Generation: ${totalTime}ms`);
         console.log(`   Proof Verification: ${verifyResult.verificationTime}ms`);
-        console.log(`   Target (<5000ms): ${totalTime < 5000 ? '✅ PASSED' : '❌ FAILED'}\n`);
+        console.log(`   Target (<5000ms): ${totalTime < 5000 ? ' PASSED' : ' FAILED'}\n`);
 
         // Usage in production
         console.log('🏭 Production Integration Notes:');
@@ -142,10 +142,10 @@ async function demonstrateWageProof() {
         console.log('   4. Implement proper key management for employer signatures');
         console.log('   5. Use trusted setup ceremony for production zkey');
 
-        console.log('\n✅ Demo completed successfully!');
+        console.log('\n Demo completed successfully!');
 
     } catch (error) {
-        console.error('❌ Demo failed:', error.message);
+        console.error(' Demo failed:', error.message);
         process.exit(1);
     }
 }
@@ -182,9 +182,9 @@ async function demonstrateBatchProofGeneration() {
 
         if (proofResult.success) {
             proofs.push(proofResult.proof);
-            console.log(`✅ Proof ${i + 1} generated successfully`);
+            console.log(` Proof ${i + 1} generated successfully`);
         } else {
-            console.error(`❌ Proof ${i + 1} failed: ${proofResult.error}`);
+            console.error(` Proof ${i + 1} failed: ${proofResult.error}`);
         }
     }
 

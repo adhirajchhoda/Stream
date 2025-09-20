@@ -47,7 +47,7 @@ npm run demo:uber         # Uber driver on Friday night
 
 - 🌈 **Gradient ASCII art** for visual impact
 - 📊 **Real-time progress bars** showing proof generation
-- ⚡ **Performance metrics** displayed live
+-  **Performance metrics** displayed live
 - 🔒 **Privacy guarantees** clearly demonstrated
 - 🛡️ **Security features** tested in real-time
 - 💰 **Financial breakdown** with exact amounts

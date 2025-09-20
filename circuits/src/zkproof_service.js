@@ -45,11 +45,11 @@ class WageProofService {
             // Load verification key
             this.circuitCache.vkey = JSON.parse(fs.readFileSync(this.vkeyPath, 'utf8'));
 
-            console.log('✅ WageProofService initialized successfully');
+            console.log(' WageProofService initialized successfully');
             return true;
 
         } catch (error) {
-            console.error('❌ Failed to initialize WageProofService:', error.message);
+            console.error(' Failed to initialize WageProofService:', error.message);
             throw error;
         }
     }
@@ -185,7 +185,7 @@ class WageProofService {
             const proofTime = Date.now() - startProof;
 
             const totalTime = witnessTime + proofTime;
-            console.log(`✅ Proof generated successfully in ${totalTime}ms`);
+            console.log(` Proof generated successfully in ${totalTime}ms`);
             console.log(`  - Witness calculation: ${witnessTime}ms`);
             console.log(`  - Proof generation: ${proofTime}ms`);
 
@@ -210,7 +210,7 @@ class WageProofService {
             return formattedProof;
 
         } catch (error) {
-            console.error('❌ Proof generation failed:', error.message);
+            console.error(' Proof generation failed:', error.message);
             throw new Error(`Proof generation failed: ${error.message}`);
         }
     }
@@ -234,7 +234,7 @@ class WageProofService {
             const isValid = await snarkjs.groth16.verify(this.circuitCache.vkey, publicSignals, coreProof);
             const verificationTime = Date.now() - startTime;
 
-            console.log(`✅ Proof verification completed in ${verificationTime}ms`);
+            console.log(` Proof verification completed in ${verificationTime}ms`);
             console.log(`  Result: ${isValid ? 'VALID' : 'INVALID'}`);
 
             return {
@@ -244,7 +244,7 @@ class WageProofService {
             };
 
         } catch (error) {
-            console.error('❌ Proof verification failed:', error.message);
+            console.error(' Proof verification failed:', error.message);
             throw new Error(`Proof verification failed: ${error.message}`);
         }
     }
@@ -312,7 +312,7 @@ class WageProofService {
             };
 
         } catch (error) {
-            console.error('❌ Wage proof creation failed:', error.message);
+            console.error(' Wage proof creation failed:', error.message);
             return {
                 success: false,
                 error: error.message

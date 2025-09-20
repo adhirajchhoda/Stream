@@ -52,9 +52,9 @@ class DatabaseManager {
             await this.redis.ping();
 
             this.connected = true;
-            console.log(chalk.green('✅ Database connections established'));
+            console.log(chalk.green(' Database connections established'));
         } catch (error) {
-            console.error(chalk.red('❌ Database connection failed:'), error.message);
+            console.error(chalk.red(' Database connection failed:'), error.message);
             throw error;
         }
     }

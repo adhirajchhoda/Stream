@@ -20,10 +20,10 @@ check_service() {
     local name=$3
 
     if nc -z localhost $port 2>/dev/null; then
-        echo -e "${GREEN}✅ $name${NC} (port $port)"
+        echo -e "${GREEN} $name${NC} (port $port)"
         return 0
     else
-        echo -e "${RED}❌ $name${NC} (port $port)"
+        echo -e "${RED} $name${NC} (port $port)"
         return 1
     fi
 }
@@ -34,10 +34,10 @@ check_docker_service() {
     local name=$2
 
     if docker-compose -f docker-compose.demo.yml ps $service 2>/dev/null | grep -q "Up\|healthy"; then
-        echo -e "${GREEN}✅ $name${NC} (Docker)"
+        echo -e "${GREEN} $name${NC} (Docker)"
         return 0
     else
-        echo -e "${RED}❌ $name${NC} (Docker)"
+        echo -e "${RED} $name${NC} (Docker)"
         return 1
     fi
 }
@@ -86,9 +86,9 @@ check_demo_files() {
 
     for file in "${files[@]}"; do
         if [[ -f "$file" ]]; then
-            echo -e "${GREEN}✅${NC} $file"
+            echo -e "${GREEN}${NC} $file"
         else
-            echo -e "${RED}❌${NC} $file"
+            echo -e "${RED}${NC} $file"
         fi
     done
 
@@ -147,7 +147,7 @@ check_docker_services() {
         local docker_health=$((docker_healthy * 100 / docker_total))
         echo -e "\nDocker Health: ${YELLOW}$docker_healthy/$docker_total ($docker_health%)${NC}"
     else
-        echo -e "${YELLOW}⚠️  Docker not available${NC}"
+        echo -e "${YELLOW}  Docker not available${NC}"
     fi
 
     echo ""
@@ -183,19 +183,19 @@ show_demo_status() {
 
     # Check if demo is currently running
     if pgrep -f "stream_hackathon_demo.js" >/dev/null; then
-        echo -e "${GREEN}✅ Demo is currently running${NC}"
+        echo -e "${GREEN} Demo is currently running${NC}"
     else
         echo -e "${YELLOW}⏸️  Demo is not running${NC}"
     fi
 
     # Check if fallback mode is enabled
     if [[ "$USE_ALL_FALLBACKS" == "true" ]]; then
-        echo -e "${YELLOW}⚠️  Fallback mode enabled${NC}"
+        echo -e "${YELLOW}  Fallback mode enabled${NC}"
     fi
 
     # Check if performance mode is enabled
     if [[ "$DEMO_PERFORMANCE_MODE" == "true" ]]; then
-        echo -e "${BLUE}⚡ Performance mode enabled${NC}"
+        echo -e "${BLUE} Performance mode enabled${NC}"
     fi
 
     echo ""
@@ -271,26 +271,26 @@ run_single_check() {
 
     # Check for critical files
     if [[ ! -f "./stream_hackathon_demo.js" ]]; then
-        echo -e "${RED}❌ Missing demo orchestrator${NC}"
+        echo -e "${RED} Missing demo orchestrator${NC}"
         issues=$((issues + 1))
     fi
 
     if [[ ! -f "./demo_data/scenarios.json" ]]; then
-        echo -e "${RED}❌ Missing demo scenarios${NC}"
+        echo -e "${RED} Missing demo scenarios${NC}"
         issues=$((issues + 1))
     fi
 
     # Check for running services
     if ! nc -z localhost 5432 2>/dev/null && ! docker-compose -f docker-compose.demo.yml ps postgres 2>/dev/null | grep -q "Up"; then
-        echo -e "${YELLOW}⚠️  Database not available (fallback mode available)${NC}"
+        echo -e "${YELLOW}  Database not available (fallback mode available)${NC}"
     fi
 
     if [[ $issues -eq 0 ]]; then
-        echo -e "${GREEN}✅ System ready for demo!${NC}"
+        echo -e "${GREEN} System ready for demo!${NC}"
     elif [[ $issues -le 2 ]]; then
-        echo -e "${YELLOW}⚠️  Minor issues detected, but demo should work with fallbacks${NC}"
+        echo -e "${YELLOW}  Minor issues detected, but demo should work with fallbacks${NC}"
     else
-        echo -e "${RED}❌ Major issues detected, run setup script${NC}"
+        echo -e "${RED} Major issues detected, run setup script${NC}"
     fi
 }
 

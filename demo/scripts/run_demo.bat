@@ -8,24 +8,24 @@ echo ===============================
 REM Check if Node.js is installed
 node --version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ❌ Node.js is not installed. Please install Node.js first.
+    echo  Node.js is not installed. Please install Node.js first.
     echo    Download from: https://nodejs.org/
     pause
     exit /b 1
 )
 
-echo ✅ Node.js found
+echo  Node.js found
 node --version
 
 REM Check if npm is installed
 npm --version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ❌ npm is not installed. Please install npm first.
+    echo  npm is not installed. Please install npm first.
     pause
     exit /b 1
 )
 
-echo ✅ npm found
+echo  npm found
 npm --version
 
 REM Install dependencies if node_modules doesn't exist
@@ -33,20 +33,20 @@ if not exist "node_modules" (
     echo 📦 Installing dependencies...
     npm install
     if %errorlevel% neq 0 (
-        echo ❌ Failed to install dependencies
+        echo  Failed to install dependencies
         pause
         exit /b 1
     )
-    echo ✅ Dependencies installed
+    echo  Dependencies installed
 ) else (
-    echo ✅ Dependencies already installed
+    echo  Dependencies already installed
 )
 
 REM Test demo components
 echo 🧪 Testing demo components...
 npm run test:demo
 if %errorlevel% neq 0 (
-    echo ❌ Demo test failed. Please check the error messages above.
+    echo  Demo test failed. Please check the error messages above.
     pause
     exit /b 1
 )
@@ -81,7 +81,7 @@ if "%choice%"=="1" (
     echo 🚗 Starting Uber scenario...
     npm run demo:uber
 ) else (
-    echo ❌ Invalid choice. Running default demo...
+    echo  Invalid choice. Running default demo...
     npm run demo:auto
 )
 

@@ -66,7 +66,7 @@ class PerformanceBenchmark {
             }
         }
 
-        this.log('✅ All required files found', colors.green);
+        this.log(' All required files found', colors.green);
     }
 
     generateTestInput() {
@@ -128,7 +128,7 @@ class PerformanceBenchmark {
                 this.log(`  Run ${i + 1}: ${duration.toFixed(2)}ms`, colors.dim);
 
             } catch (error) {
-                this.log(`❌ Witness generation failed on run ${i + 1}: ${error.message}`, colors.red);
+                this.log(` Witness generation failed on run ${i + 1}: ${error.message}`, colors.red);
                 throw error;
             } finally {
                 // Cleanup temp files
@@ -180,7 +180,7 @@ class PerformanceBenchmark {
                 this.log(`  Run ${i + 1}: ${duration.toFixed(2)}ms`, colors.dim);
 
             } catch (error) {
-                this.log(`❌ Proof generation failed on run ${i + 1}: ${error.message}`, colors.red);
+                this.log(` Proof generation failed on run ${i + 1}: ${error.message}`, colors.red);
                 throw error;
             } finally {
                 // Cleanup temp files
@@ -195,7 +195,7 @@ class PerformanceBenchmark {
     }
 
     async measureProofVerification() {
-        this.log('✅ Benchmarking proof verification...', colors.yellow);
+        this.log(' Benchmarking proof verification...', colors.yellow);
 
         // Generate one proof for verification benchmarks
         const input = this.generateTestInput();
@@ -238,7 +238,7 @@ class PerformanceBenchmark {
                 this.log(`  Run ${i + 1}: ${duration.toFixed(2)}ms`, colors.dim);
 
             } catch (error) {
-                this.log(`❌ Proof verification failed on run ${i + 1}: ${error.message}`, colors.red);
+                this.log(` Proof verification failed on run ${i + 1}: ${error.message}`, colors.red);
                 throw error;
             }
         }
@@ -278,7 +278,7 @@ class PerformanceBenchmark {
             this.results.circuitStats = stats;
 
         } catch (error) {
-            this.log(`❌ Failed to get circuit statistics: ${error.message}`, colors.red);
+            this.log(` Failed to get circuit statistics: ${error.message}`, colors.red);
         }
     }
 
@@ -337,7 +337,7 @@ class PerformanceBenchmark {
         // Target Analysis
         const targetMet = proofStats.mean < CONFIG.targetProofTime;
         const targetColor = targetMet ? colors.green : colors.red;
-        const targetStatus = targetMet ? '✅ PASSED' : '❌ FAILED';
+        const targetStatus = targetMet ? ' PASSED' : ' FAILED';
 
         this.log(`\n🎯 Target Analysis (${CONFIG.targetProofTime}ms):`, colors.bright);
         this.log(`  Status: ${targetStatus}`, targetColor);
@@ -345,7 +345,7 @@ class PerformanceBenchmark {
 
         // Proof Verification
         const verifyStats = this.calculateStatistics(this.results.proofVerification);
-        this.log('\n✅ Proof Verification Performance:', colors.bright);
+        this.log('\n Proof Verification Performance:', colors.bright);
         this.log(`  Mean: ${verifyStats.mean.toFixed(2)}ms`);
         this.log(`  Median: ${verifyStats.median.toFixed(2)}ms`);
         this.log(`  Min: ${verifyStats.min.toFixed(2)}ms`);
@@ -360,15 +360,15 @@ class PerformanceBenchmark {
         // Recommendations
         this.log('\n💡 Recommendations:', colors.bright + colors.yellow);
         if (!targetMet) {
-            this.log(`  ⚠️  Proof generation exceeds ${CONFIG.targetProofTime}ms target`);
+            this.log(`    Proof generation exceeds ${CONFIG.targetProofTime}ms target`);
             this.log(`  🔧 Consider optimizing circuit constraints`);
             this.log(`  🔧 Review ECDSA implementation for efficiency`);
         } else {
-            this.log(`  ✅ Performance target met!`);
+            this.log(`   Performance target met!`);
         }
 
         if (this.results.circuitStats?.constraints > 50000) {
-            this.log(`  ⚠️  High constraint count (${this.results.circuitStats.constraints})`);
+            this.log(`    High constraint count (${this.results.circuitStats.constraints})`);
             this.log(`  🔧 Consider simplifying circuit logic`);
         }
 
@@ -411,7 +411,7 @@ class PerformanceBenchmark {
             return report;
 
         } catch (error) {
-            this.log(`\n❌ Benchmark failed: ${error.message}`, colors.red);
+            this.log(`\n Benchmark failed: ${error.message}`, colors.red);
             process.exit(1);
         }
     }

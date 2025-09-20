@@ -24,7 +24,7 @@ echo ""
 
 # Check if we're in the right directory
 if [[ ! -f "package.json" ]] || [[ ! -d "circuits" ]] || [[ ! -d "contracts" ]]; then
-    echo -e "${RED}❌ Error: Please run this script from the Stream project root directory${NC}"
+    echo -e "${RED} Error: Please run this script from the Stream project root directory${NC}"
     exit 1
 fi
 
@@ -35,10 +35,10 @@ check_service() {
     local name=$3
 
     if nc -z localhost $port 2>/dev/null; then
-        echo -e "${GREEN}✅ $name is running on port $port${NC}"
+        echo -e "${GREEN} $name is running on port $port${NC}"
         return 0
     else
-        echo -e "${YELLOW}⚠️  $name not running on port $port${NC}"
+        echo -e "${YELLOW}  $name not running on port $port${NC}"
         return 1
     fi
 }
@@ -53,13 +53,13 @@ wait_for_service() {
 
     for i in $(seq 1 $timeout); do
         if nc -z localhost $port 2>/dev/null; then
-            echo -e "${GREEN}✅ $name is ready!${NC}"
+            echo -e "${GREEN} $name is ready!${NC}"
             return 0
         fi
         sleep 1
     done
 
-    echo -e "${RED}❌ Timeout waiting for $name${NC}"
+    echo -e "${RED} Timeout waiting for $name${NC}"
     return 1
 }
 
@@ -79,7 +79,7 @@ backup_critical_files() {
         cp -r contracts/deployments ./demo_backups/$(date +%Y%m%d_%H%M%S)/
     fi
 
-    echo -e "${GREEN}✅ Backup completed${NC}"
+    echo -e "${GREEN} Backup completed${NC}"
 }
 
 # Function to check system requirements
@@ -90,21 +90,21 @@ check_requirements() {
     if command -v node >/dev/null 2>&1; then
         NODE_VERSION=$(node --version | cut -d'v' -f2 | cut -d'.' -f1)
         if [[ $NODE_VERSION -ge 16 ]]; then
-            echo -e "${GREEN}✅ Node.js version: $(node --version)${NC}"
+            echo -e "${GREEN} Node.js version: $(node --version)${NC}"
         else
-            echo -e "${RED}❌ Node.js version 16+ required. Current: $(node --version)${NC}"
+            echo -e "${RED} Node.js version 16+ required. Current: $(node --version)${NC}"
             exit 1
         fi
     else
-        echo -e "${RED}❌ Node.js not found. Please install Node.js 16+${NC}"
+        echo -e "${RED} Node.js not found. Please install Node.js 16+${NC}"
         exit 1
     fi
 
     # Check npm
     if command -v npm >/dev/null 2>&1; then
-        echo -e "${GREEN}✅ npm version: $(npm --version)${NC}"
+        echo -e "${GREEN} npm version: $(npm --version)${NC}"
     else
-        echo -e "${RED}❌ npm not found${NC}"
+        echo -e "${RED} npm not found${NC}"
         exit 1
     fi
 
@@ -112,18 +112,18 @@ check_requirements() {
     if command -v free >/dev/null 2>&1; then
         AVAILABLE_MB=$(free -m | awk 'NR==2{print $7}')
         if [[ $AVAILABLE_MB -gt 4000 ]]; then
-            echo -e "${GREEN}✅ Available memory: ${AVAILABLE_MB}MB${NC}"
+            echo -e "${GREEN} Available memory: ${AVAILABLE_MB}MB${NC}"
         else
-            echo -e "${YELLOW}⚠️  Available memory: ${AVAILABLE_MB}MB (4GB+ recommended for ZK proofs)${NC}"
+            echo -e "${YELLOW}  Available memory: ${AVAILABLE_MB}MB (4GB+ recommended for ZK proofs)${NC}"
         fi
     fi
 
     # Check disk space (at least 2GB)
     AVAILABLE_GB=$(df . | awk 'NR==2 {print int($4/1024/1024)}')
     if [[ $AVAILABLE_GB -gt 2 ]]; then
-        echo -e "${GREEN}✅ Available disk space: ${AVAILABLE_GB}GB${NC}"
+        echo -e "${GREEN} Available disk space: ${AVAILABLE_GB}GB${NC}"
     else
-        echo -e "${YELLOW}⚠️  Low disk space: ${AVAILABLE_GB}GB${NC}"
+        echo -e "${YELLOW}  Low disk space: ${AVAILABLE_GB}GB${NC}"
     fi
 }
 
@@ -159,7 +159,7 @@ install_dependencies() {
         cd ..
     fi
 
-    echo -e "${GREEN}✅ All dependencies installed${NC}"
+    echo -e "${GREEN} All dependencies installed${NC}"
 }
 
 # Function to setup environment
@@ -170,7 +170,7 @@ setup_environment() {
     if [[ ! -f ".env" ]]; then
         if [[ -f ".env.example" ]]; then
             cp .env.example .env
-            echo -e "${GREEN}✅ Created .env from .env.example${NC}"
+            echo -e "${GREEN} Created .env from .env.example${NC}"
         else
             # Create basic .env file
             cat > .env << EOF
@@ -198,10 +198,10 @@ DEMO_MODE=true
 ENABLE_FALLBACKS=true
 PRE_GENERATE_PROOFS=true
 EOF
-            echo -e "${GREEN}✅ Created basic .env file${NC}"
+            echo -e "${GREEN} Created basic .env file${NC}"
         fi
     else
-        echo -e "${GREEN}✅ .env file already exists${NC}"
+        echo -e "${GREEN} .env file already exists${NC}"
     fi
 
     # Ensure demo mode is enabled
@@ -280,7 +280,7 @@ EOF
         wait_for_service $REDIS_PORT "Redis"
 
     else
-        echo -e "${YELLOW}⚠️  Docker not available, please start services manually:${NC}"
+        echo -e "${YELLOW}  Docker not available, please start services manually:${NC}"
         echo -e "${YELLOW}   - PostgreSQL on port $DB_PORT${NC}"
         echo -e "${YELLOW}   - Redis on port $REDIS_PORT${NC}"
         echo -e "${YELLOW}   - Hardhat node on port $BLOCKCHAIN_PORT${NC}"
@@ -292,22 +292,22 @@ EOF
 
 # Function to compile circuits with fallback
 compile_circuits() {
-    echo -e "${BLUE}⚡ Compiling ZK circuits...${NC}"
+    echo -e "${BLUE} Compiling ZK circuits...${NC}"
 
     cd circuits
 
     # Check if circuits are already compiled
     if [[ -f "build/wage_proof.zkey" ]] && [[ -f "build/wage_proof_js/wage_proof.wasm" ]]; then
-        echo -e "${GREEN}✅ Circuits already compiled${NC}"
+        echo -e "${GREEN} Circuits already compiled${NC}"
         cd ..
         return 0
     fi
 
     # Try to compile circuits
     if npm run build 2>/dev/null; then
-        echo -e "${GREEN}✅ Circuits compiled successfully${NC}"
+        echo -e "${GREEN} Circuits compiled successfully${NC}"
     else
-        echo -e "${YELLOW}⚠️  Circuit compilation failed, downloading pre-compiled circuits...${NC}"
+        echo -e "${YELLOW}  Circuit compilation failed, downloading pre-compiled circuits...${NC}"
 
         # Create build directory
         mkdir -p build/wage_proof_js
@@ -317,7 +317,7 @@ compile_circuits() {
         echo "// Dummy verification key" > build/wage_proof.zkey
         echo "// Dummy witness calculator" > build/wage_proof_js/witness_calculator.js
 
-        echo -e "${GREEN}✅ Fallback circuits ready${NC}"
+        echo -e "${GREEN} Fallback circuits ready${NC}"
     fi
 
     cd ..
@@ -329,7 +329,7 @@ deploy_contracts() {
 
     # Wait for blockchain to be ready
     if ! wait_for_service $BLOCKCHAIN_PORT "Hardhat node"; then
-        echo -e "${YELLOW}⚠️  Starting local Hardhat node...${NC}"
+        echo -e "${YELLOW}  Starting local Hardhat node...${NC}"
         npx hardhat node &
         HARDHAT_PID=$!
 
@@ -343,17 +343,17 @@ deploy_contracts() {
 
     while [[ $retry_count -lt $max_retries ]]; do
         if npm run deploy:local; then
-            echo -e "${GREEN}✅ Contracts deployed successfully${NC}"
+            echo -e "${GREEN} Contracts deployed successfully${NC}"
             break
         else
             retry_count=$((retry_count + 1))
-            echo -e "${YELLOW}⚠️  Contract deployment failed (attempt $retry_count/$max_retries)${NC}"
+            echo -e "${YELLOW}  Contract deployment failed (attempt $retry_count/$max_retries)${NC}"
 
             if [[ $retry_count -lt $max_retries ]]; then
                 echo -e "${YELLOW}🔄 Retrying in 5 seconds...${NC}"
                 sleep 5
             else
-                echo -e "${RED}❌ Contract deployment failed after $max_retries attempts${NC}"
+                echo -e "${RED} Contract deployment failed after $max_retries attempts${NC}"
                 echo -e "${YELLOW}💡 Using fallback mock contracts...${NC}"
 
                 # Create mock deployment file
@@ -374,7 +374,7 @@ deploy_contracts() {
   }
 }
 EOF
-                echo -e "${GREEN}✅ Fallback contracts ready${NC}"
+                echo -e "${GREEN} Fallback contracts ready${NC}"
                 break
             fi
         fi
@@ -392,7 +392,7 @@ seed_demo_data() {
             # Try to load sample data
             if command -v psql >/dev/null 2>&1; then
                 PGPASSWORD=stream_demo_password psql -h localhost -U stream_user -d stream_demo -f sample_data.sql 2>/dev/null || {
-                    echo -e "${YELLOW}⚠️  Database seeding failed, using in-memory data${NC}"
+                    echo -e "${YELLOW}  Database seeding failed, using in-memory data${NC}"
                 }
             fi
         fi
@@ -436,7 +436,7 @@ seed_demo_data() {
 }
 EOF
 
-    echo -e "${GREEN}✅ Demo data ready${NC}"
+    echo -e "${GREEN} Demo data ready${NC}"
 }
 
 # Function to pre-generate fallback proofs
@@ -463,7 +463,7 @@ pre_generate_proofs() {
 EOF
     done
 
-    echo -e "${GREEN}✅ Fallback proofs generated${NC}"
+    echo -e "${GREEN} Fallback proofs generated${NC}"
 }
 
 # Function to run health checks
@@ -475,50 +475,50 @@ run_health_checks() {
 
     # Check Node.js
     if command -v node >/dev/null 2>&1; then
-        echo -e "${GREEN}✅ Node.js runtime${NC}"
+        echo -e "${GREEN} Node.js runtime${NC}"
         health_score=$((health_score + 1))
     else
-        echo -e "${RED}❌ Node.js runtime${NC}"
+        echo -e "${RED} Node.js runtime${NC}"
     fi
 
     # Check dependencies
     if [[ -d "node_modules" ]] && [[ -f "node_modules/.package-lock.json" || -f "package-lock.json" ]]; then
-        echo -e "${GREEN}✅ Dependencies installed${NC}"
+        echo -e "${GREEN} Dependencies installed${NC}"
         health_score=$((health_score + 1))
     else
-        echo -e "${RED}❌ Dependencies missing${NC}"
+        echo -e "${RED} Dependencies missing${NC}"
     fi
 
     # Check circuits
     if [[ -f "circuits/build/wage_proof.zkey" ]] || [[ -f "demo_data/fallback_proofs/starbucks_barista.json" ]]; then
-        echo -e "${GREEN}✅ ZK circuits ready${NC}"
+        echo -e "${GREEN} ZK circuits ready${NC}"
         health_score=$((health_score + 1))
     else
-        echo -e "${RED}❌ ZK circuits not ready${NC}"
+        echo -e "${RED} ZK circuits not ready${NC}"
     fi
 
     # Check contracts
     if [[ -f "contracts/deployments/localhost.json" ]]; then
-        echo -e "${GREEN}✅ Smart contracts deployed${NC}"
+        echo -e "${GREEN} Smart contracts deployed${NC}"
         health_score=$((health_score + 1))
     else
-        echo -e "${RED}❌ Smart contracts not deployed${NC}"
+        echo -e "${RED} Smart contracts not deployed${NC}"
     fi
 
     # Check demo data
     if [[ -f "demo_data/scenarios.json" ]]; then
-        echo -e "${GREEN}✅ Demo data ready${NC}"
+        echo -e "${GREEN} Demo data ready${NC}"
         health_score=$((health_score + 1))
     else
-        echo -e "${RED}❌ Demo data missing${NC}"
+        echo -e "${RED} Demo data missing${NC}"
     fi
 
     # Check integration script
     if [[ -f "integration/cli/stream-demo.js" ]]; then
-        echo -e "${GREEN}✅ Demo interface ready${NC}"
+        echo -e "${GREEN} Demo interface ready${NC}"
         health_score=$((health_score + 1))
     else
-        echo -e "${RED}❌ Demo interface missing${NC}"
+        echo -e "${RED} Demo interface missing${NC}"
     fi
 
     # Calculate health percentage
@@ -528,10 +528,10 @@ run_health_checks() {
     echo -e "${BLUE}🎯 System Health: $health_score/$total_checks ($health_percentage%)${NC}"
 
     if [[ $health_percentage -ge 80 ]]; then
-        echo -e "${GREEN}✅ System ready for demo!${NC}"
+        echo -e "${GREEN} System ready for demo!${NC}"
         return 0
     else
-        echo -e "${YELLOW}⚠️  System needs attention before demo${NC}"
+        echo -e "${YELLOW}  System needs attention before demo${NC}"
         return 1
     fi
 }
@@ -547,7 +547,7 @@ echo "🌊 Starting Stream Protocol Demo..."
 
 # Check if setup was completed
 if [[ ! -f ".demo_setup_complete" ]]; then
-    echo "❌ Setup not completed. Please run ./setup_demo.sh first"
+    echo " Setup not completed. Please run ./setup_demo.sh first"
     exit 1
 fi
 
@@ -572,12 +572,12 @@ if command -v docker-compose >/dev/null 2>&1; then
     docker-compose restart
 fi
 
-echo "✅ Demo environment reset"
+echo " Demo environment reset"
 EOF
 
     chmod +x reset_demo.sh
 
-    echo -e "${GREEN}✅ Demo shortcuts created:${NC}"
+    echo -e "${GREEN} Demo shortcuts created:${NC}"
     echo -e "   ${YELLOW}./run_demo.sh${NC} - Start the demo"
     echo -e "   ${YELLOW}./reset_demo.sh${NC} - Reset demo environment"
 }
@@ -617,7 +617,7 @@ main() {
 
     # Create setup lock to prevent concurrent runs
     if [[ -f ".setup_in_progress" ]]; then
-        echo -e "${RED}❌ Setup already in progress. If this is an error, remove .setup_in_progress file${NC}"
+        echo -e "${RED} Setup already in progress. If this is an error, remove .setup_in_progress file${NC}"
         exit 1
     fi
 
@@ -650,7 +650,7 @@ main() {
         echo -e "${GREEN}🎯 HACKATHON DEMO IS READY TO ROCK! 🚀${NC}"
         exit 0
     else
-        echo -e "${RED}❌ Setup completed with issues. Please review the health check results.${NC}"
+        echo -e "${RED} Setup completed with issues. Please review the health check results.${NC}"
         exit 1
     fi
 }

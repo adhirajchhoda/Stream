@@ -10,28 +10,28 @@ echo "==============================="
 
 # Check if Node.js is installed
 if ! command -v node &> /dev/null; then
-    echo "❌ Node.js is not installed. Please install Node.js first."
+    echo " Node.js is not installed. Please install Node.js first."
     echo "   Download from: https://nodejs.org/"
     exit 1
 fi
 
-echo "✅ Node.js found: $(node --version)"
+echo " Node.js found: $(node --version)"
 
 # Check if npm is installed
 if ! command -v npm &> /dev/null; then
-    echo "❌ npm is not installed. Please install npm first."
+    echo " npm is not installed. Please install npm first."
     exit 1
 fi
 
-echo "✅ npm found: $(npm --version)"
+echo " npm found: $(npm --version)"
 
 # Install dependencies if node_modules doesn't exist
 if [ ! -d "node_modules" ]; then
     echo "📦 Installing dependencies..."
     npm install
-    echo "✅ Dependencies installed"
+    echo " Dependencies installed"
 else
-    echo "✅ Dependencies already installed"
+    echo " Dependencies already installed"
 fi
 
 # Test demo components
@@ -75,11 +75,11 @@ if [ $? -eq 0 ]; then
             npm run demo:uber
             ;;
         *)
-            echo "❌ Invalid choice. Running default demo..."
+            echo " Invalid choice. Running default demo..."
             npm run demo:auto
             ;;
     esac
 else
-    echo "❌ Demo test failed. Please check the error messages above."
+    echo " Demo test failed. Please check the error messages above."
     exit 1
 fi

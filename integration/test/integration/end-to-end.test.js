@@ -104,7 +104,7 @@ describe('Stream Protocol End-to-End Integration', () => {
             // Performance check
             expect(duration).toBeLessThan(5000); // Must be under 5 seconds
 
-            console.log(`✅ ZK Proof generated in ${duration}ms (Target: <5000ms)`);
+            console.log(` ZK Proof generated in ${duration}ms (Target: <5000ms)`);
 
             // Store proof for contract test
             testAttestation.proof = proof;
@@ -143,7 +143,7 @@ describe('Stream Protocol End-to-End Integration', () => {
             expect(receipt.status).toBe(1); // Success
             expect(gasUsed).toBeLessThan(150000); // Gas target
 
-            console.log(`✅ Smart contract verification: ${gasUsed} gas (Target: <150k)`);
+            console.log(` Smart contract verification: ${gasUsed} gas (Target: <150k)`);
 
             // Check nullifier is now used
             const nullifierNowUsed = await contracts.streamCore.usedNullifiers(
@@ -187,7 +187,7 @@ describe('Stream Protocol End-to-End Integration', () => {
                 )
             ).rejects.toThrow();
 
-            console.log('✅ Double-spend prevention working correctly');
+            console.log(' Double-spend prevention working correctly');
         }, 10000);
     });
 
@@ -263,7 +263,7 @@ describe('Stream Protocol End-to-End Integration', () => {
             if (zkMetrics.length > 0) {
                 const avgDuration = zkMetrics.reduce((sum, m) => sum + m.duration, 0) / zkMetrics.length;
                 expect(avgDuration).toBeLessThan(5000);
-                console.log(`✅ Average ZK proof generation: ${avgDuration.toFixed(0)}ms`);
+                console.log(` Average ZK proof generation: ${avgDuration.toFixed(0)}ms`);
             }
 
             // Find smart contract verification metrics
@@ -271,7 +271,7 @@ describe('Stream Protocol End-to-End Integration', () => {
             if (contractMetrics.length > 0) {
                 const avgDuration = contractMetrics.reduce((sum, m) => sum + m.duration, 0) / contractMetrics.length;
                 expect(avgDuration).toBeLessThan(30000); // 30 seconds including network
-                console.log(`✅ Average contract verification: ${avgDuration.toFixed(0)}ms`);
+                console.log(` Average contract verification: ${avgDuration.toFixed(0)}ms`);
             }
         });
 
@@ -310,7 +310,7 @@ describe('Stream Protocol End-to-End Integration', () => {
             expect(exceededResult.allowed).toBe(false);
             expect(exceededResult.current).toBe(limit + 1);
 
-            console.log('✅ Rate limiting working correctly');
+            console.log(' Rate limiting working correctly');
         });
     });
 
@@ -323,7 +323,7 @@ describe('Stream Protocol End-to-End Integration', () => {
             expect(health.redis).toBe(true);
             expect(health.timestamp).toBeDefined();
 
-            console.log('✅ All systems healthy');
+            console.log(' All systems healthy');
         });
     });
 });
