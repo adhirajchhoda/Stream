@@ -48,9 +48,9 @@ Earned Wage Access Market:
 ### Visual: Comparison table showing problems
 | Provider | Privacy | Fees | Setup | Coverage |
 |----------|---------|------|--------|----------|
-| DailyPay | ❌ Full PII | 3-5% | Employer must adopt | 20% of workers |
-| Earnin | ❌ GPS tracking | 15% "tips" | Bank monitoring | Gig workers only |
-| Stream Protocol | ✅ Zero knowledge | 0.1% | Universal | 100% of workers |
+| DailyPay | Full PII | 3-5% | Employer must adopt | 20% of workers |
+| Earnin | GPS tracking | 15% "tips" | Bank monitoring | Gig workers only |
+| Stream Protocol | Zero knowledge | 0.1% | Universal | 100% of workers |
 
 ### Key Message:
 > **"Every current solution forces workers to choose between privacy, fees, or access. That's not a choice - that's extortion."**
@@ -192,11 +192,11 @@ Business Team:
 ```
 
 ### Execution Milestones:
-- ✅ **ZK Circuits**: Production-ready wage verification
-- ✅ **Smart Contracts**: Audited and gas-optimized
-- ✅ **Demo**: Working end-to-end system
-- 🚧 **Mobile App**: User-friendly interface (6 weeks)
-- 🚧 **Mainnet Launch**: Public deployment (10 weeks)
+- **ZK Circuits**: Production-ready wage verification
+- **Smart Contracts**: Audited and gas-optimized
+- **Demo**: Working end-to-end system
+- **Mobile App**: User-friendly interface (6 weeks)
+- **Mainnet Launch**: Public deployment (10 weeks)
 
 ### Why We'll Win:
 - **Technical depth**: Real cryptography team, not consultants

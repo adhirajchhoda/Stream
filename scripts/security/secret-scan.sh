@@ -96,6 +96,7 @@ EXCLUDE_DIRS=(
   "vault-data"
   "secrets"
   "demo_data"
+  "demo"
   "test"
   "tests"
 )

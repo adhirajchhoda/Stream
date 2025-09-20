@@ -25,13 +25,13 @@ ping -c 3 polygon-rpc.com
 ```
 
 ### Equipment Checklist
-- ✅ Primary laptop (fully charged)
-- ✅ Backup laptop (same demo setup)
-- ✅ Mobile hotspot (network fallback)
-- ✅ Clicker/presenter remote
-- ✅ HDMI/USB-C adapters
-- ✅ Printed technical one-pager (judges)
-- ✅ Business cards with demo QR code
+- Primary laptop (fully charged)
+- Backup laptop (same demo setup)
+- Mobile hotspot (network fallback)
+- Clicker/presenter remote
+- HDMI/USB-C adapters
+- Printed technical one-pager (judges)
+- Business cards with demo QR code
 
 ---
 
@@ -109,9 +109,9 @@ STEP 4: Trustless Verification & Payment
 ├── Transaction Hash: 0x2c7f8a3d...
 ├── Gas Used: 142,000 (under 150k target)
 ├── Transaction Fee: $0.05 (vs $7+ incumbents)
-├── Verification: ✅ Proof valid
-├── Nullifier Check: ✅ No double-spend
-├── Payment Status: ✅ $144 USDC transferred
+├── Verification: Proof valid
+├── Nullifier Check: No double-spend
+├── Payment Status: $144 USDC transferred
 └── Settlement: Instant (vs 2-week wait)
 
 Innovation: Automated verification, no human approval
@@ -126,9 +126,9 @@ STEP 5: Double-Spend Prevention Test
 ├── Attempt: Second claim for same wages
 ├── Nullifier: 0x7b9e4f1a... (already used)
 ├── Smart Contract: REVERT - Duplicate nullifier
-├── Result: ❌ Transaction failed
-├── Security: ✅ Double-spend prevented
-└── Privacy: ✅ No identity revealed in failure
+├── Result: Transaction failed
+├── Security: Double-spend prevented
+└── Privacy: No identity revealed in failure
 
 Mathematical Guarantee: Same wages cannot be claimed twice
 ```
@@ -139,12 +139,12 @@ DEMO COMPLETE: Privacy-Preserving Wage Access
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Results:
-├── ✅ $144 wages accessed instantly
-├── ✅ Complete privacy maintained
-├── ✅ 4.2 second proof generation
-├── ✅ $0.05 total cost (vs $7+ competitors)
-├── ✅ Cryptographic security guaranteed
-└── ✅ Zero employer integration required
+├── $144 wages accessed instantly
+├── Complete privacy maintained
+├── 4.2 second proof generation
+├── $0.05 total cost (vs $7+ competitors)
+├── Cryptographic security guaranteed
+└── Zero employer integration required
 
 This is not a mockup - this is production-ready technology
 ```
@@ -266,22 +266,22 @@ Stream Protocol - Live Performance Metrics
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Proof Generation:
-├── Current: 4.2s ✅ (Target: <5s)
+├── Current: 4.2s (Target: <5s)
 ├── Best: 3.8s
 ├── 95th percentile: 4.7s
 └── Success rate: 99.3%
 
 Smart Contract:
-├── Gas usage: 142,000 ✅ (Target: <150k)
+├── Gas usage: 142,000 (Target: <150k)
 ├── Transaction fee: $0.047
 ├── Confirmation time: 2.3s
 └── Success rate: 99.8%
 
 Privacy Guarantees:
-├── Data leakage: 0 bytes ✅
-├── Identity exposure: 0% ✅
-├── Cryptographic security: Unbreakable ✅
-└── Compliance: GDPR ready ✅
+├── Data leakage: 0 bytes
+├── Identity exposure: 0%
+├── Cryptographic security: Unbreakable
+└── Compliance: GDPR ready
 ```
 
 ### Historical Performance Log
