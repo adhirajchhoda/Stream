@@ -204,12 +204,6 @@ scripts/
 ├── verify/           # Contract verification
 ├── upgrade/          # Upgrade scripts
 └── analysis/         # Gas and security analysis
-
-ios/                  # iOS Application
-├── StreamApp/        # Main iOS app
-├── ViewModels/       # Business logic
-├── Services/         # Core services
-└── Views/           # SwiftUI interfaces
 ```
 
 ### Key Scripts
@@ -232,10 +226,12 @@ npm run verify         # Verify contracts
 npm run flatten        # Flatten contracts
 ```
 
-## iOS Application
+## Frontend Applications
 
+Stream Protocol has frontend applications available in dedicated branches:
+
+### iOS Application (frontend-ios branch)
 Stream Protocol includes a beautiful iOS application with:
-
 - Modern SwiftUI interface with scenario-based theming
 - Biometric authentication (Face ID, Touch ID)
 - On-device ZK-proof generation
@@ -243,10 +239,21 @@ Stream Protocol includes a beautiful iOS application with:
 - Multi-wallet integration (MetaMask, WalletConnect, Coinbase)
 - Comprehensive dashboard and earnings tracking
 
-### iOS Setup
 ```bash
+# Switch to iOS frontend branch
+git checkout frontend-ios
+
+# Open iOS project
 cd ios/StreamApp
 open StreamApp.xcodeproj
+```
+
+### Web Frontend (web-frontend branch)
+Web frontend development branch for future web-based user interface.
+
+```bash
+# Switch to web frontend branch (for future development)
+git checkout web-frontend
 ```
 
 ## Multi-Platform Support
