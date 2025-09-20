@@ -1,0 +1,47 @@
+{
+  "name": "@stream/zkp-circuits",
+  "version": "0.1.0",
+  "description": "Zero-Knowledge Proof circuits for Stream Protocol wage attestations",
+  "main": "src/zkproof_service.js",
+  "scripts": {
+    "build": "../scripts/build_circuit.sh",
+    "test": "mocha test/*.test.js --timeout 30000",
+    "benchmark": "node ../scripts/benchmark_circuit.js",
+    "example": "node examples/usage_example.js",
+    "clean": "rm -rf build/*",
+    "install-deps": "npm install && npm install -g circom snarkjs"
+  },
+  "keywords": [
+    "zero-knowledge",
+    "zk-snark",
+    "circom",
+    "blockchain",
+    "privacy",
+    "wage-attestation"
+  ],
+  "author": "Stream Protocol Team",
+  "license": "MIT",
+  "dependencies": {
+    "snarkjs": "^0.7.0",
+    "circomlib": "^2.0.5",
+    "crypto": "^1.0.1"
+  },
+  "devDependencies": {
+    "circom_tester": "^0.0.19",
+    "mocha": "^10.2.0",
+    "chai": "^4.3.7"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stream-protocol/zkp-circuits.git"
+  },
+  "files": [
+    "src/",
+    "build/",
+    "test/",
+    "examples/"
+  ]
+}

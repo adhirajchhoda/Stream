@@ -1,0 +1,58 @@
+{
+  "name": "stream-protocol-integration",
+  "version": "1.0.0",
+  "description": "Stream Protocol End-to-End Integration and Demo CLI",
+  "main": "cli/stream-demo.js",
+  "bin": {
+    "stream-demo": "./cli/stream-demo.js"
+  },
+  "scripts": {
+    "demo": "node cli/stream-demo.js",
+    "test": "jest",
+    "test:integration": "jest test/integration",
+    "test:performance": "jest test/performance",
+    "benchmark": "node scripts/benchmark.js",
+    "health-check": "node scripts/health-check.js",
+    "setup": "node scripts/setup.js",
+    "clean": "node scripts/clean.js",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "migrate": "node scripts/migrate.js"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "ora": "^5.4.1",
+    "inquirer": "^8.2.5",
+    "ethers": "^5.7.2",
+    "pg": "^8.8.0",
+    "ioredis": "^5.2.4",
+    "dotenv": "^16.0.3",
+    "axios": "^1.2.0",
+    "ws": "^8.11.0",
+    "uuid": "^9.0.0",
+    "commander": "^9.4.1",
+    "table": "^6.8.1",
+    "cli-progress": "^3.11.2"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "supertest": "^6.3.3",
+    "@types/jest": "^29.2.4",
+    "nodemon": "^2.0.20"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "stream",
+    "protocol",
+    "wage",
+    "advance",
+    "zero-knowledge",
+    "blockchain",
+    "defi",
+    "stablecoin"
+  ],
+  "author": "Stream Protocol Team",
+  "license": "MIT"
+}

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "mcp__sequential-thinking__sequentialthinking",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.nuget.org)",
+      "mcp__github__list_commits",
+      "mcp__filesystem__list_allowed_directories",
+      "mcp__filesystem__list_directory",
+      "mcp__github__get_file_contents",
+      "mcp__github__search_repositories",
+      "mcp__filesystem__read_file",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "mcp__github__list_pull_requests",
+      "Bash(cmd /c:*)",
+      "mcp__filesystem__read_text_file",
+      "mcp__filesystem__directory_tree",
+      "Bash(gh auth:*)",
+      "Bash(gcloud auth:*)",
+      "Bash(gh repo view:*)",
+      "Bash(bash:*)",
+      "Bash(uv pip install:*)",
+      "Bash(uv run:*)",
+      "Bash(wsl:*)",
+      "WebSearch",
+      "Bash(npm run storybook:*)",
+      "Bash(curl:*)",
+      "Bash(docker ps:*)",
+      "Bash(sqlite3:*)",
+      "mcp__puppeteer__puppeteer_navigate",
+      "mcp__puppeteer__puppeteer_screenshot",
+      "mcp__figma-dev-mode-mcp-server__get_code",
+      "mcp__figma-dev-mode-mcp-server__get_image",
+      "Bash(mkdir:*)",
+      "Bash(npx playwright screenshot:*)",
+      "Bash(yamllint:*)",
+      "Bash(gh workflow view:*)",
+      "Bash(gh pr view:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "filesystem",
+    "shell",
+    "github",
+    "memory-bank",
+    "sequential-thinking",
+    "puppeteer",
+    "figma"
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx vibe-log-cli send --silent --background --hook-trigger=sessionstart --hook-version=1.0.0 --claude-project-dir=\"$CLAUDE_PROJECT_DIR\""
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx vibe-log-cli send --silent --background --hook-trigger=precompact --hook-version=1.0.0 --claude-project-dir=\"$CLAUDE_PROJECT_DIR\""
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "clear|logout|prompt_input_exit|other",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx vibe-log-cli send --silent --background --hook-trigger=sessionend --hook-version=1.0.0 --claude-project-dir=\"$CLAUDE_PROJECT_DIR\""
+          }
+        ]
+      }
+    ]
+  }
+}

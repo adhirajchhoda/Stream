@@ -1,0 +1,56 @@
+{
+  "name": "stream-protocol-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for Stream protocol ZKP verification and stablecoin liquidity management",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "coverage": "hardhat coverage",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:polygon": "hardhat run scripts/deploy.js --network polygon",
+    "deploy:ethereum": "hardhat run scripts/deploy.js --network mainnet",
+    "verify": "hardhat verify",
+    "gas-report": "REPORT_GAS=true hardhat test",
+    "size-contracts": "hardhat size-contracts",
+    "node": "hardhat node",
+    "flatten": "hardhat flatten",
+    "demo": "node stream_hackathon_demo.js",
+    "demo:auto": "node stream_hackathon_demo.js --auto",
+    "demo:starbucks": "node stream_hackathon_demo.js --scenario=starbucks",
+    "demo:amazon": "node stream_hackathon_demo.js --scenario=amazon",
+    "demo:uber": "node stream_hackathon_demo.js --scenario=uber",
+    "test:demo": "node test_demo.js"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^5.0.1",
+    "@openzeppelin/contracts-upgradeable": "^5.0.1",
+    "@openzeppelin/hardhat-upgrades": "^3.0.5",
+    "hardhat": "^2.19.4",
+    "hardhat-gas-reporter": "^1.0.9",
+    "hardhat-contract-sizer": "^2.10.0",
+    "solidity-coverage": "^0.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "dependencies": {
+    "@chainlink/contracts": "^0.8.0",
+    "chalk": "^4.1.2",
+    "ora": "^5.4.1",
+    "figlet": "^1.7.0",
+    "cli-progress": "^3.12.0",
+    "gradient-string": "^2.0.2",
+    "boxen": "^5.1.2"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "polygon",
+    "zk-proofs",
+    "defi",
+    "stablecoin",
+    "liquidity"
+  ],
+  "author": "Stream Protocol",
+  "license": "MIT"
+}

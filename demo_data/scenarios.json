@@ -1,0 +1,46 @@
+{
+  "scenarios": [
+    {
+      "id": "starbucks_barista",
+      "employer": "Starbucks Coffee",
+      "position": "Barista",
+      "hours": 8.5,
+      "hourlyRate": 18,
+      "totalWage": 153,
+      "description": "Morning shift at busy downtown location",
+      "employee": "Alex Johnson",
+      "difficulty": "easy",
+      "theme": "green"
+    },
+    {
+      "id": "amazon_warehouse",
+      "employer": "Amazon Fulfillment",
+      "position": "Warehouse Associate",
+      "hours": 10,
+      "hourlyRate": 22,
+      "totalWage": 220,
+      "description": "Night shift package sorting and loading",
+      "employee": "Maria Rodriguez",
+      "difficulty": "medium",
+      "theme": "orange"
+    },
+    {
+      "id": "uber_driver",
+      "employer": "Uber Technologies",
+      "position": "Rideshare Driver",
+      "hours": 6,
+      "hourlyRate": 28.5,
+      "totalWage": 171,
+      "description": "Evening rush hour with surge pricing",
+      "employee": "David Chen",
+      "difficulty": "hard",
+      "theme": "cyan"
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "created": "2025-09-20T02:00:00Z",
+    "purpose": "Hackathon demo scenarios with fallback data",
+    "total_scenarios": 3
+  }
+}

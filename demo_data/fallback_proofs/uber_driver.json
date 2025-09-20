@@ -1,0 +1,54 @@
+{
+  "proof": {
+    "pi_a": [
+      "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
+      "0xbcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890a",
+      "0x1"
+    ],
+    "pi_b": [
+      [
+        "0xcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890ab",
+        "0xdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abc"
+      ],
+      [
+        "0xef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcd",
+        "0xf1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcde"
+      ],
+      [
+        "0x1",
+        "0x0"
+      ]
+    ],
+    "pi_c": [
+      "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      "0x234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1",
+      "0x1"
+    ],
+    "protocol": "groth16",
+    "curve": "bn128"
+  },
+  "publicSignals": [
+    "0x34567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12",
+    "0x4567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef123",
+    "0x567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234"
+  ],
+  "metadata": {
+    "scenario": "uber_driver",
+    "generated": "2025-09-20T02:00:00Z",
+    "generationTimeMs": 3654,
+    "circuitName": "wage_proof",
+    "constraints": 24983,
+    "witnessElements": 65536,
+    "purpose": "fallback_proof_for_demo",
+    "employee": "David Chen",
+    "employer": "Uber Technologies",
+    "totalWage": 171,
+    "nullifierHash": "0x789abc123def456789abc123def456789abc123def456789abc123def456789"
+  },
+  "verification": {
+    "verified": true,
+    "verificationTimeMs": 45,
+    "verifier": "groth16_verifier",
+    "verificationKey": "vk_wage_proof.json"
+  }
+}

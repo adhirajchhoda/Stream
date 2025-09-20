@@ -1,0 +1,54 @@
+{
+  "proof": {
+    "pi_a": [
+      "0x1a2b3c4d5e6f7890abcdef1234567890fedcba0987654321abcdef1234567890",
+      "0x2b3c4d5e6f7890abcdef1234567890fedcba0987654321abcdef1234567890ab",
+      "0x1"
+    ],
+    "pi_b": [
+      [
+        "0x3c4d5e6f7890abcdef1234567890fedcba0987654321abcdef1234567890abcd",
+        "0x4d5e6f7890abcdef1234567890fedcba0987654321abcdef1234567890abcdef"
+      ],
+      [
+        "0x5e6f7890abcdef1234567890fedcba0987654321abcdef1234567890abcdef12",
+        "0x6f7890abcdef1234567890fedcba0987654321abcdef1234567890abcdef1234"
+      ],
+      [
+        "0x1",
+        "0x0"
+      ]
+    ],
+    "pi_c": [
+      "0x7890abcdef1234567890fedcba0987654321abcdef1234567890abcdef123456",
+      "0x90abcdef1234567890fedcba0987654321abcdef1234567890abcdef12345678",
+      "0x1"
+    ],
+    "protocol": "groth16",
+    "curve": "bn128"
+  },
+  "publicSignals": [
+    "0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0",
+    "0x456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123",
+    "0x789abcdef0123456789abcdef0123456789abcdef0123456789abcdef012345"
+  ],
+  "metadata": {
+    "scenario": "starbucks_barista",
+    "generated": "2025-09-20T02:00:00Z",
+    "generationTimeMs": 3247,
+    "circuitName": "wage_proof",
+    "constraints": 24983,
+    "witnessElements": 65536,
+    "purpose": "fallback_proof_for_demo",
+    "employee": "Alex Johnson",
+    "employer": "Starbucks Coffee",
+    "totalWage": 153,
+    "nullifierHash": "0xabc123def456789abc123def456789abc123def456789abc123def456789abc"
+  },
+  "verification": {
+    "verified": true,
+    "verificationTimeMs": 42,
+    "verifier": "groth16_verifier",
+    "verificationKey": "vk_wage_proof.json"
+  }
+}
