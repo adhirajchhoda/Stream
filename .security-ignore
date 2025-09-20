@@ -1,0 +1,35 @@
+# Stream Protocol Security Scan Ignore List
+# Files listed here contain legitimate test data or demo values
+# Format: one file path per line, supports wildcards
+
+# Test and demo data files
+sample_data.sql
+contracts/demo/StreamDemo.sol
+hardhat.config.js
+scripts/analysis/gas-analysis.js
+
+# Demo and test directories
+demo_data/**
+test/**
+tests/**
+
+# Mock and fixture files
+**/fixtures/**
+**/mocks/**
+**/*mock*.js
+**/*fixture*.js
+**/*demo*.js
+
+# Configuration files with placeholder values
+*.config.js
+**/config/**
+
+# Documentation and templates
+*.md
+*.template
+*.example
+
+# Build and generated files
+build/**
+dist/**
+coverage/**

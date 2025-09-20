@@ -62,11 +62,18 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
+# dotenv environment variables file - NEVER COMMIT SECRETS
 .env
 .env.test
 .env.local
 .env.production
+.env.development
+.env.staging
+
+# Secret management
+secrets/
+vault-data/
+*.secret
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

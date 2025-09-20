@@ -1,0 +1,87 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files - NEVER COMMIT THESE
+.env
+.env.local
+.env.development
+.env.staging
+.env.production
+.env.test
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build outputs
+build/
+dist/
+out/
+*.tgz
+*.tar.gz
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output/
+
+# Hardhat files
+cache/
+artifacts/
+typechain-types/
+
+# ZK Circuit files (large)
+circuits/*.zkey
+circuits/proving_key.zkey
+circuits/verification_key.json
+circuits/witness.wtns
+
+# Database
+*.db
+*.sqlite
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Secret management
+secrets/
+vault-data/
+*.pem
+*.key
+*.crt
+
+# Backup files
+*.backup
+*.bak
+
+# System files
+.cache/
