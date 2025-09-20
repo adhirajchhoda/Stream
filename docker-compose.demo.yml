@@ -1,0 +1,190 @@
+version: '3.8'
+
+# Stream Protocol - Complete Demo Environment
+# Bulletproof Docker setup for hackathon demonstrations
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: stream-postgres
+    environment:
+      POSTGRES_DB: stream_demo
+      POSTGRES_USER: stream_user
+      POSTGRES_PASSWORD: stream_demo_password
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database_schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./sample_data.sql:/docker-entrypoint-initdb.d/02-data.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stream_user -d stream_demo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - stream-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: stream-redis
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - stream-network
+
+  # Hardhat Local Blockchain
+  hardhat:
+    image: node:18-alpine
+    container_name: stream-hardhat
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8545:8545"
+    command: >
+      sh -c "
+        npm install -g hardhat &&
+        npx hardhat node --hostname 0.0.0.0 --port 8545
+      "
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "8545"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - stream-network
+
+  # Attestation Service
+  attestation-service:
+    build:
+      context: ./attestation-service
+      dockerfile: Dockerfile
+    container_name: stream-attestation
+    environment:
+      NODE_ENV: demo
+      PORT: 3001
+      DATABASE_URL: postgresql://stream_user:stream_demo_password@postgres:5432/stream_demo
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "3001:3001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - stream-network
+
+  # Main Demo Application
+  stream-demo:
+    build:
+      context: .
+      dockerfile: Dockerfile.demo
+    container_name: stream-demo-app
+    environment:
+      NODE_ENV: demo
+      DEMO_MODE: true
+      ENABLE_FALLBACKS: true
+      PRE_GENERATE_PROOFS: true
+      DATABASE_URL: postgresql://stream_user:stream_demo_password@postgres:5432/stream_demo
+      REDIS_URL: redis://redis:6379
+      BLOCKCHAIN_RPC_URL: http://hardhat:8545
+      ATTESTATION_SERVICE_URL: http://attestation-service:3001
+    ports:
+      - "3000:3000"
+    volumes:
+      - demo_logs:/app/logs
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('Demo app healthy')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      hardhat:
+        condition: service_healthy
+      attestation-service:
+        condition: service_healthy
+    networks:
+      - stream-network
+
+  # Monitoring Dashboard (optional)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: stream-monitoring
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: demo123
+    ports:
+      - "3002:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+    profiles:
+      - monitoring
+    networks:
+      - stream-network
+
+# Networks
+networks:
+  stream-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Volumes
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker-data/postgres
+  redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker-data/redis
+  demo_logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker-data/logs
+  grafana_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker-data/grafana

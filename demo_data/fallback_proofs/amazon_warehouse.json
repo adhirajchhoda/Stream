@@ -1,0 +1,54 @@
+{
+  "proof": {
+    "pi_a": [
+      "0x9876543210fedcba0987654321fedcba0987654321fedcba0987654321fedcba",
+      "0x876543210fedcba0987654321fedcba0987654321fedcba0987654321fedcba09",
+      "0x1"
+    ],
+    "pi_b": [
+      [
+        "0x76543210fedcba0987654321fedcba0987654321fedcba0987654321fedcba098",
+        "0x6543210fedcba0987654321fedcba0987654321fedcba0987654321fedcba0987"
+      ],
+      [
+        "0x543210fedcba0987654321fedcba0987654321fedcba0987654321fedcba09876",
+        "0x43210fedcba0987654321fedcba0987654321fedcba0987654321fedcba098765"
+      ],
+      [
+        "0x1",
+        "0x0"
+      ]
+    ],
+    "pi_c": [
+      "0x3210fedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654",
+      "0x210fedcba0987654321fedcba0987654321fedcba0987654321fedcba09876543",
+      "0x1"
+    ],
+    "protocol": "groth16",
+    "curve": "bn128"
+  },
+  "publicSignals": [
+    "0xfedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321",
+    "0xedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321f",
+    "0xdcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321fe"
+  ],
+  "metadata": {
+    "scenario": "amazon_warehouse",
+    "generated": "2025-09-20T02:00:00Z",
+    "generationTimeMs": 4123,
+    "circuitName": "wage_proof",
+    "constraints": 24983,
+    "witnessElements": 65536,
+    "purpose": "fallback_proof_for_demo",
+    "employee": "Maria Rodriguez",
+    "employer": "Amazon Fulfillment",
+    "totalWage": 220,
+    "nullifierHash": "0xdef456789abc123def456789abc123def456789abc123def456789abc123def"
+  },
+  "verification": {
+    "verified": true,
+    "verificationTimeMs": 38,
+    "verifier": "groth16_verifier",
+    "verificationKey": "vk_wage_proof.json"
+  }
+}

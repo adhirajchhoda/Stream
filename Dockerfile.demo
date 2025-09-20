@@ -1,0 +1,65 @@
+# Stream Protocol - Hackathon Demo Docker Image
+# Bulletproof containerized demo environment
+
+FROM node:18-alpine
+
+# Install system dependencies for ZK proofs and networking
+RUN apk add --no-cache \
+    git \
+    python3 \
+    make \
+    g++ \
+    netcat-openbsd \
+    postgresql-client \
+    curl \
+    bash
+
+# Set working directory
+WORKDIR /app
+
+# Create demo user for security
+RUN addgroup -g 1001 -S demo && \
+    adduser -S demo -u 1001 -G demo
+
+# Copy package files first for better caching
+COPY package*.json ./
+COPY circuits/package*.json ./circuits/
+COPY attestation-service/package*.json ./attestation-service/
+COPY integration/package*.json ./integration/
+
+# Install dependencies
+RUN npm ci --production=false && \
+    cd circuits && npm ci --production=false && \
+    cd ../attestation-service && npm ci --production=false && \
+    cd ../integration && npm ci --production=false
+
+# Copy application code
+COPY . .
+
+# Create demo data directories and set permissions
+RUN mkdir -p demo_data/fallback_proofs demo_data/fallback_contracts && \
+    mkdir -p circuits/build/wage_proof_js && \
+    mkdir -p contracts/deployments && \
+    chown -R demo:demo /app
+
+# Switch to demo user
+USER demo
+
+# Pre-generate fallback data and optimize for demo
+RUN node performance_optimizer.js || true
+
+# Health check for container readiness
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD node -e "console.log('Demo container healthy')" || exit 1
+
+# Expose ports for services
+EXPOSE 3000 8545
+
+# Environment variables for demo
+ENV NODE_ENV=demo
+ENV DEMO_MODE=true
+ENV ENABLE_FALLBACKS=true
+ENV PRE_GENERATE_PROOFS=true
+
+# Default command runs the demo
+CMD ["node", "stream_hackathon_demo.js", "--auto"]

@@ -1,0 +1,1 @@
+- 2025-08-14 15:15 — **auth-refactor** — Refactor authentication; Improve security
