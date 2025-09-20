@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -59,6 +59,7 @@ contract EmployerRegistry is
     mapping(address => uint256) public employerIndex;
 
     // Events
+    event EmployerStakeUpdated(address indexed employer, uint256 newStake, uint256 oldStake);
     event StakeSlashed(address indexed employer, uint256 amount, string reason);
     event StakeRestored(address indexed employer, uint256 amount);
     event ParametersUpdated(string parameter, uint256 oldValue, uint256 newValue);
