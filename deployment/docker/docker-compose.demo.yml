@@ -11,7 +11,7 @@ services:
     environment:
       POSTGRES_DB: stream_demo
       POSTGRES_USER: stream_user
-      POSTGRES_PASSWORD: stream_demo_password
+      POSTGRES_PASSWORD: REPLACE_WITH_DB_PASSWORD
       POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
     ports:
       - "5432:5432"
