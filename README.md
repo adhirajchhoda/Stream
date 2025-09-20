@@ -1,12 +1,12 @@
 # Stream Protocol - Decentralized Earned Wage Access
 
-## 🌊 **Overview**
+## **Overview**
 
 Stream Protocol revolutionizes earned wage access by leveraging Zero-Knowledge Proofs to enable instant, private wage advances without revealing employee or employer identities. Built for PennApps hackathon.
 
-## 🔐 **Security First**
+## **Security First**
 
-**🚨 IMPORTANT: This repository implements comprehensive security measures. All developers must read the [Security Guide](SECURITY.md) before contributing.**
+**IMPORTANT: This repository implements comprehensive security measures. All developers must read the [Security Guide](SECURITY.md) before contributing.**
 
 ### **Quick Security Check**
 
@@ -18,7 +18,7 @@ Stream Protocol revolutionizes earned wage access by leveraging Zero-Knowledge P
 # No secrets are allowed in git history
 ```
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 The Stream Protocol consists of three core smart contracts:
 
@@ -26,33 +26,33 @@ The Stream Protocol consists of three core smart contracts:
 - **StablecoinPool**: Liquidity management for USDC/USDT with automated market making
 - **EmployerRegistry**: Employer verification, stake management, and reputation tracking
 
-## ✨ Features
+## Features
 
-### 🔒 Zero-Knowledge Verification
+### Zero-Knowledge Verification
 - Groth16 ZK-SNARK proof verification
 - Privacy-preserving wage claims
 - Nullifier-based double-spending prevention
 - Gas-optimized verification (<150k gas per claim)
 
-### 💰 Stablecoin Liquidity Management
+### Stablecoin Liquidity Management
 - Multi-token support (USDC, USDT)
 - Dynamic fee calculation based on utilization
 - Yield generation for liquidity providers
 - Emergency pause and circuit breaker mechanisms
 
-### 🏢 Employer Management
+### Employer Management
 - Stake-based security model
 - Reputation scoring system
 - Whitelist management
 - Automated slashing for violations
 
-### ⚡ Upgradeable Architecture
+### Upgradeable Architecture
 - UUPS proxy pattern for future improvements
 - Multi-network deployment (Ethereum, Polygon)
 - Factory pattern for easy deployment
 - Role-based access control
 
-## 📦 Installation
+## Installation
 
 ```bash
 # Clone the repository
@@ -67,7 +67,7 @@ cp .env.example .env
 # Edit .env with your configuration
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Demo Mode
 ```bash
@@ -94,7 +94,7 @@ docker-compose -f deployment/docker/docker-compose.demo.yml up -d
 # - Database: localhost:5432
 ```
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run all tests
@@ -110,7 +110,7 @@ npm run gas-report
 npx hardhat test test/unit/StreamCore.test.js
 ```
 
-## 🚀 Deployment
+## Deployment
 
 ### Local Development
 
@@ -142,24 +142,24 @@ npm run deploy:polygon
 npm run deploy:ethereum
 ```
 
-## ⛽ Gas Optimization
+## Gas Optimization
 
 Target gas usage per operation:
 
 | Operation | Target | Status |
 |-----------|--------|--------|
-| claimWages | <150k | ✅ |
-| addLiquidity | <200k | ✅ |
-| removeLiquidity | <180k | ✅ |
-| disburseAdvance | <120k | ✅ |
-| registerEmployer | <250k | ✅ |
+| claimWages | <150k | PASS |
+| addLiquidity | <200k | PASS |
+| removeLiquidity | <180k | PASS |
+| disburseAdvance | <120k | PASS |
+| registerEmployer | <250k | PASS |
 
 Run gas analysis:
 ```bash
 npm run gas-report
 ```
 
-## 🔐 Security
+## Security
 
 ### Security Features
 - ReentrancyGuard on all external functions
@@ -169,11 +169,11 @@ npm run gas-report
 - Circuit breaker mechanisms
 
 ### Audit Status
-- ✅ 0 critical vulnerabilities
-- ✅ 0 high-severity vulnerabilities
-- ⚠️ 15 low-severity dev dependencies (acceptable for hackathon)
+- PASS: 0 critical vulnerabilities
+- PASS: 0 high-severity vulnerabilities
+- WARNING: 15 low-severity dev dependencies (acceptable for hackathon)
 
-## 📚 Documentation
+## Documentation
 
 - [Technical Architecture](./technical_architecture.md)
 - [API Design](./api_design.md)
@@ -181,7 +181,7 @@ npm run gas-report
 - [Security Audit Checklist](./SECURITY_AUDIT_CHECKLIST.md)
 - [Risk Assessment](./risk_assessment.md)
 
-## 🛠️ Development
+## Development
 
 ### Project Structure
 
@@ -232,16 +232,16 @@ npm run verify         # Verify contracts
 npm run flatten        # Flatten contracts
 ```
 
-## 📱 iOS Application
+## iOS Application
 
 Stream Protocol includes a beautiful iOS application with:
 
-- 🎨 Modern SwiftUI interface with scenario-based theming
-- 🔐 Biometric authentication (Face ID, Touch ID)
-- 🔒 On-device ZK-proof generation
-- 💼 Real-time work session tracking
-- 🏦 Multi-wallet integration (MetaMask, WalletConnect, Coinbase)
-- 📊 Comprehensive dashboard and earnings tracking
+- Modern SwiftUI interface with scenario-based theming
+- Biometric authentication (Face ID, Touch ID)
+- On-device ZK-proof generation
+- Real-time work session tracking
+- Multi-wallet integration (MetaMask, WalletConnect, Coinbase)
+- Comprehensive dashboard and earnings tracking
 
 ### iOS Setup
 ```bash
@@ -249,7 +249,7 @@ cd ios/StreamApp
 open StreamApp.xcodeproj
 ```
 
-## 🌐 Multi-Platform Support
+## Multi-Platform Support
 
 ### Supported Networks
 - Ethereum Mainnet
@@ -262,7 +262,7 @@ open StreamApp.xcodeproj
 - Coinbase Wallet
 - Demo Mode (for testing)
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
@@ -276,11 +276,11 @@ open StreamApp.xcodeproj
 - Follow Solidity style guide
 - Document all public functions
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🏆 Hackathon
+## Hackathon
 
 Built for **PennApps** hackathon with focus on:
 - Zero-knowledge privacy
@@ -290,4 +290,4 @@ Built for **PennApps** hackathon with focus on:
 
 ---
 
-**⚠️ Disclaimer**: This software is in active development. Use at your own risk. Please conduct thorough testing before deploying to mainnet.
+**WARNING - Disclaimer**: This software is in active development. Use at your own risk. Please conduct thorough testing before deploying to mainnet.
