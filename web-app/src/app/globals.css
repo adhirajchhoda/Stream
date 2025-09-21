@@ -1,0 +1,265 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles matching iOS app design */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-text-primary;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* iOS-style scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+
+  /* Custom focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-stream-blue ring-offset-2 ring-offset-background;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-stream-blue/20 text-text-primary;
+  }
+}
+
+/* Component styles matching iOS patterns */
+@layer components {
+  /* Card styles */
+  .card {
+    @apply bg-surface rounded-stream shadow-stream border border-outline/20;
+  }
+
+  .card-interactive {
+    @apply card hover:shadow-stream-lg transition-all duration-200 cursor-pointer;
+  }
+
+  .card-interactive:hover {
+    @apply transform scale-[1.02];
+  }
+
+  .card-interactive:active {
+    @apply transform scale-[0.98];
+  }
+
+  /* Button styles matching iOS design */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-3 text-button font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-stream-blue text-white hover:bg-stream-blue/90 active:bg-stream-blue/80;
+  }
+
+  .btn-secondary {
+    @apply btn bg-surface-variant text-text-primary hover:bg-outline/20 active:bg-outline/30;
+  }
+
+  .btn-success {
+    @apply btn bg-success text-white hover:bg-success/90 active:bg-success/80;
+  }
+
+  .btn-warning {
+    @apply btn bg-warning text-white hover:bg-warning/90 active:bg-warning/80;
+  }
+
+  .btn-error {
+    @apply btn bg-error text-white hover:bg-error/90 active:bg-error/80;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-text-primary hover:bg-surface-variant active:bg-outline/20;
+  }
+
+  /* Input styles */
+  .input {
+    @apply w-full rounded-xl border border-outline bg-surface px-4 py-3 text-body placeholder:text-text-tertiary focus:border-stream-blue focus:outline-none focus:ring-2 focus:ring-stream-blue/20;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-caption font-medium;
+  }
+
+  .badge-success {
+    @apply badge bg-success/10 text-success;
+  }
+
+  .badge-warning {
+    @apply badge bg-warning/10 text-warning;
+  }
+
+  .badge-error {
+    @apply badge bg-error/10 text-error;
+  }
+
+  .badge-info {
+    @apply badge bg-info/10 text-info;
+  }
+
+  .badge-neutral {
+    @apply badge bg-outline/20 text-text-secondary;
+  }
+
+  /* Text styles matching iOS StreamFonts */
+  .text-large-title {
+    @apply text-large-title font-bold font-system-rounded;
+  }
+
+  .text-title-1 {
+    @apply text-title-1 font-semibold font-system-rounded;
+  }
+
+  .text-title-2 {
+    @apply text-title-2 font-semibold font-system-rounded;
+  }
+
+  .text-title-3 {
+    @apply text-title-3 font-medium font-system-rounded;
+  }
+
+  .text-headline {
+    @apply text-headline font-semibold text-text-primary;
+  }
+
+  .text-body {
+    @apply text-body text-text-primary;
+  }
+
+  .text-body-secondary {
+    @apply text-body text-text-secondary;
+  }
+
+  .text-callout {
+    @apply text-callout text-text-primary;
+  }
+
+  .text-caption {
+    @apply text-caption text-text-secondary;
+  }
+
+  .text-currency {
+    @apply text-currency font-bold font-system-rounded;
+  }
+
+  .text-currency-large {
+    @apply text-currency-large font-bold font-system-rounded;
+  }
+
+  .text-monospace {
+    @apply font-mono text-callout text-text-secondary;
+  }
+
+  /* Layout styles */
+  .container-app {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-narrow {
+    @apply mx-auto max-w-3xl px-4 sm:px-6;
+  }
+
+  /* Animation utilities */
+  .animate-fade-in {
+    @apply animate-fade-in;
+  }
+
+  .animate-slide-up {
+    @apply animate-slide-up;
+  }
+
+  .animate-scale-in {
+    @apply animate-scale-in;
+  }
+}
+
+/* Utility classes */
+@layer utilities {
+  /* iOS-style safe area handling */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Backdrop blur utilities */
+  .backdrop-blur-ios {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    @apply bg-white/10 backdrop-blur-ios border border-white/20;
+  }
+
+  /* Loading shimmer effect */
+  .shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* Custom scrollbar for specific areas */
+  .scroll-custom {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(203 213 225) transparent;
+  }
+
+  .scroll-custom::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scroll-custom::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .scroll-custom::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  .scroll-custom::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+}
