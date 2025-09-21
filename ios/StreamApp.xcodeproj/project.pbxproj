@@ -10,7 +10,6 @@
 		0DD18F0B2E7FBB1900A893D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DD18F052E7FBB1900A893D7 /* Assets.xcassets */; };
 		0DD18F0C2E7FBB1900A893D7 /* wage_proof.wasm in Resources */ = {isa = PBXBuildFile; fileRef = 0DD18ED82E7FBB1900A893D7 /* wage_proof.wasm */; };
 		0DD18F0D2E7FBB1900A893D7 /* zkproof_service.js in Resources */ = {isa = PBXBuildFile; fileRef = 0DD18ED92E7FBB1900A893D7 /* zkproof_service.js */; };
-		
 		0DD18F0F2E7FBB1900A893D7 /* verification_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DD18ED72E7FBB1900A893D7 /* verification_key.json */; };
 		0DD18F102E7FBB1900A893D7 /* StreamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EDC2E7FBB1900A893D7 /* StreamApp.swift */; };
 		0DD18F112E7FBB1900A893D7 /* BiometricAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EE92E7FBB1900A893D7 /* BiometricAuthService.swift */; };
@@ -330,7 +329,6 @@
 				0DD18F0B2E7FBB1900A893D7 /* Assets.xcassets in Resources */,
 				0DD18F0C2E7FBB1900A893D7 /* wage_proof.wasm in Resources */,
 				0DD18F0D2E7FBB1900A893D7 /* zkproof_service.js in Resources */,
-				
 				0DD18F0F2E7FBB1900A893D7 /* verification_key.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,7 +502,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5A6JT4D3P5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = StreamApp/Info.plist;
@@ -534,7 +532,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5A6JT4D3P5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = StreamApp/Info.plist;

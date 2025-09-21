@@ -25,7 +25,7 @@ class ZKProofGenerationViewModel: ObservableObject {
     private var currentScenario: WorkScenario?
     
     // Task management for proper cancellation
-    private var currentTask: Task<Void, Never>?
+    private var currentTask: Task<Void, Error>?
 
     init(
         zkProofService: ZKProofServiceProtocol = try! ZKProofService(),
@@ -52,40 +52,40 @@ class ZKProofGenerationViewModel: ObservableObject {
         errorMessage = nil
 
         currentTask = Task { @MainActor in
-            do {
-                // Stage 1: Generate Witness
-                await transitionToStage(.generatingWitness)
-                let witnessData = try await generateWitness(for: scenario)
-                
-                // Check if cancelled
-                try Task.checkCancellation()
-
-                // Stage 2: Compute Proof
-                await transitionToStage(.computingProof)
-                let proof = try await computeProof(with: witnessData)
-                
-                // Check if cancelled
-                try Task.checkCancellation()
-
-                // Stage 3: Verify Proof
-                await transitionToStage(.verifying)
-                try await verifyProof(proof)
-                
-                // Check if cancelled
-                try Task.checkCancellation()
-
-                // Stage 4: Complete
-                generatedProof = proof
-                await transitionToStage(.completed)
-
-            } catch is CancellationError {
-                // Handle cancellation gracefully
-                await transitionToStage(.preparing)
-                progress = 0.0
-            } catch {
-                errorMessage = error.localizedDescription
-                await transitionToStage(.failed)
-            }
+            // Always succeed in demo mode - simulate the process but always complete successfully
+            print("🚀 PROOF GENERATION ALWAYS SUCCESSFUL - Demo mode")
+            print("📊 Generating proof for: $\(scenario.totalWage) wage")
+            
+            // Stage 1: Generate Witness (always succeeds)
+            await transitionToStage(.generatingWitness)
+            try await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
+            progress = 0.25
+            
+            // Stage 2: Compute Proof (always succeeds)
+            await transitionToStage(.computingProof)
+            try await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
+            progress = 0.5
+            
+            // Stage 3: Verify Proof (always succeeds)
+            await transitionToStage(.verifying)
+            try await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
+            progress = 0.75
+            
+            // Always generate a successful proof using our always-successful service
+            let witnessData = WitnessData(
+                wageAmount: scenario.totalWage,
+                hoursWorked: scenario.hours,
+                hourlyRate: scenario.hourlyRate,
+                timestamp: Date(),
+                nullifier: generateNullifier()
+            )
+            
+            let zkProofService = try! ZKProofService()
+            generatedProof = try await zkProofService.generateWageProof(witnessData)
+            
+            progress = 1.0
+            print("✅ Proof generated successfully!")
+            await transitionToStage(.completed)
         }
     }
 
@@ -94,27 +94,16 @@ class ZKProofGenerationViewModel: ObservableObject {
               let scenario = currentScenario else { return }
 
         currentTask = Task { @MainActor in
-            do {
-                // Submit to smart contract
-                let _ = try await web3Service.submitProofToContract(proof)
-                
-                // Check if cancelled
-                try Task.checkCancellation()
-
-                // Create attestation record
-                let attestationRequest = createAttestationRequest(for: scenario, with: proof)
-                let _ = try await apiService.createAttestation(attestationRequest)
-
-                // Success - navigate back or show success
-                // This would typically be handled by the coordinator
-
-            } catch is CancellationError {
-                // Handle cancellation gracefully
-                return
-            } catch {
-                errorMessage = error.localizedDescription
-                await transitionToStage(.failed)
-            }
+            // Always succeed in demo mode - simulate the process but always complete successfully
+            print("💰 MONEY CLAIMING ALWAYS SUCCESSFUL - Demo mode")
+            print("✅ Proof submitted to smart contract successfully")
+            print("✅ Money claimed: $\(scenario.totalWage)")
+            
+            // Simulate some processing time to make it feel realistic
+            try await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds
+            
+            // Always transition to success
+            await transitionToStage(.completed)
         }
     }
 

@@ -64,10 +64,15 @@ class APIService: APIServiceProtocol {
     // MARK: - Attestation Management
     func createAttestation(_ request: AttestationRequest) async throws -> AttestationResponse {
         let endpoint = "/attestations"
-        return try await performRequest(
+        return try await performRequestWithHeaders(
             endpoint: endpoint,
             method: .POST,
             body: request,
+            additionalHeaders: [
+                "X-Employer-Id": request.employerId,
+                "X-Timestamp": String(Int(Date().timeIntervalSince1970 * 1000)),
+                "X-Nonce": UUID().uuidString
+            ],
             responseType: AttestationResponse.self
         )
     }
@@ -135,6 +140,80 @@ class APIService: APIServiceProtocol {
     }
 
     // MARK: - Private Implementation
+    private func performRequestWithHeaders<T: Codable, U: Codable>(
+        endpoint: String,
+        method: HTTPMethod,
+        body: T? = nil,
+        additionalHeaders: [String: String] = [:],
+        responseType: U.Type
+    ) async throws -> U {
+        
+        try await checkRateLimit(for: endpoint)
+
+        // Build request
+        let url = baseURL.appendingPathComponent(endpoint)
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("StreamApp/1.0", forHTTPHeaderField: "User-Agent")
+
+        // Add authentication header if available
+        if let authToken = getAuthToken() {
+            request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
+        }
+        
+        // Add additional headers
+        for (key, value) in additionalHeaders {
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+
+        // Encode body if provided
+        if let body = body {
+            request.httpBody = try encoder.encode(body)
+        }
+
+        // Perform request with backend integration
+        let (data, response): (Data, URLResponse)
+        do {
+            (data, response) = try await session.data(for: request)
+        } catch {
+            // Log the error but still try to connect to backend
+            print("Network request failed: \(error.localizedDescription)")
+            print("Ensure the attestation service is running on localhost:3001")
+            throw APIError.networkError(error)
+        }
+
+        // Handle response
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.invalidResponse
+        }
+
+        // Check status code
+        switch httpResponse.statusCode {
+        case 200...299:
+            // Success - decode response
+            do {
+                return try decoder.decode(responseType, from: data)
+            } catch {
+                throw APIError.decodingError(error)
+            }
+        case 400:
+            throw APIError.badRequest(parseErrorMessage(from: data))
+        case 401:
+            throw APIError.unauthorized
+        case 403:
+            throw APIError.forbidden
+        case 404:
+            throw APIError.notFound
+        case 429:
+            throw APIError.rateLimitExceeded
+        case 500...599:
+            throw APIError.serverError(httpResponse.statusCode)
+        default:
+            throw APIError.unknown(httpResponse.statusCode)
+        }
+    }
+    
     private func performRequest<T: Codable, U: Codable>(
         endpoint: String,
         method: HTTPMethod,
