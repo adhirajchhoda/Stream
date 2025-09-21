@@ -4,7 +4,7 @@ import Combine
 protocol Web3ServiceProtocol {
     func connectWallet() async throws -> WalletConnection
     func submitProofToContract(_ proof: ZKProofData) async throws -> TransactionResult
-    func checkClaimStatus(_ txHash: String) async throws -> ClaimStatus
+    func checkClaimStatus(_ txHash: String) async throws -> BlockchainClaimStatus
     func getBalance(for address: String) async throws -> String
     func estimateGasFee(for transaction: EthereumTransaction) async throws -> String
 }
@@ -44,11 +44,11 @@ class Web3Service: Web3ServiceProtocol {
         )
     }
 
-    func checkClaimStatus(_ txHash: String) async throws -> ClaimStatus {
+    func checkClaimStatus(_ txHash: String) async throws -> BlockchainClaimStatus {
         // Simulate blockchain query
         try await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
 
-        return ClaimStatus(
+        return BlockchainClaimStatus(
             transactionHash: txHash,
             status: .confirmed,
             blockNumber: Int.random(in: 1000000...9999999),
@@ -91,7 +91,7 @@ struct TransactionResult {
     }
 }
 
-struct ClaimStatus {
+struct BlockchainClaimStatus {
     let transactionHash: String
     let status: TransactionStatus
     let blockNumber: Int

@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import SwiftUI
 
 enum ZKProofStage {
     case preparing
@@ -22,9 +23,12 @@ class ZKProofGenerationViewModel: ObservableObject {
     private let web3Service: Web3ServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     private var currentScenario: WorkScenario?
+    
+    // Task management for proper cancellation
+    private var currentTask: Task<Void, Never>?
 
     init(
-        zkProofService: ZKProofServiceProtocol = ZKProofService(),
+        zkProofService: ZKProofServiceProtocol = try! ZKProofService(),
         apiService: APIServiceProtocol = APIService(),
         web3Service: Web3ServiceProtocol = Web3Service()
     ) {
@@ -32,31 +36,56 @@ class ZKProofGenerationViewModel: ObservableObject {
         self.apiService = apiService
         self.web3Service = web3Service
     }
+    
+    deinit {
+        // Clean up resources
+        Task { @MainActor in
+            cleanup()
+        }
+    }
 
     func startProofGeneration(for scenario: WorkScenario) async {
+        // Cancel any existing proof generation
+        cancelCurrentOperation()
+        
         currentScenario = scenario
         errorMessage = nil
 
-        do {
-            // Stage 1: Generate Witness
-            await transitionToStage(.generatingWitness)
-            let witnessData = try await generateWitness(for: scenario)
+        currentTask = Task { @MainActor in
+            do {
+                // Stage 1: Generate Witness
+                await transitionToStage(.generatingWitness)
+                let witnessData = try await generateWitness(for: scenario)
+                
+                // Check if cancelled
+                try Task.checkCancellation()
 
-            // Stage 2: Compute Proof
-            await transitionToStage(.computingProof)
-            let proof = try await computeProof(with: witnessData)
+                // Stage 2: Compute Proof
+                await transitionToStage(.computingProof)
+                let proof = try await computeProof(with: witnessData)
+                
+                // Check if cancelled
+                try Task.checkCancellation()
 
-            // Stage 3: Verify Proof
-            await transitionToStage(.verifying)
-            try await verifyProof(proof)
+                // Stage 3: Verify Proof
+                await transitionToStage(.verifying)
+                try await verifyProof(proof)
+                
+                // Check if cancelled
+                try Task.checkCancellation()
 
-            // Stage 4: Complete
-            generatedProof = proof
-            await transitionToStage(.completed)
+                // Stage 4: Complete
+                generatedProof = proof
+                await transitionToStage(.completed)
 
-        } catch {
-            errorMessage = error.localizedDescription
-            await transitionToStage(.failed)
+            } catch is CancellationError {
+                // Handle cancellation gracefully
+                await transitionToStage(.preparing)
+                progress = 0.0
+            } catch {
+                errorMessage = error.localizedDescription
+                await transitionToStage(.failed)
+            }
         }
     }
 
@@ -64,20 +93,28 @@ class ZKProofGenerationViewModel: ObservableObject {
         guard let proof = generatedProof,
               let scenario = currentScenario else { return }
 
-        do {
-            // Submit to smart contract
-            let txResult = try await web3Service.submitProofToContract(proof)
+        currentTask = Task { @MainActor in
+            do {
+                // Submit to smart contract
+                let _ = try await web3Service.submitProofToContract(proof)
+                
+                // Check if cancelled
+                try Task.checkCancellation()
 
-            // Create attestation record
-            let attestationRequest = createAttestationRequest(for: scenario, with: proof)
-            let _ = try await apiService.createAttestation(attestationRequest)
+                // Create attestation record
+                let attestationRequest = createAttestationRequest(for: scenario, with: proof)
+                let _ = try await apiService.createAttestation(attestationRequest)
 
-            // Success - navigate back or show success
-            // This would typically be handled by the coordinator
+                // Success - navigate back or show success
+                // This would typically be handled by the coordinator
 
-        } catch {
-            errorMessage = error.localizedDescription
-            await transitionToStage(.failed)
+            } catch is CancellationError {
+                // Handle cancellation gracefully
+                return
+            } catch {
+                errorMessage = error.localizedDescription
+                await transitionToStage(.failed)
+            }
         }
     }
 
@@ -86,6 +123,11 @@ class ZKProofGenerationViewModel: ObservableObject {
         progress = 0.0
         await transitionToStage(.preparing)
         await startProofGeneration(for: scenario)
+    }
+    
+    func cancelCurrentOperation() {
+        currentTask?.cancel()
+        currentTask = nil
     }
 
     // MARK: - Private Methods
@@ -106,6 +148,8 @@ class ZKProofGenerationViewModel: ObservableObject {
         let stepDuration = 0.03 // 30ms per step
 
         for step in 1...totalSteps {
+            try Task.checkCancellation()
+            
             try await Task.sleep(nanoseconds: UInt64(stepDuration * 1_000_000_000))
 
             let newProgress = Double(step) / Double(totalSteps)
@@ -130,6 +174,8 @@ class ZKProofGenerationViewModel: ObservableObject {
         progress = 0.0
 
         for step in 1...totalSteps {
+            try Task.checkCancellation()
+            
             try await Task.sleep(nanoseconds: UInt64(stepDuration * 1_000_000_000))
 
             let newProgress = Double(step) / Double(totalSteps)
@@ -149,6 +195,8 @@ class ZKProofGenerationViewModel: ObservableObject {
         progress = 0.0
 
         for step in 1...totalSteps {
+            try Task.checkCancellation()
+            
             try await Task.sleep(nanoseconds: UInt64(stepDuration * 1_000_000_000))
 
             let newProgress = Double(step) / Double(totalSteps)
@@ -191,6 +239,11 @@ class ZKProofGenerationViewModel: ObservableObject {
                 nonce: generateNullifier()
             )
         )
+    }
+    
+    private func cleanup() {
+        cancelCurrentOperation()
+        cancellables.removeAll()
     }
 }
 

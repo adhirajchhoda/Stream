@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DashboardView: View {
-    @StateObject private var viewModel = DashboardViewModel()
+    @StateObject private var viewModel = DashboardViewModel(walletManager: WalletManager())
     @State private var showingProofGeneration = false
     @State private var selectedScenario: WorkScenario?
 

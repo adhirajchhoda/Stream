@@ -1,0 +1,85 @@
+{
+  "protocol": "groth16",
+  "curve": "bn128",
+  "nPublic": 4,
+  "vk_alpha_1": [
+    "0x2d4d9aa7e302d9df41749d5507949d05dbea33fbb16c643b22f599a2be6df2e2",
+    "0x14bedd503c37ceb061d8ec60209fe345ce89830a19230301f076caff004d1926"
+  ],
+  "vk_beta_2": [
+    [
+      "0x0967032fcbf776d1afc985f88877f182d38480a653f2decaa9794cbc3bf3060c",
+      "0x0e187847ad4c798374d0d6732bf501847dd68bc0e071241e0213bc7fc13db7ab"
+    ],
+    [
+      "0x304cfbd1e08a704a99f5e847d93f8c3caafddec46b7a0d379da69a4d112346a7",
+      "0x1739c1b1a457a8c7313123d24d2f9192f896b7c63eea05a9d57f06547ad0cec8"
+    ]
+  ],
+  "vk_gamma_2": [
+    [
+      "0x198e9393920d483a7260bfb731fb5d25f1aa493335a9e71297e485b7aef312c2",
+      "0x1800deef121f1e76426a00665e5c4479674322d4f75edadd46debd5cd992f6ed"
+    ],
+    [
+      "0x090689d0585ff075ec9e99ad690c3395bc4b313370b38ef355acdadcd122975b",
+      "0x12c85ea5db8c6deb4aab71808dcb408fe3d1e7690c43d37b4ce6cc0166fa7daa"
+    ]
+  ],
+  "vk_delta_2": [
+    [
+      "0x2e89718ad33c8bed92e210e81d1853435399a271913a6520736a4729cf0d51eb",
+      "0x01a9e2ffa2e92599b68e44de5bcf354fa2642bd4f26b259daa6f7ce3ed57aeb3"
+    ],
+    [
+      "0x14a9a87b789a58af499b314e13c3d65bede56c07ea2d418d6874857b70763713",
+      "0x178fb49a2d6cd347dc58973ff49613a20757d0fcc22079f9abd10c3baee245901"
+    ]
+  ],
+  "vk_alphabeta_12": [
+    [
+      [
+        "0x2f47432157afb04b8346d10c08d1fd75b1e86cd3153a37a9a23226b283cd26db",
+        "0x205fdc2de23c5d88b8e493f719a985e2a5bdaccf3db9e5e6c49bf3c4a9d63b"
+      ],
+      [
+        "0x15f44aec1c2d2c8c3b2b2f99a50e6ff83b1b8cde13c6e15a1db70b8a19e5076",
+        "0x1b4a5b9b8fde9e8a5ff1f61844bad57b8a36e7bd9ff38a7b06f4b0f5d8e80b9"
+      ]
+    ]
+  ],
+  "IC": [
+    [
+      "0x1f7a58d9fb2213e2fcf2b2c8b1b1e2ffa1d8f7c4d6e3a5b9e1f8c7d4a5b9e2c3",
+      "0x2c8b1e4f7a3d9e6b2f5c8a1d4e7b0c3f6e9a2d5b8e1c4f7a0d3b6e9c2f5a8b1"
+    ],
+    [
+      "0x0a3f9c2e5d8b1f4e7a0d3c6f9b2e5a8d1c4f7b0e3a6d9c2f5b8e1a4d7c0f3b6",
+      "0x1d7c0f3b6e9a2d5c8f1b4e7a0d3f6c9b2e5a8d1f4c7b0e3a6f9c2d5b8e1a4d7"
+    ],
+    [
+      "0x2f5b8e1a4d7c0f3b6e9c2d5a8f1b4e7a0d3c6f9b2e5d8c1f4b7a0e3d6c9f2b5",
+      "0x0e3d6c9f2b5a8e1d4c7f0b3a6e9c2f5b8d1a4f7c0e3b6d9f2c5a8e1b4d7c0f3"
+    ],
+    [
+      "0x1b4d7c0f3b6e9a2d5c8f1e4a7d0c3f6b9e2a5d8c1f4e7b0a3d6f9c2e5b8d1a4",
+      "0x0c3f6b9e2a5d8c1f4e7b0d3a6f9c2e5b8d1a4f7c0e3b6d9f2c5a8e1b4d7c0f3"
+    ]
+  ],
+  "metadata": {
+    "circuitName": "WageProofCircuit",
+    "version": "0.1.0",
+    "compiler": "circom 2.1.6",
+    "description": "Mock verification key for wage proof circuit",
+    "created": "2025-09-20T23:57:00Z",
+    "publicInputs": [
+      "hashedHourlyRate",
+      "hoursWorked",
+      "employerHash",
+      "nullifierHash"
+    ],
+    "constraintCount": 1247,
+    "wireCount": 1583,
+    "mode": "development"
+  }
+}

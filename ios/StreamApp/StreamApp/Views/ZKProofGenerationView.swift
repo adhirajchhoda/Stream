@@ -375,7 +375,7 @@ struct ProofSummaryCard: View {
 
                 ProofDetailRow(
                     label: "Generation Time",
-                    value: "\(proof.metadata.provingTime, specifier: "%.2f")s"
+                    value: String(format: "%.2fs", proof.metadata.provingTime)
                 )
 
                 ProofDetailRow(

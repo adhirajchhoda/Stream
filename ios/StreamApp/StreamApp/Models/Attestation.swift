@@ -86,7 +86,7 @@ struct ZKProofData: Codable {
         let pi_a: [String]
         let pi_b: [[String]]
         let pi_c: [String]
-        let protocol: String
+        let protocolType: String
         let curve: String
     }
 

@@ -74,7 +74,7 @@ struct WorkScenario: Identifiable, Codable, Hashable {
     }
 }
 
-enum ScenarioType: String, CaseIterable {
+enum ScenarioType: String, CaseIterable, Codable {
     case starbucks = "starbucks_barista"
     case amazon = "amazon_warehouse"
     case uber = "uber_driver"

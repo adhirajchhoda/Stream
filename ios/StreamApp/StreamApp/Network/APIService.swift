@@ -18,9 +18,12 @@ class APIService: APIServiceProtocol {
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
 
-    // Rate limiting
+    // Rate limiting with proper memory management
+    private let rateLimitQueue = DispatchQueue(label: "com.stream.api.ratelimit", attributes: .concurrent)
     private var requestCounts: [String: (count: Int, resetTime: Date)] = [:]
     private let maxRequestsPerMinute = 60
+    private let maxStoredEndpoints = 100 // Prevent unbounded growth
+    private var cleanupTimer: Timer?
 
     init(baseURL: String = "https://api.stream-protocol.com") {
         self.baseURL = URL(string: baseURL)!
@@ -39,6 +42,12 @@ class APIService: APIServiceProtocol {
         self.encoder = JSONEncoder()
         self.encoder.dateEncodingStrategy = .iso8601
         self.encoder.keyEncodingStrategy = .convertToSnakeCase
+        
+        startCleanupTimer()
+    }
+    
+    deinit {
+        cleanupTimer?.invalidate()
     }
 
     // MARK: - Employer Management
@@ -68,6 +77,7 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .GET,
+            body: nil as String?,
             responseType: AttestationResponse.self
         )
     }
@@ -77,6 +87,7 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .GET,
+            body: nil as String?,
             responseType: [AttestationResponse].self
         )
     }
@@ -86,6 +97,7 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .POST,
+            body: nil as String?,
             responseType: VerificationResponse.self
         )
     }
@@ -95,6 +107,7 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .GET,
+            body: nil as String?,
             responseType: ZKProofData.self
         )
     }
@@ -105,6 +118,7 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .GET,
+            body: nil as String?,
             responseType: NullifierStatus.self
         )
     }
@@ -115,6 +129,7 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .GET,
+            body: nil as String?,
             responseType: ServiceStatus.self
         )
     }
@@ -180,21 +195,60 @@ class APIService: APIServiceProtocol {
         }
     }
 
+    // MARK: - Rate Limiting with Memory Management
     private func checkRateLimit(for endpoint: String) async throws {
-        let now = Date()
-        let key = endpoint
-
-        if let existing = requestCounts[key] {
-            if now < existing.resetTime {
-                if existing.count >= maxRequestsPerMinute {
-                    throw APIError.rateLimitExceeded
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            rateLimitQueue.async(flags: .barrier) {
+                let now = Date()
+                let key = endpoint
+                
+                // Clean up expired entries first
+                self.cleanupExpiredEntries(currentTime: now)
+                
+                if let existing = self.requestCounts[key] {
+                    if now < existing.resetTime {
+                        if existing.count >= self.maxRequestsPerMinute {
+                            continuation.resume(throwing: APIError.rateLimitExceeded)
+                            return
+                        }
+                        self.requestCounts[key] = (existing.count + 1, existing.resetTime)
+                    } else {
+                        self.requestCounts[key] = (1, now.addingTimeInterval(60))
+                    }
+                } else {
+                    // Ensure we don't exceed maximum stored endpoints
+                    if self.requestCounts.count >= self.maxStoredEndpoints {
+                        self.cleanupOldestEntries()
+                    }
+                    self.requestCounts[key] = (1, now.addingTimeInterval(60))
                 }
-                requestCounts[key] = (existing.count + 1, existing.resetTime)
-            } else {
-                requestCounts[key] = (1, now.addingTimeInterval(60))
+                
+                continuation.resume()
             }
-        } else {
-            requestCounts[key] = (1, now.addingTimeInterval(60))
+        }
+    }
+    
+    private func cleanupExpiredEntries(currentTime: Date) {
+        requestCounts = requestCounts.filter { _, value in
+            currentTime < value.resetTime
+        }
+    }
+    
+    private func cleanupOldestEntries() {
+        // Remove 25% of entries (oldest reset times) when at capacity
+        let sortedEntries = requestCounts.sorted { $0.value.resetTime < $1.value.resetTime }
+        let removeCount = max(1, requestCounts.count / 4)
+        
+        for i in 0..<removeCount {
+            requestCounts.removeValue(forKey: sortedEntries[i].key)
+        }
+    }
+    
+    private func startCleanupTimer() {
+        cleanupTimer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { [weak self] _ in
+            self?.rateLimitQueue.async(flags: .barrier) {
+                self?.cleanupExpiredEntries(currentTime: Date())
+            }
         }
     }
 

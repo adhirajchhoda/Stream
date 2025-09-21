@@ -235,7 +235,7 @@ struct SessionStatsSection: View {
 
                 StatCard(
                     title: "Earned",
-                    value: "$\(stats.totalEarned, specifier: "%.0f")",
+                    value: String(format: "$%.0f", stats.totalEarned),
                     icon: "dollarsign.circle.fill",
                     color: StreamColors.success
                 )
@@ -281,7 +281,7 @@ struct RecentSessionRow: View {
                     .streamCallout()
                     .foregroundColor(StreamColors.textPrimary)
 
-                Text("\(session.duration, specifier: "%.1f")h • $\(session.earnings, specifier: "%.2f")")
+                Text(String(format: "%.1fh • $%.2f", session.duration, session.earnings))
                     .streamCaption()
                     .foregroundColor(StreamColors.textSecondary)
             }
