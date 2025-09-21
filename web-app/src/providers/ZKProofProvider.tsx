@@ -1,7 +1,9 @@
 'use client';
 
-import React, { createContext, useContext, useReducer, useCallback } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
 import { ZKProofData, ZKProofRecord, ProofStats, WitnessData, ProofStatus } from '@/types/models';
+import { zkProofService, ZKProofInput, ZKProofOutput } from '@/services/zkProofService';
+import { useWallet } from './WalletProvider';
 
 interface ZKProofState {
   activeProofs: ZKProofRecord[];
@@ -16,10 +18,15 @@ interface ZKProofState {
 interface ZKProofContextType {
   state: ZKProofState;
   generateProof: (witnessData: WitnessData) => Promise<ZKProofData>;
+  generateSalaryProof: (input: ZKProofInput) => Promise<ZKProofOutput>;
+  generateWorkHoursProof: (input: ZKProofInput) => Promise<ZKProofOutput>;
+  generateEmploymentProof: (input: ZKProofInput) => Promise<ZKProofOutput>;
   verifyProof: (proofData: ZKProofData) => Promise<boolean>;
+  submitProofToBlockchain: (proofOutput: ZKProofOutput, contractAddress: string) => Promise<string>;
   getProofById: (id: string) => ZKProofRecord | null;
   updateProofStatus: (id: string, status: ProofStatus) => void;
   clearError: () => void;
+  isZKSupported: boolean;
 }
 
 const ZKProofContext = createContext<ZKProofContextType | undefined>(undefined);
@@ -153,15 +160,37 @@ interface ZKProofProviderProps {
 
 export function ZKProofProvider({ children }: ZKProofProviderProps) {
   const [state, dispatch] = useReducer(zkProofReducer, initialState);
+  const { state: walletState } = useWallet();
+  const [isZKSupported, setIsZKSupported] = React.useState(false);
 
-  // Mock ZK-proof generation (in production, this would use WebAssembly and actual circuits)
+  // Initialize ZK-proof service and check WebAssembly support
+  useEffect(() => {
+    const initializeZK = async () => {
+      try {
+        setIsZKSupported(typeof WebAssembly !== 'undefined' && typeof WebAssembly.instantiate === 'function');
+        await zkProofService.initialize();
+        await zkProofService.preloadCircuits();
+      } catch (error) {
+        console.error('Failed to initialize ZK-proof service:', error);
+        setIsZKSupported(false);
+      }
+    };
+
+    initializeZK();
+  }, []);
+
+  // Real ZK-proof generation using snarkjs and WebAssembly
   const generateProof = useCallback(async (witnessData: WitnessData): Promise<ZKProofData> => {
+    if (!isZKSupported) {
+      throw new Error('WebAssembly not supported in this browser');
+    }
+
     const proofId = `proof_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
     // Create initial proof record
     const proofRecord: ZKProofRecord = {
       id: proofId,
-      title: 'Wage Proof',
+      title: 'Salary Proof',
       subtitle: `${witnessData.hoursWorked}h @ $${witnessData.hourlyRate}/hr`,
       amount: witnessData.wageAmount,
       status: 'generating',
@@ -170,60 +199,60 @@ export function ZKProofProvider({ children }: ZKProofProviderProps) {
       proofType: 'wage_proof',
       generationTime: 0,
       circuitVersion: 'v1.0.0',
-      circuitId: 'wage_proof_v1',
+      circuitId: 'salary_v1',
       publicSignalsCount: 4,
     };
 
     dispatch({ type: 'START_GENERATION', payload: { proofId } });
 
     try {
-      // Simulate proof generation stages
-      const stages = [
-        { name: 'Loading circuit', progress: 10, delay: 300 },
-        { name: 'Generating witness', progress: 25, delay: 500 },
-        { name: 'Computing proof', progress: 60, delay: 1500 },
-        { name: 'Verifying proof', progress: 85, delay: 800 },
-        { name: 'Finalizing', progress: 100, delay: 200 },
-      ];
-
       const startTime = Date.now();
 
-      for (const stage of stages) {
-        await new Promise(resolve => setTimeout(resolve, stage.delay));
-        dispatch({ type: 'UPDATE_PROGRESS', payload: stage.progress });
-      }
+      // Progress updates
+      dispatch({ type: 'UPDATE_PROGRESS', payload: 10 });
+
+      // Prepare input for ZK circuit
+      const zkInput: ZKProofInput = {
+        salary: witnessData.wageAmount,
+        hoursWorked: witnessData.hoursWorked,
+        hourlyRate: witnessData.hourlyRate,
+        periodStart: new Date(witnessData.timestamp.getTime() - 7 * 24 * 60 * 60 * 1000), // Week ago
+        periodEnd: witnessData.timestamp,
+        employeeId: witnessData.nullifier, // Use nullifier as employee ID
+        employerAttestation: 'employer_signature_placeholder'
+      };
+
+      dispatch({ type: 'UPDATE_PROGRESS', payload: 30 });
+
+      // Generate the actual ZK proof
+      const zkProofOutput = await zkProofService.generateSalaryProof(zkInput);
+
+      dispatch({ type: 'UPDATE_PROGRESS', payload: 80 });
 
       const generationTime = (Date.now() - startTime) / 1000;
 
-      // Create mock proof data
+      // Convert to our internal format
       const proofData: ZKProofData = {
         proof: {
-          pi_a: [generateRandomHex(), generateRandomHex(), '0x1'],
-          pi_b: [
-            [generateRandomHex(), generateRandomHex()],
-            [generateRandomHex(), generateRandomHex()],
-            ['0x1', '0x0']
-          ],
-          pi_c: [generateRandomHex(), generateRandomHex(), '0x1'],
+          pi_a: zkProofOutput.proof.pi_a,
+          pi_b: zkProofOutput.proof.pi_b,
+          pi_c: zkProofOutput.proof.pi_c,
           protocol: 'groth16',
           curve: 'bn254',
         },
-        publicSignals: [
-          String(Math.floor(witnessData.wageAmount * 1e18)), // Convert to wei
-          String(Math.floor(witnessData.hoursWorked * 100)),
-          String(Math.floor(witnessData.hourlyRate * 100)),
-          String(Math.floor(witnessData.timestamp.getTime() / 1000))
-        ],
+        publicSignals: zkProofOutput.publicSignals,
         metadata: {
-          circuitId: 'wage_proof_v1',
+          circuitId: 'salary_v1',
           provingTime: generationTime,
-          verificationKey: generateRandomHex(),
+          verificationKey: JSON.stringify(zkProofOutput.verificationKey),
           publicInputs: {
             wageAmount: String(Math.floor(witnessData.wageAmount * 1e18)),
             nullifierHash: witnessData.nullifier,
           },
         },
       };
+
+      dispatch({ type: 'UPDATE_PROGRESS', payload: 100 });
 
       // Update proof record with completion
       const completedProof: ZKProofRecord = {
@@ -244,19 +273,95 @@ export function ZKProofProvider({ children }: ZKProofProviderProps) {
       });
       throw error;
     }
-  }, []);
+  }, [isZKSupported]);
 
-  // Mock proof verification
+  // Generate salary-specific proof
+  const generateSalaryProof = useCallback(async (input: ZKProofInput): Promise<ZKProofOutput> => {
+    if (!isZKSupported) {
+      throw new Error('WebAssembly not supported in this browser');
+    }
+
+    try {
+      return await zkProofService.generateSalaryProof(input);
+    } catch (error: any) {
+      dispatch({ type: 'SET_ERROR', payload: error.message });
+      throw error;
+    }
+  }, [isZKSupported]);
+
+  // Generate work hours proof
+  const generateWorkHoursProof = useCallback(async (input: ZKProofInput): Promise<ZKProofOutput> => {
+    if (!isZKSupported) {
+      throw new Error('WebAssembly not supported in this browser');
+    }
+
+    try {
+      return await zkProofService.generateWorkHoursProof(input);
+    } catch (error: any) {
+      dispatch({ type: 'SET_ERROR', payload: error.message });
+      throw error;
+    }
+  }, [isZKSupported]);
+
+  // Generate employment proof
+  const generateEmploymentProof = useCallback(async (input: ZKProofInput): Promise<ZKProofOutput> => {
+    if (!isZKSupported) {
+      throw new Error('WebAssembly not supported in this browser');
+    }
+
+    try {
+      return await zkProofService.generateEmploymentProof(input);
+    } catch (error: any) {
+      dispatch({ type: 'SET_ERROR', payload: error.message });
+      throw error;
+    }
+  }, [isZKSupported]);
+
+  // Submit proof to blockchain
+  const submitProofToBlockchain = useCallback(async (proofOutput: ZKProofOutput, contractAddress: string): Promise<string> => {
+    if (walletState.connectionStatus !== 'connected' || !walletState.connectedWallet) {
+      throw new Error('Wallet not connected');
+    }
+
+    try {
+      // For now, we'll simulate the blockchain submission
+      // In a real implementation, you would use the wallet's provider to get a signer
+      return await zkProofService.submitProofToBlockchain(proofOutput, contractAddress, null);
+    } catch (error: any) {
+      dispatch({ type: 'SET_ERROR', payload: error.message });
+      throw error;
+    }
+  }, [walletState.connectionStatus, walletState.connectedWallet]);
+
+  // Real proof verification using snarkjs
   const verifyProof = useCallback(async (proofData: ZKProofData): Promise<boolean> => {
-    // Simulate verification delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    if (!isZKSupported) {
+      console.warn('WebAssembly not supported, skipping verification');
+      return false;
+    }
 
-    // In production, this would use snarkjs or similar to verify the proof
-    // For demo purposes, we'll simulate a high success rate
-    const isValid = Math.random() > 0.05; // 95% success rate
+    try {
+      // Convert proof back to snarkjs format
+      const proof = {
+        pi_a: proofData.proof.pi_a as [string, string],
+        pi_b: proofData.proof.pi_b as [[string, string], [string, string]],
+        pi_c: proofData.proof.pi_c as [string, string]
+      };
 
-    return isValid;
-  }, []);
+      // Determine proof type based on circuit ID
+      let proofType: 'salary' | 'workHours' | 'employment' = 'salary';
+      if (proofData.metadata.circuitId.includes('work_hours')) {
+        proofType = 'workHours';
+      } else if (proofData.metadata.circuitId.includes('employment')) {
+        proofType = 'employment';
+      }
+
+      return await zkProofService.verifyProof(proofType, proof, proofData.publicSignals);
+    } catch (error) {
+      console.error('Proof verification failed:', error);
+      return false;
+    }
+  }, [isZKSupported]);
 
   const getProofById = useCallback((id: string): ZKProofRecord | null => {
     const allProofs = [...state.activeProofs, ...state.completedProofs];
@@ -274,10 +379,15 @@ export function ZKProofProvider({ children }: ZKProofProviderProps) {
   const contextValue: ZKProofContextType = {
     state,
     generateProof,
+    generateSalaryProof,
+    generateWorkHoursProof,
+    generateEmploymentProof,
     verifyProof,
+    submitProofToBlockchain,
     getProofById,
     updateProofStatus,
     clearError,
+    isZKSupported,
   };
 
   return (

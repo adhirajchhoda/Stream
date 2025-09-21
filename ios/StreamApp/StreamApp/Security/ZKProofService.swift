@@ -123,6 +123,14 @@ class ZKProofService: ZKProofServiceProtocol {
             print("JS: \(message)")
         }
         jsContext.setObject(logFunction, forKeyedSubscript: "log" as NSString)
+        
+        // Test that our required functions are available
+        let testGenerateWageProof = jsContext.objectForKeyedSubscript("generateWageProof")
+        if testGenerateWageProof?.isUndefined != false {
+            throw ZKProofServiceError.javascriptExecutionFailed("generateWageProof function not found in JavaScript context")
+        }
+        
+        print("ZK Proof JavaScript environment initialized successfully")
     }
 
     private func generateProofInJS(inputs: [String: String]) throws -> ZKProofData {

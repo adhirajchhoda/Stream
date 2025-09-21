@@ -47,8 +47,8 @@ export function AuthenticationScreen() {
   ] as const;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stream-blue via-stream-green to-stream-blue">
-      <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white">
+      <div className="min-h-screen flex items-center justify-center p-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,20 +56,10 @@ export function AuthenticationScreen() {
           className="w-full max-w-md"
         >
           {/* Header */}
-          <div className="text-center mb-8">
-            <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm"
-            >
-              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
-                <div className="w-6 h-6 bg-gradient-to-br from-stream-blue to-stream-green rounded-lg" />
-              </div>
-            </motion.div>
-
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome to Stream</h1>
-            <p className="text-white/80">Connect your wallet to get started</p>
+          <div className="text-center mb-10">
+            <div className="w-12 h-12 mx-auto mb-4 rounded-md bg-blue" />
+            <h1 className="text-3xl font-bold text-charcoal mb-2">Welcome to Stream</h1>
+            <p className="text-charcoal/70">Connect your wallet to get started</p>
           </div>
 
           {/* Role Selection */}
@@ -79,7 +69,7 @@ export function AuthenticationScreen() {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="mb-6"
           >
-            <p className="text-white/90 text-sm font-medium mb-4 text-center">
+            <p className="text-charcoal/70 text-sm font-medium mb-4 text-center">
               Select your role
             </p>
             <div className="grid grid-cols-2 gap-3">
@@ -92,14 +82,14 @@ export function AuthenticationScreen() {
                   className={`
                     relative p-4 rounded-xl border-2 transition-all duration-200
                     ${selectedRole === role.id
-                      ? 'border-white bg-white/20 backdrop-blur-sm'
-                      : 'border-white/30 bg-white/10 backdrop-blur-sm'
+                      ? 'border-blue bg-white'
+                      : 'border-border bg-white'
                     }
                   `}
                 >
-                  <div className="text-white mb-2">{role.icon}</div>
-                  <h3 className="text-white font-semibold text-sm mb-1">{role.title}</h3>
-                  <p className="text-white/70 text-xs">{role.description}</p>
+                  <div className="text-blue mb-2">{role.icon}</div>
+                  <h3 className="text-charcoal font-semibold text-sm mb-1">{role.title}</h3>
+                  <p className="text-charcoal/70 text-xs">{role.description}</p>
 
                   {selectedRole === role.id && (
                     <motion.div
@@ -107,8 +97,8 @@ export function AuthenticationScreen() {
                       animate={{ scale: 1 }}
                       className="absolute top-2 right-2"
                     >
-                      <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
-                        <Check className="w-3 h-3 text-stream-blue" />
+                      <div className="w-5 h-5 bg-blue rounded-full flex items-center justify-center">
+                        <Check className="w-3 h-3 text-white" />
                       </div>
                     </motion.div>
                   )}
@@ -125,8 +115,8 @@ export function AuthenticationScreen() {
               transition={{ duration: 0.3 }}
               className="mb-6"
             >
-              <Card className="bg-white/10 backdrop-blur-sm border border-white/20" padding="md">
-                <div className="text-white">
+              <Card className="bg-white border border-border" padding="md">
+                <div className="text-charcoal">
                   <h4 className="font-semibold mb-3">
                     {roles.find(r => r.id === selectedRole)?.title} Features
                   </h4>
@@ -137,9 +127,9 @@ export function AuthenticationScreen() {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="flex items-center text-sm text-white/80"
+                        className="flex items-center text-sm text-charcoal/80"
                       >
-                        <Check className="w-4 h-4 mr-2 text-white" />
+                        <Check className="w-4 h-4 mr-2 text-blue" />
                         {feature}
                       </motion.li>
                     ))}
@@ -159,10 +149,9 @@ export function AuthenticationScreen() {
               onClick={handleConnect}
               loading={isConnecting || walletState.isConnecting}
               disabled={!selectedRole}
-              variant="secondary"
+              variant="primary"
               size="lg"
               fullWidth
-              className="bg-white text-stream-blue hover:bg-white/90 font-semibold"
               rightIcon={<ArrowRight className="w-5 h-5" />}
             >
               {isConnecting || walletState.isConnecting ? 'Connecting...' : 'Connect Wallet'}
@@ -172,9 +161,9 @@ export function AuthenticationScreen() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg"
+                className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg"
               >
-                <p className="text-red-200 text-sm">{walletState.error}</p>
+                <p className="text-red-600 text-sm">{walletState.error}</p>
               </motion.div>
             )}
           </motion.div>
@@ -186,7 +175,7 @@ export function AuthenticationScreen() {
             transition={{ delay: 0.8, duration: 0.5 }}
             className="mt-6 text-center"
           >
-            <p className="text-white/60 text-xs">
+            <p className="text-charcoal/60 text-xs">
               Your wallet connection is secured with industry-standard encryption.
               Stream never stores your private keys.
             </p>

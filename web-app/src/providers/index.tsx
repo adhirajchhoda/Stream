@@ -7,13 +7,14 @@ import { Toaster } from 'react-hot-toast';
 import { WalletProvider } from './WalletProvider';
 import { AppStateProvider } from './AppStateProvider';
 import { ZKProofProvider } from './ZKProofProvider';
+import { PayrollProvider } from './PayrollProvider';
 
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 60 * 1000, // 1 minute
-      cacheTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 5 * 60 * 1000, // 5 minutes
       retry: (failureCount, error: any) => {
         // Don't retry for authentication errors
         if (error?.status === 401) return false;
@@ -35,37 +36,39 @@ export function Providers({ children }: ProvidersProps) {
       <AppStateProvider>
         <WalletProvider>
           <ZKProofProvider>
-            {children}
-            <Toaster
-              position="top-right"
-              toastOptions={{
-                duration: 4000,
-                style: {
-                  background: '#FFFFFF',
-                  color: '#1A1A1A',
-                  borderRadius: '12px',
-                  border: '1px solid #E0E4E7',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                },
-                success: {
-                  iconTheme: {
-                    primary: '#10B981',
-                    secondary: '#FFFFFF',
+            <PayrollProvider>
+              {children}
+              <Toaster
+                position="top-right"
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    background: '#FFFFFF',
+                    color: '#1A1A1A',
+                    borderRadius: '12px',
+                    border: '1px solid #E0E4E7',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
+                    fontSize: '14px',
+                    fontWeight: '500',
                   },
-                },
-                error: {
-                  iconTheme: {
-                    primary: '#EF4444',
-                    secondary: '#FFFFFF',
+                  success: {
+                    iconTheme: {
+                      primary: '#10B981',
+                      secondary: '#FFFFFF',
+                    },
                   },
-                },
-              }}
-            />
-            {process.env.NODE_ENV === 'development' && (
-              <ReactQueryDevtools initialIsOpen={false} />
-            )}
+                  error: {
+                    iconTheme: {
+                      primary: '#EF4444',
+                      secondary: '#FFFFFF',
+                    },
+                  },
+                }}
+              />
+              {process.env.NODE_ENV === 'development' && (
+                <ReactQueryDevtools initialIsOpen={false} />
+              )}
+            </PayrollProvider>
           </ZKProofProvider>
         </WalletProvider>
       </AppStateProvider>

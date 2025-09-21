@@ -79,6 +79,8 @@ function appStateReducer(state: AppState, action: AppStateAction): AppState {
         ...state,
         ...action.payload,
         flowState: 'loading', // Always start with loading to determine the correct flow
+        // Ensure isAuthenticated is properly restored from persistence
+        isAuthenticated: action.payload.isAuthenticated || false,
       };
 
     default:
@@ -119,6 +121,7 @@ export function AppStateProvider({ children }: AppStateProviderProps) {
           userRole: state.userRole,
           hasCompletedOnboarding: state.hasCompletedOnboarding,
           currentTab: state.currentTab,
+          isAuthenticated: state.isAuthenticated,
         };
         localStorage.setItem('stream-app-state', JSON.stringify(stateToPersist));
       } catch (error) {
@@ -130,16 +133,26 @@ export function AppStateProvider({ children }: AppStateProviderProps) {
   // Determine the correct flow state based on persisted data
   useEffect(() => {
     if (state.flowState === 'loading') {
+      console.log('Stream App: Initializing flow state transition...', {
+        hasCompletedOnboarding: state.hasCompletedOnboarding,
+        isAuthenticated: state.isAuthenticated,
+      });
+
       // Simulate initialization delay
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         if (!state.hasCompletedOnboarding) {
+          console.log('Stream App: Transitioning to onboarding');
           dispatch({ type: 'SET_FLOW_STATE', payload: 'onboarding' });
         } else if (!state.isAuthenticated) {
+          console.log('Stream App: Transitioning to authentication');
           dispatch({ type: 'SET_FLOW_STATE', payload: 'authentication' });
         } else {
+          console.log('Stream App: Transitioning to main app');
           dispatch({ type: 'SET_FLOW_STATE', payload: 'main' });
         }
       }, 1500);
+
+      return () => clearTimeout(timer);
     }
   }, [state.flowState, state.hasCompletedOnboarding, state.isAuthenticated]);
 

@@ -29,23 +29,25 @@ export function MainAppScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Top Bar */}
-      <TopBar />
+    <div className="min-h-screen bg-white relative">
+      <div className="relative">
+        {/* Top Bar */}
+        <TopBar />
 
-      {/* Main Content */}
-      <motion.main
-        key={state.currentTab}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="pb-20 pt-16" // Account for top bar and bottom navigation
-      >
-        {renderCurrentView()}
-      </motion.main>
+        {/* Main Content */}
+        <motion.main
+          key={state.currentTab}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="pb-20 pt-16" // Account for top bar and bottom navigation
+        >
+          {renderCurrentView()}
+        </motion.main>
 
-      {/* Bottom Navigation */}
-      <BottomNavigation />
+        {/* Bottom Navigation */}
+        <BottomNavigation />
+      </div>
     </div>
   );
 }

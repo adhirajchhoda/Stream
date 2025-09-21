@@ -39,20 +39,25 @@ class MockZKProofService {
         // Simulate proof generation time (realistic delay)
         await this.delay(this.mockDelay.proofGeneration);
 
-        // Generate mock proof structure (Groth16 format)
+        // Generate mock proof structure (Groth16 format) - CORRECTED
         const proof = {
             pi_a: [
                 "0x" + this.randomHex(64),
-                "0x" + this.randomHex(64)
+                "0x" + this.randomHex(64),
+                "0x" + this.randomHex(64)  // Fixed: Groth16 requires 3 elements
             ],
             pi_b: [
                 ["0x" + this.randomHex(64), "0x" + this.randomHex(64)],
-                ["0x" + this.randomHex(64), "0x" + this.randomHex(64)]
+                ["0x" + this.randomHex(64), "0x" + this.randomHex(64)],
+                ["0x" + this.randomHex(64), "0x" + this.randomHex(64)]  // Fixed: Groth16 requires 3x2 matrix
             ],
             pi_c: [
                 "0x" + this.randomHex(64),
-                "0x" + this.randomHex(64)
+                "0x" + this.randomHex(64),
+                "0x" + this.randomHex(64)  // Fixed: Groth16 requires 3 elements
             ],
+            protocolType: "groth16",  // Added: Required field
+            curve: "bn254",          // Added: Required field
             publicSignals: [
                 this.hashHourlyRate(wageData.hourlyRate).toString(),
                 wageData.hoursWorked.toString(),
@@ -62,8 +67,25 @@ class MockZKProofService {
         };
 
         const result = {
-            proof: proof,
+            proof: {
+                pi_a: proof.pi_a,
+                pi_b: proof.pi_b,
+                pi_c: proof.pi_c,
+                protocolType: proof.protocolType,
+                curve: proof.curve
+            },
             publicSignals: proof.publicSignals,
+            metadata: {
+                circuitId: "wage_proof_v1",
+                provingTime: this.mockDelay.proofGeneration / 1000,
+                verificationKey: "0x" + this.randomHex(128),
+                publicInputs: {
+                    "wageAmount": proof.publicSignals[0],
+                    "hoursWorked": proof.publicSignals[1],
+                    "hourlyRate": proof.publicSignals[0], 
+                    "timestamp": Date.now().toString()
+                }
+            },
             nullifierHash: proof.publicSignals[3],
             proofHash: this.generateProofHash(proof),
             timestamp: Date.now()
@@ -190,8 +212,33 @@ function initializeZKProof() {
     return zkProofService.initialize();
 }
 
+function generateWageProof(inputs) {
+    console.log("Swift bridge: generateWageProof called");
+    console.log("Inputs:", inputs);
+
+    try {
+        // Convert inputs to the expected format
+        const wageData = {
+            hourlyRate: parseFloat(inputs.hourlyRate) / 100, // Convert back from cents
+            hoursWorked: parseFloat(inputs.hoursWorked) / 100, // Convert back from cents
+            wageAmount: parseFloat(inputs.wageAmount) / 100, // Convert back from cents
+            timestamp: parseInt(inputs.timestamp)
+        };
+        
+        // Generate mock employer signature and private key for demo
+        const mockEmployerSignature = "0x" + Math.random().toString(16).substring(2, 66);
+        const mockPrivateKey = inputs.nullifier || "0x" + Math.random().toString(16).substring(2, 66);
+        
+        return zkProofService.generateWageProof(wageData, mockEmployerSignature, mockPrivateKey);
+    } catch (error) {
+        console.error("Error generating wage proof:", error);
+        throw error;
+    }
+}
+
+// Keep the old function for backward compatibility
 function generateProof(wageDataJSON, employerSignature, privateKey) {
-    console.log("Swift bridge: generateProof called");
+    console.log("Swift bridge: generateProof called (deprecated)");
     console.log("Wage data JSON:", wageDataJSON);
 
     try {

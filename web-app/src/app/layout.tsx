@@ -72,7 +72,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
-      <body className={`${inter.className} antialiased bg-background text-text-primary`}>
+      <body className={`${inter.className} antialiased bg-white text-charcoal min-h-screen`}>
         <Providers>
           <div id="root">
             {children}

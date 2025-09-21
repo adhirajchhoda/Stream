@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    appDir: true,
+    // appDir is now stable in Next.js 14, remove this deprecated option
   },
   webpack: (config, { isServer }) => {
     // Handle WebAssembly for ZK proof generation
@@ -15,6 +15,17 @@ const nextConfig = {
       test: /\.(wasm|zkey|r1cs)$/,
       type: 'asset/resource',
     });
+
+    // Suppress warnings from snarkjs/web-worker dependencies
+    config.ignoreWarnings = [
+      {
+        module: /web-worker/,
+        message: /Critical dependency/,
+      },
+      {
+        module: /node_modules\/web-worker/,
+      }
+    ];
 
     // Node.js polyfills for browser compatibility
     if (!isServer) {

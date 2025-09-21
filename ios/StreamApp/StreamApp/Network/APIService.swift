@@ -25,12 +25,12 @@ class APIService: APIServiceProtocol {
     private let maxStoredEndpoints = 100 // Prevent unbounded growth
     private var cleanupTimer: Timer?
 
-    init(baseURL: String = "https://api.stream-protocol.com") {
+    init(baseURL: String = "http://localhost:3001/api/v1") {
         self.baseURL = URL(string: baseURL)!
 
         let config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest = 30
-        config.timeoutIntervalForResource = 60
+        config.timeoutIntervalForRequest = 10  // Reduced timeout for faster failure in dev mode
+        config.timeoutIntervalForResource = 20
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
 
         self.session = URLSession(configuration: config)
@@ -161,8 +161,16 @@ class APIService: APIServiceProtocol {
             request.httpBody = try encoder.encode(body)
         }
 
-        // Perform request
-        let (data, response) = try await session.data(for: request)
+        // Perform request with backend integration
+        let (data, response): (Data, URLResponse)
+        do {
+            (data, response) = try await session.data(for: request)
+        } catch {
+            // Log the error but still try to connect to backend
+            print("Network request failed: \(error.localizedDescription)")
+            print("Ensure the attestation service is running on localhost:3001")
+            throw APIError.networkError(error)
+        }
 
         // Handle response
         guard let httpResponse = response as? HTTPURLResponse else {
@@ -262,6 +270,112 @@ class APIService: APIServiceProtocol {
             return errorResponse.message
         }
         return "Unknown error occurred"
+    }
+    
+    // MARK: - Mock Data for Development
+    private func getMockResponse<T: Codable>(for endpoint: String, responseType: T.Type) throws -> T {
+        print("Providing mock response for endpoint: \(endpoint)")
+        
+        if endpoint.contains("/attestations/employee/") {
+            // Mock employee attestations response
+            let mockProofData = ZKProofData(
+                proof: ZKProofData.ZKProof(
+                    pi_a: ["0x1234567890abcdef", "0xabcdef1234567890"],
+                    pi_b: [["0x1111111111111111", "0x2222222222222222"], ["0x3333333333333333", "0x4444444444444444"]],
+                    pi_c: ["0x5555555555555555", "0x6666666666666666"],
+                    protocolType: "groth16",
+                    curve: "bn128"
+                ),
+                publicSignals: ["1000", "40", "25"],
+                metadata: ZKProofData.ProofMetadata(
+                    circuitId: "wage-proof-v1",
+                    provingTime: 1.5,
+                    verificationKey: "0xverificationkey123",
+                    publicInputs: ["wageAmount": "1000", "hoursWorked": "40"]
+                )
+            )
+            
+            let mockAttestations: [AttestationResponse] = [
+                AttestationResponse(
+                    id: "mock-attestation-1",
+                    employerId: "employer-123",
+                    employeeWallet: "0xdc5a00972690ad55e859bd06023001a2dfd685a3",
+                    wageAmount: 2500.0,
+                    status: .verified,
+                    signature: "0x1234567890abcdef",
+                    nullifierHash: "0xabcdef1234567890",
+                    createdAt: Date(),
+                    expiresAt: Date().addingTimeInterval(86400 * 30), // 30 days
+                    proofData: mockProofData
+                )
+            ]
+            
+            if let mockData = mockAttestations as? T {
+                return mockData
+            }
+        } else if endpoint.contains("/attestations/") {
+            // Mock single attestation response
+            let mockProofData = ZKProofData(
+                proof: ZKProofData.ZKProof(
+                    pi_a: ["0x1234567890abcdef", "0xabcdef1234567890"],
+                    pi_b: [["0x1111111111111111", "0x2222222222222222"], ["0x3333333333333333", "0x4444444444444444"]],
+                    pi_c: ["0x5555555555555555", "0x6666666666666666"],
+                    protocolType: "groth16",
+                    curve: "bn128"
+                ),
+                publicSignals: ["1000", "40", "25"],
+                metadata: ZKProofData.ProofMetadata(
+                    circuitId: "wage-proof-v1",
+                    provingTime: 1.5,
+                    verificationKey: "0xverificationkey123",
+                    publicInputs: ["wageAmount": "1000", "hoursWorked": "40"]
+                )
+            )
+            
+            let mockAttestation = AttestationResponse(
+                id: "mock-attestation-1",
+                employerId: "employer-123",
+                employeeWallet: "0xdc5a00972690ad55e859bd06023001a2dfd685a3",
+                wageAmount: 2500.0,
+                status: .verified,
+                signature: "0x1234567890abcdef",
+                nullifierHash: "0xabcdef1234567890",
+                createdAt: Date(),
+                expiresAt: Date().addingTimeInterval(86400 * 30), // 30 days
+                proofData: mockProofData
+            )
+            
+            if let mockData = mockAttestation as? T {
+                return mockData
+            }
+        } else if endpoint.contains("/status") {
+            // Mock service status
+            let mockStatus = ServiceStatus(
+                service: "StreamApp API",
+                status: "operational",
+                statistics: ServiceStatus.Statistics(
+                    totalAttestations: 1000,
+                    totalVerifications: 950,
+                    activeEmployers: 25,
+                    totalEmployers: 100
+                ),
+                features: ServiceStatus.Features(
+                    attestationCreation: true,
+                    signatureVerification: true,
+                    antiReplayProtection: true,
+                    zkpCompatibility: true,
+                    rateLimiting: true
+                ),
+                timestamp: Date()
+            )
+            
+            if let mockData = mockStatus as? T {
+                return mockData
+            }
+        }
+        
+        // If we can't provide a specific mock, throw an error
+        throw APIError.notFound
     }
 }
 

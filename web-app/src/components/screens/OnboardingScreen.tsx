@@ -56,7 +56,7 @@ export function OnboardingScreen() {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${onboardingPages[currentPage].color} transition-all duration-1000`}>
+    <div className="min-h-screen bg-white">
       <div className="min-h-screen flex flex-col items-center justify-center p-4 relative">
         {/* Skip Button */}
         {currentPage < onboardingPages.length - 1 && (
@@ -73,14 +73,7 @@ export function OnboardingScreen() {
         {/* Content */}
         <div className="w-full max-w-md text-center">
           <AnimatePresence mode="wait">
-            <motion.div
-              key={currentPage}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="mb-12"
-            >
+            <motion.div key={currentPage} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5 }} className="mb-12">
               {/* Icon */}
               <motion.div
                 initial={{ scale: 0.8 }}
@@ -88,30 +81,18 @@ export function OnboardingScreen() {
                 transition={{ delay: 0.2, duration: 0.6, type: 'spring' }}
                 className="mb-8"
               >
-                <div className="w-32 h-32 mx-auto bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <div className="text-white">
-                    {onboardingPages[currentPage].icon}
-                  </div>
+                <div className="w-24 h-24 mx-auto rounded-full border border-border flex items-center justify-center">
+                  <div className="text-blue">{onboardingPages[currentPage].icon}</div>
                 </div>
               </motion.div>
 
               {/* Title */}
-              <motion.h1
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.6 }}
-                className="text-4xl font-bold text-white mb-4 font-system-rounded"
-              >
+              <motion.h1 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.6 }} className="text-4xl font-bold text-charcoal mb-4 font-system-rounded">
                 {onboardingPages[currentPage].title}
               </motion.h1>
 
               {/* Description */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6, duration: 0.6 }}
-                className="text-lg text-white/90 leading-relaxed px-4"
-              >
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.6 }} className="text-lg text-charcoal/80 leading-relaxed px-4">
                 {onboardingPages[currentPage].description}
               </motion.p>
             </motion.div>
@@ -131,8 +112,8 @@ export function OnboardingScreen() {
                 className={`
                   w-3 h-3 rounded-full transition-all duration-300
                   ${index === currentPage
-                    ? 'bg-white scale-125'
-                    : 'bg-white/40 hover:bg-white/60'
+                    ? 'bg-blue scale-125'
+                    : 'bg-charcoal/20 hover:bg-charcoal/40'
                   }
                 `}
               />
@@ -146,22 +127,11 @@ export function OnboardingScreen() {
             transition={{ delay: 1, duration: 0.4 }}
             className="flex justify-between items-center"
           >
-            <Button
-              onClick={prevPage}
-              disabled={currentPage === 0}
-              variant="ghost"
-              className="text-white hover:bg-white/20 disabled:opacity-30"
-              leftIcon={<ChevronLeft className="w-5 h-5" />}
-            >
+            <Button onClick={prevPage} disabled={currentPage === 0} variant="ghost" className="disabled:opacity-30" leftIcon={<ChevronLeft className="w-5 h-5" />}>
               Previous
             </Button>
 
-            <Button
-              onClick={nextPage}
-              variant="secondary"
-              className="bg-white text-gray-900 hover:bg-white/90 font-semibold px-8"
-              rightIcon={<ChevronRight className="w-5 h-5" />}
-            >
+            <Button onClick={nextPage} variant="primary" className="px-8" rightIcon={<ChevronRight className="w-5 h-5" />}>
               {currentPage === onboardingPages.length - 1 ? 'Get Started' : 'Next'}
             </Button>
           </motion.div>

@@ -270,7 +270,7 @@ enum WalletType: String, CaseIterable, Identifiable {
     var iconName: String {
         switch self {
         case .demo: return "testtube.2"
-        case .metamask: return "fox.fill"
+        case .metamask: return "circle.fill"
         case .walletConnect: return "qrcode"
         case .coinbase: return "building.columns.fill"
         }
