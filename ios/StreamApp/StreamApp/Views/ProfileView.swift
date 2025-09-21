@@ -65,7 +65,7 @@ struct ProfileView: View {
         [
             SettingsItem(
                 title: "Wallet Details",
-                subtitle: walletManager.connectedWallet?.address.prefix(6) ?? "Not connected",
+                subtitle: String(walletManager.connectedWallet?.address.prefix(6) ?? "Not connected"),
                 icon: "wallet.pass.fill",
                 action: { showingWalletDetails = true }
             ),

@@ -18,16 +18,19 @@ class APIService: APIServiceProtocol {
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
 
-    // Rate limiting
+    // Rate limiting with proper memory management
+    private let rateLimitQueue = DispatchQueue(label: "com.stream.api.ratelimit", attributes: .concurrent)
     private var requestCounts: [String: (count: Int, resetTime: Date)] = [:]
     private let maxRequestsPerMinute = 60
+    private let maxStoredEndpoints = 100 // Prevent unbounded growth
+    private var cleanupTimer: Timer?
 
-    init(baseURL: String = "https://api.stream-protocol.com") {
+    init(baseURL: String = "http://localhost:3001/api/v1") {
         self.baseURL = URL(string: baseURL)!
 
         let config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest = 30
-        config.timeoutIntervalForResource = 60
+        config.timeoutIntervalForRequest = 10  // Reduced timeout for faster failure in dev mode
+        config.timeoutIntervalForResource = 20
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
 
         self.session = URLSession(configuration: config)
@@ -39,6 +42,12 @@ class APIService: APIServiceProtocol {
         self.encoder = JSONEncoder()
         self.encoder.dateEncodingStrategy = .iso8601
         self.encoder.keyEncodingStrategy = .convertToSnakeCase
+        
+        startCleanupTimer()
+    }
+    
+    deinit {
+        cleanupTimer?.invalidate()
     }
 
     // MARK: - Employer Management
@@ -55,10 +64,15 @@ class APIService: APIServiceProtocol {
     // MARK: - Attestation Management
     func createAttestation(_ request: AttestationRequest) async throws -> AttestationResponse {
         let endpoint = "/attestations"
-        return try await performRequest(
+        return try await performRequestWithHeaders(
             endpoint: endpoint,
             method: .POST,
             body: request,
+            additionalHeaders: [
+                "X-Employer-Id": request.employerId,
+                "X-Timestamp": String(Int(Date().timeIntervalSince1970 * 1000)),
+                "X-Nonce": UUID().uuidString
+            ],
             responseType: AttestationResponse.self
         )
     }
@@ -68,6 +82,7 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .GET,
+            body: nil as String?,
             responseType: AttestationResponse.self
         )
     }
@@ -77,6 +92,7 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .GET,
+            body: nil as String?,
             responseType: [AttestationResponse].self
         )
     }
@@ -86,6 +102,7 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .POST,
+            body: nil as String?,
             responseType: VerificationResponse.self
         )
     }
@@ -95,6 +112,7 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .GET,
+            body: nil as String?,
             responseType: ZKProofData.self
         )
     }
@@ -105,6 +123,7 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .GET,
+            body: nil as String?,
             responseType: NullifierStatus.self
         )
     }
@@ -115,11 +134,86 @@ class APIService: APIServiceProtocol {
         return try await performRequest(
             endpoint: endpoint,
             method: .GET,
+            body: nil as String?,
             responseType: ServiceStatus.self
         )
     }
 
     // MARK: - Private Implementation
+    private func performRequestWithHeaders<T: Codable, U: Codable>(
+        endpoint: String,
+        method: HTTPMethod,
+        body: T? = nil,
+        additionalHeaders: [String: String] = [:],
+        responseType: U.Type
+    ) async throws -> U {
+        
+        try await checkRateLimit(for: endpoint)
+
+        // Build request
+        let url = baseURL.appendingPathComponent(endpoint)
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("StreamApp/1.0", forHTTPHeaderField: "User-Agent")
+
+        // Add authentication header if available
+        if let authToken = getAuthToken() {
+            request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
+        }
+        
+        // Add additional headers
+        for (key, value) in additionalHeaders {
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+
+        // Encode body if provided
+        if let body = body {
+            request.httpBody = try encoder.encode(body)
+        }
+
+        // Perform request with backend integration
+        let (data, response): (Data, URLResponse)
+        do {
+            (data, response) = try await session.data(for: request)
+        } catch {
+            // Log the error but still try to connect to backend
+            print("Network request failed: \(error.localizedDescription)")
+            print("Ensure the attestation service is running on localhost:3001")
+            throw APIError.networkError(error)
+        }
+
+        // Handle response
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.invalidResponse
+        }
+
+        // Check status code
+        switch httpResponse.statusCode {
+        case 200...299:
+            // Success - decode response
+            do {
+                return try decoder.decode(responseType, from: data)
+            } catch {
+                throw APIError.decodingError(error)
+            }
+        case 400:
+            throw APIError.badRequest(parseErrorMessage(from: data))
+        case 401:
+            throw APIError.unauthorized
+        case 403:
+            throw APIError.forbidden
+        case 404:
+            throw APIError.notFound
+        case 429:
+            throw APIError.rateLimitExceeded
+        case 500...599:
+            throw APIError.serverError(httpResponse.statusCode)
+        default:
+            throw APIError.unknown(httpResponse.statusCode)
+        }
+    }
+    
     private func performRequest<T: Codable, U: Codable>(
         endpoint: String,
         method: HTTPMethod,
@@ -146,8 +240,16 @@ class APIService: APIServiceProtocol {
             request.httpBody = try encoder.encode(body)
         }
 
-        // Perform request
-        let (data, response) = try await session.data(for: request)
+        // Perform request with backend integration
+        let (data, response): (Data, URLResponse)
+        do {
+            (data, response) = try await session.data(for: request)
+        } catch {
+            // Log the error but still try to connect to backend
+            print("Network request failed: \(error.localizedDescription)")
+            print("Ensure the attestation service is running on localhost:3001")
+            throw APIError.networkError(error)
+        }
 
         // Handle response
         guard let httpResponse = response as? HTTPURLResponse else {
@@ -180,21 +282,60 @@ class APIService: APIServiceProtocol {
         }
     }
 
+    // MARK: - Rate Limiting with Memory Management
     private func checkRateLimit(for endpoint: String) async throws {
-        let now = Date()
-        let key = endpoint
-
-        if let existing = requestCounts[key] {
-            if now < existing.resetTime {
-                if existing.count >= maxRequestsPerMinute {
-                    throw APIError.rateLimitExceeded
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            rateLimitQueue.async(flags: .barrier) {
+                let now = Date()
+                let key = endpoint
+                
+                // Clean up expired entries first
+                self.cleanupExpiredEntries(currentTime: now)
+                
+                if let existing = self.requestCounts[key] {
+                    if now < existing.resetTime {
+                        if existing.count >= self.maxRequestsPerMinute {
+                            continuation.resume(throwing: APIError.rateLimitExceeded)
+                            return
+                        }
+                        self.requestCounts[key] = (existing.count + 1, existing.resetTime)
+                    } else {
+                        self.requestCounts[key] = (1, now.addingTimeInterval(60))
+                    }
+                } else {
+                    // Ensure we don't exceed maximum stored endpoints
+                    if self.requestCounts.count >= self.maxStoredEndpoints {
+                        self.cleanupOldestEntries()
+                    }
+                    self.requestCounts[key] = (1, now.addingTimeInterval(60))
                 }
-                requestCounts[key] = (existing.count + 1, existing.resetTime)
-            } else {
-                requestCounts[key] = (1, now.addingTimeInterval(60))
+                
+                continuation.resume()
             }
-        } else {
-            requestCounts[key] = (1, now.addingTimeInterval(60))
+        }
+    }
+    
+    private func cleanupExpiredEntries(currentTime: Date) {
+        requestCounts = requestCounts.filter { _, value in
+            currentTime < value.resetTime
+        }
+    }
+    
+    private func cleanupOldestEntries() {
+        // Remove 25% of entries (oldest reset times) when at capacity
+        let sortedEntries = requestCounts.sorted { $0.value.resetTime < $1.value.resetTime }
+        let removeCount = max(1, requestCounts.count / 4)
+        
+        for i in 0..<removeCount {
+            requestCounts.removeValue(forKey: sortedEntries[i].key)
+        }
+    }
+    
+    private func startCleanupTimer() {
+        cleanupTimer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { [weak self] _ in
+            self?.rateLimitQueue.async(flags: .barrier) {
+                self?.cleanupExpiredEntries(currentTime: Date())
+            }
         }
     }
 
@@ -208,6 +349,112 @@ class APIService: APIServiceProtocol {
             return errorResponse.message
         }
         return "Unknown error occurred"
+    }
+    
+    // MARK: - Mock Data for Development
+    private func getMockResponse<T: Codable>(for endpoint: String, responseType: T.Type) throws -> T {
+        print("Providing mock response for endpoint: \(endpoint)")
+        
+        if endpoint.contains("/attestations/employee/") {
+            // Mock employee attestations response
+            let mockProofData = ZKProofData(
+                proof: ZKProofData.ZKProof(
+                    pi_a: ["0x1234567890abcdef", "0xabcdef1234567890"],
+                    pi_b: [["0x1111111111111111", "0x2222222222222222"], ["0x3333333333333333", "0x4444444444444444"]],
+                    pi_c: ["0x5555555555555555", "0x6666666666666666"],
+                    protocolType: "groth16",
+                    curve: "bn128"
+                ),
+                publicSignals: ["1000", "40", "25"],
+                metadata: ZKProofData.ProofMetadata(
+                    circuitId: "wage-proof-v1",
+                    provingTime: 1.5,
+                    verificationKey: "0xverificationkey123",
+                    publicInputs: ["wageAmount": "1000", "hoursWorked": "40"]
+                )
+            )
+            
+            let mockAttestations: [AttestationResponse] = [
+                AttestationResponse(
+                    id: "mock-attestation-1",
+                    employerId: "employer-123",
+                    employeeWallet: "0xdc5a00972690ad55e859bd06023001a2dfd685a3",
+                    wageAmount: 2500.0,
+                    status: .verified,
+                    signature: "0x1234567890abcdef",
+                    nullifierHash: "0xabcdef1234567890",
+                    createdAt: Date(),
+                    expiresAt: Date().addingTimeInterval(86400 * 30), // 30 days
+                    proofData: mockProofData
+                )
+            ]
+            
+            if let mockData = mockAttestations as? T {
+                return mockData
+            }
+        } else if endpoint.contains("/attestations/") {
+            // Mock single attestation response
+            let mockProofData = ZKProofData(
+                proof: ZKProofData.ZKProof(
+                    pi_a: ["0x1234567890abcdef", "0xabcdef1234567890"],
+                    pi_b: [["0x1111111111111111", "0x2222222222222222"], ["0x3333333333333333", "0x4444444444444444"]],
+                    pi_c: ["0x5555555555555555", "0x6666666666666666"],
+                    protocolType: "groth16",
+                    curve: "bn128"
+                ),
+                publicSignals: ["1000", "40", "25"],
+                metadata: ZKProofData.ProofMetadata(
+                    circuitId: "wage-proof-v1",
+                    provingTime: 1.5,
+                    verificationKey: "0xverificationkey123",
+                    publicInputs: ["wageAmount": "1000", "hoursWorked": "40"]
+                )
+            )
+            
+            let mockAttestation = AttestationResponse(
+                id: "mock-attestation-1",
+                employerId: "employer-123",
+                employeeWallet: "0xdc5a00972690ad55e859bd06023001a2dfd685a3",
+                wageAmount: 2500.0,
+                status: .verified,
+                signature: "0x1234567890abcdef",
+                nullifierHash: "0xabcdef1234567890",
+                createdAt: Date(),
+                expiresAt: Date().addingTimeInterval(86400 * 30), // 30 days
+                proofData: mockProofData
+            )
+            
+            if let mockData = mockAttestation as? T {
+                return mockData
+            }
+        } else if endpoint.contains("/status") {
+            // Mock service status
+            let mockStatus = ServiceStatus(
+                service: "StreamApp API",
+                status: "operational",
+                statistics: ServiceStatus.Statistics(
+                    totalAttestations: 1000,
+                    totalVerifications: 950,
+                    activeEmployers: 25,
+                    totalEmployers: 100
+                ),
+                features: ServiceStatus.Features(
+                    attestationCreation: true,
+                    signatureVerification: true,
+                    antiReplayProtection: true,
+                    zkpCompatibility: true,
+                    rateLimiting: true
+                ),
+                timestamp: Date()
+            )
+            
+            if let mockData = mockStatus as? T {
+                return mockData
+            }
+        }
+        
+        // If we can't provide a specific mock, throw an error
+        throw APIError.notFound
     }
 }
 

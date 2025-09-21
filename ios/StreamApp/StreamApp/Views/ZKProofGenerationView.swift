@@ -2,8 +2,14 @@ import SwiftUI
 
 struct ZKProofGenerationView: View {
     let scenario: WorkScenario
+    let onMoneyClaimedCallback: ((Double) -> Void)?
     @StateObject private var viewModel = ZKProofGenerationViewModel()
     @Environment(\.dismiss) private var dismiss
+    
+    init(scenario: WorkScenario, onMoneyClaimedCallback: ((Double) -> Void)? = nil) {
+        self.scenario = scenario
+        self.onMoneyClaimedCallback = onMoneyClaimedCallback
+    }
 
     var body: some View {
         NavigationView {
@@ -44,6 +50,15 @@ struct ZKProofGenerationView: View {
                     onSubmitTapped: {
                         Task {
                             await viewModel.submitProof()
+                            // After successful submission, call callback first, then dismiss after a delay
+                            await MainActor.run {
+                                onMoneyClaimedCallback?(scenario.totalWage)
+                            }
+                            // Small delay to prevent race conditions
+                            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+                            await MainActor.run {
+                                dismiss()
+                            }
                         }
                     },
                     onRetryTapped: {
@@ -375,7 +390,7 @@ struct ProofSummaryCard: View {
 
                 ProofDetailRow(
                     label: "Generation Time",
-                    value: "\(proof.metadata.provingTime, specifier: "%.2f")s"
+                    value: String(format: "%.2fs", proof.metadata.provingTime)
                 )
 
                 ProofDetailRow(

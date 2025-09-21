@@ -34,7 +34,7 @@ struct WageCard: View {
             HStack(spacing: 16) {
                 WorkDetailItem(
                     icon: "clock.fill",
-                    value: "\(scenario.hours, specifier: "%.1f")h",
+                    value: String(format: "%.1fh", scenario.hours),
                     label: "Hours"
                 )
 
@@ -43,7 +43,7 @@ struct WageCard: View {
 
                 WorkDetailItem(
                     icon: "dollarsign.circle.fill",
-                    value: "$\(scenario.hourlyRate, specifier: "%.0f")",
+                    value: String(format: "$%.0f", scenario.hourlyRate),
                     label: "Rate"
                 )
 
@@ -263,21 +263,21 @@ enum ClaimStatus {
         WageCard(
             scenario: WorkScenario.sampleScenarios[0],
             amount: 153.00,
-            status: .available,
+            status: ClaimStatus.available,
             onClaimTapped: {}
         )
 
         WageCard(
             scenario: WorkScenario.sampleScenarios[1],
             amount: 220.00,
-            status: .processing,
+            status: ClaimStatus.processing,
             onClaimTapped: {}
         )
 
         WageCard(
             scenario: WorkScenario.sampleScenarios[2],
             amount: 171.00,
-            status: .completed,
+            status: ClaimStatus.completed,
             onClaimTapped: {}
         )
     }

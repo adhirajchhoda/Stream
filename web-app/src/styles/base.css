@@ -1,0 +1,166 @@
+/* Base styles and resets */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    height: 100%;
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    height: 100%;
+    font-feature-settings: "rlig" 1, "calt" 1, "kern" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    background: #FFFFFF;
+    color: #1A1A1A;
+    overflow-x: hidden;
+  }
+
+  /* Enhanced typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  p {
+    line-height: 1.6;
+  }
+
+  /* Better button defaults */
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
+  }
+
+  /* Better input defaults */
+  input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /* Enhanced iOS-style scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.6);
+    border-radius: 9999px;
+    transition: background-color 0.2s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 116, 139, 0.8);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /* Firefox scrollbar styling */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.6) transparent;
+  }
+
+  /* Enhanced focus styles */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgb(33 150 243), 0 0 0 4px rgba(33, 150, 243, 0.2);
+    transition: box-shadow 0.15s ease-in-out;
+  }
+
+  /* Enhanced selection styles */
+  ::selection {
+    background: rgba(33, 150, 243, 0.15);
+    color: inherit;
+  }
+
+  ::-moz-selection {
+    background: rgba(33, 150, 243, 0.15);
+    color: inherit;
+  }
+
+  /* Placeholder styles */
+  ::placeholder {
+    color: rgb(148 163 184);
+    opacity: 1;
+  }
+
+  ::-webkit-input-placeholder {
+    color: rgb(148 163 184);
+  }
+
+  ::-moz-placeholder {
+    color: rgb(148 163 184);
+    opacity: 1;
+  }
+
+  :-ms-input-placeholder {
+    color: rgb(148 163 184);
+  }
+}
+
+/* Enhanced reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-float,
+  .animate-gradient-x,
+  .animate-gradient-y,
+  .animate-gradient-xy,
+  .animate-pulse-glow,
+  .animate-bounce-gentle,
+  .animate-shimmer,
+  .animate-spin-slow,
+  .animate-wiggle {
+    animation: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .backdrop-blur-glass,
+  .backdrop-blur-glass-lg,
+  .backdrop-blur-glass-xl {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .bg-white\/80,
+  .bg-white\/90 {
+    background: rgba(255, 255, 255, 1);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+
+  body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  }
+}
