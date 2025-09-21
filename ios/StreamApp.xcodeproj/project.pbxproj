@@ -7,64 +7,80 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1000001000000000000001A /* StreamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000001B /* StreamApp.swift */; };
-		A1000001000000000000001C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000001D /* ContentView.swift */; };
-		A1000001000000000000001E /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000001F /* AppCoordinator.swift */; };
-		A1000001000000000000002A /* Attestation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000002B /* Attestation.swift */; };
-		A1000001000000000000002C /* WorkScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000002D /* WorkScenario.swift */; };
-		A1000001000000000000002E /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000002F /* APIService.swift */; };
-		A1000001000000000000003A /* StreamColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000003B /* StreamColors.swift */; };
-		A1000001000000000000003C /* StreamFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000003D /* StreamFonts.swift */; };
-		A1000001000000000000003E /* BiometricAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000003F /* BiometricAuthService.swift */; };
-		A1000001000000000000004A /* KeychainSecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000004B /* KeychainSecureStorage.swift */; };
-		A1000001000000000000004C /* WalletManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000004D /* WalletManager.swift */; };
-		A1000001000000000000004E /* Web3Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000004F /* Web3Service.swift */; };
-		A1000001000000000000005A /* ZKProofService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000005B /* ZKProofService.swift */; };
-		A1000001000000000000005C /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000005D /* DashboardViewModel.swift */; };
-		A1000001000000000000005E /* ProofsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000005F /* ProofsViewModel.swift */; };
-		A1000001000000000000006A /* WorkSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000006B /* WorkSessionViewModel.swift */; };
-		A1000001000000000000006C /* ZKProofGenerationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000006D /* ZKProofGenerationViewModel.swift */; };
-		A1000001000000000000006E /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000006F /* AuthenticationView.swift */; };
-		A1000001000000000000007A /* WalletConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000007B /* WalletConnectView.swift */; };
-		A1000001000000000000007C /* WageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000007D /* WageCard.swift */; };
-		A1000001000000000000007E /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000007F /* DashboardView.swift */; };
-		A1000001000000000000008A /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000008B /* MainTabView.swift */; };
-		A1000001000000000000008C /* OnboardingCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000008D /* OnboardingCoordinatorView.swift */; };
-		A1000001000000000000008E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000008F /* ProfileView.swift */; };
-		A1000001000000000000009A /* ProofsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000009B /* ProofsView.swift */; };
-		A1000001000000000000009C /* WorkSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000009D /* WorkSessionView.swift */; };
-		A1000001000000000000009E /* ZKProofGenerationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000009F /* ZKProofGenerationView.swift */; };
+		0DD18F0B2E7FBB1900A893D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DD18F052E7FBB1900A893D7 /* Assets.xcassets */; };
+		0DD18F0C2E7FBB1900A893D7 /* wage_proof.wasm in Resources */ = {isa = PBXBuildFile; fileRef = 0DD18ED82E7FBB1900A893D7 /* wage_proof.wasm */; };
+		0DD18F0D2E7FBB1900A893D7 /* zkproof_service.js in Resources */ = {isa = PBXBuildFile; fileRef = 0DD18ED92E7FBB1900A893D7 /* zkproof_service.js */; };
+		0DD18F0F2E7FBB1900A893D7 /* verification_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DD18ED72E7FBB1900A893D7 /* verification_key.json */; };
+		0DD18F102E7FBB1900A893D7 /* StreamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EDC2E7FBB1900A893D7 /* StreamApp.swift */; };
+		0DD18F112E7FBB1900A893D7 /* BiometricAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EE92E7FBB1900A893D7 /* BiometricAuthService.swift */; };
+		0DD18F122E7FBB1900A893D7 /* KeychainSecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EEA2E7FBB1900A893D7 /* KeychainSecureStorage.swift */; };
+		0DD18F132E7FBB1900A893D7 /* WorkScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EE22E7FBB1900A893D7 /* WorkScenario.swift */; };
+		0DD18F142E7FBB1900A893D7 /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EE12E7FBB1900A893D7 /* OnboardingPage.swift */; };
+		0DD18F152E7FBB1900A893D7 /* ProofsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EF02E7FBB1900A893D7 /* ProofsViewModel.swift */; };
+		0DD18F162E7FBB1900A893D7 /* WorkSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18F012E7FBB1900A893D7 /* WorkSessionView.swift */; };
+		0DD18F172E7FBB1900A893D7 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EFF2E7FBB1900A893D7 /* ProfileView.swift */; };
+		0DD18F182E7FBB1900A893D7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EDB2E7FBB1900A893D7 /* ContentView.swift */; };
+		0DD18F192E7FBB1900A893D7 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EE42E7FBB1900A893D7 /* APIService.swift */; };
+		0DD18F1A2E7FBB1900A893D7 /* WalletConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EF52E7FBB1900A893D7 /* WalletConnectView.swift */; };
+		0DD18F1B2E7FBB1900A893D7 /* ZKProofGenerationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EF22E7FBB1900A893D7 /* ZKProofGenerationViewModel.swift */; };
+		0DD18F1C2E7FBB1900A893D7 /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EFB2E7FBB1900A893D7 /* OnboardingPageView.swift */; };
+		0DD18F1D2E7FBB1900A893D7 /* Web3Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EEC2E7FBB1900A893D7 /* Web3Service.swift */; };
+		0DD18F1E2E7FBB1900A893D7 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EF72E7FBB1900A893D7 /* LoadingView.swift */; };
+		0DD18F1F2E7FBB1900A893D7 /* WageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EF82E7FBB1900A893D7 /* WageCard.swift */; };
+		0DD18F202E7FBB1900A893D7 /* ProofsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18F002E7FBB1900A893D7 /* ProofsView.swift */; };
+		0DD18F212E7FBB1900A893D7 /* StreamColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EE62E7FBB1900A893D7 /* StreamColors.swift */; };
+		0DD18F222E7FBB1900A893D7 /* ZKProofGenerationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18F022E7FBB1900A893D7 /* ZKProofGenerationView.swift */; };
+		0DD18F232E7FBB1900A893D7 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EFD2E7FBB1900A893D7 /* DashboardView.swift */; };
+		0DD18F242E7FBB1900A893D7 /* StreamFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EE72E7FBB1900A893D7 /* StreamFonts.swift */; };
+		0DD18F252E7FBB1900A893D7 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EF42E7FBB1900A893D7 /* AuthenticationView.swift */; };
+		0DD18F262E7FBB1900A893D7 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EFE2E7FBB1900A893D7 /* MainTabView.swift */; };
+		0DD18F272E7FBB1900A893D7 /* WalletManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EEB2E7FBB1900A893D7 /* WalletManager.swift */; };
+		0DD18F282E7FBB1900A893D7 /* OnboardingCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EFA2E7FBB1900A893D7 /* OnboardingCoordinatorView.swift */; };
+		0DD18F292E7FBB1900A893D7 /* WorkSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EF12E7FBB1900A893D7 /* WorkSessionViewModel.swift */; };
+		0DD18F2A2E7FBB1900A893D7 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EDE2E7FBB1900A893D7 /* AppCoordinator.swift */; };
+		0DD18F2B2E7FBB1900A893D7 /* Attestation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EE02E7FBB1900A893D7 /* Attestation.swift */; };
+		0DD18F2C2E7FBB1900A893D7 /* ZKProofService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EED2E7FBB1900A893D7 /* ZKProofService.swift */; };
+		0DD18F2D2E7FBB1900A893D7 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD18EEF2E7FBB1900A893D7 /* DashboardViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0DD18ED72E7FBB1900A893D7 /* verification_key.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = verification_key.json; sourceTree = "<group>"; };
+		0DD18ED82E7FBB1900A893D7 /* wage_proof.wasm */ = {isa = PBXFileReference; lastKnownFileType = text; path = wage_proof.wasm; sourceTree = "<group>"; };
+		0DD18ED92E7FBB1900A893D7 /* zkproof_service.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = zkproof_service.js; sourceTree = "<group>"; };
+		0DD18EDB2E7FBB1900A893D7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		0DD18EDC2E7FBB1900A893D7 /* StreamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamApp.swift; sourceTree = "<group>"; };
+		0DD18EDE2E7FBB1900A893D7 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		0DD18EE02E7FBB1900A893D7 /* Attestation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attestation.swift; sourceTree = "<group>"; };
+		0DD18EE12E7FBB1900A893D7 /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
+		0DD18EE22E7FBB1900A893D7 /* WorkScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkScenario.swift; sourceTree = "<group>"; };
+		0DD18EE42E7FBB1900A893D7 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		0DD18EE62E7FBB1900A893D7 /* StreamColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamColors.swift; sourceTree = "<group>"; };
+		0DD18EE72E7FBB1900A893D7 /* StreamFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamFonts.swift; sourceTree = "<group>"; };
+		0DD18EE92E7FBB1900A893D7 /* BiometricAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthService.swift; sourceTree = "<group>"; };
+		0DD18EEA2E7FBB1900A893D7 /* KeychainSecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSecureStorage.swift; sourceTree = "<group>"; };
+		0DD18EEB2E7FBB1900A893D7 /* WalletManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManager.swift; sourceTree = "<group>"; };
+		0DD18EEC2E7FBB1900A893D7 /* Web3Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Service.swift; sourceTree = "<group>"; };
+		0DD18EED2E7FBB1900A893D7 /* ZKProofService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKProofService.swift; sourceTree = "<group>"; };
+		0DD18EEF2E7FBB1900A893D7 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		0DD18EF02E7FBB1900A893D7 /* ProofsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofsViewModel.swift; sourceTree = "<group>"; };
+		0DD18EF12E7FBB1900A893D7 /* WorkSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSessionViewModel.swift; sourceTree = "<group>"; };
+		0DD18EF22E7FBB1900A893D7 /* ZKProofGenerationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKProofGenerationViewModel.swift; sourceTree = "<group>"; };
+		0DD18EF42E7FBB1900A893D7 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
+		0DD18EF52E7FBB1900A893D7 /* WalletConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectView.swift; sourceTree = "<group>"; };
+		0DD18EF72E7FBB1900A893D7 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		0DD18EF82E7FBB1900A893D7 /* WageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WageCard.swift; sourceTree = "<group>"; };
+		0DD18EFA2E7FBB1900A893D7 /* OnboardingCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinatorView.swift; sourceTree = "<group>"; };
+		0DD18EFB2E7FBB1900A893D7 /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
+		0DD18EFD2E7FBB1900A893D7 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		0DD18EFE2E7FBB1900A893D7 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		0DD18EFF2E7FBB1900A893D7 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		0DD18F002E7FBB1900A893D7 /* ProofsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofsView.swift; sourceTree = "<group>"; };
+		0DD18F012E7FBB1900A893D7 /* WorkSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSessionView.swift; sourceTree = "<group>"; };
+		0DD18F022E7FBB1900A893D7 /* ZKProofGenerationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKProofGenerationView.swift; sourceTree = "<group>"; };
+		0DD18F052E7FBB1900A893D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0DD18F062E7FBB1900A893D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0DD18F082E7FBB1900A893D7 /* StreamApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = StreamApp.xcodeproj; sourceTree = "<group>"; };
 		FIX00001000000000000000A /* StreamApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StreamApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1000001000000000000001B /* StreamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamApp.swift; sourceTree = "<group>"; };
-		A1000001000000000000001D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A1000001000000000000001F /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
-		A1000001000000000000002B /* Attestation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attestation.swift; sourceTree = "<group>"; };
-		A1000001000000000000002D /* WorkScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkScenario.swift; sourceTree = "<group>"; };
-		A1000001000000000000002F /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
-		A1000001000000000000003B /* StreamColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamColors.swift; sourceTree = "<group>"; };
-		A1000001000000000000003D /* StreamFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamFonts.swift; sourceTree = "<group>"; };
-		A1000001000000000000003F /* BiometricAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthService.swift; sourceTree = "<group>"; };
-		A1000001000000000000004B /* KeychainSecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSecureStorage.swift; sourceTree = "<group>"; };
-		A1000001000000000000004D /* WalletManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManager.swift; sourceTree = "<group>"; };
-		A1000001000000000000004F /* Web3Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Service.swift; sourceTree = "<group>"; };
-		A1000001000000000000005B /* ZKProofService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKProofService.swift; sourceTree = "<group>"; };
-		A1000001000000000000005D /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
-		A1000001000000000000005F /* ProofsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofsViewModel.swift; sourceTree = "<group>"; };
-		A1000001000000000000006B /* WorkSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSessionViewModel.swift; sourceTree = "<group>"; };
-		A1000001000000000000006D /* ZKProofGenerationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKProofGenerationViewModel.swift; sourceTree = "<group>"; };
-		A1000001000000000000006F /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
-		A1000001000000000000007B /* WalletConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectView.swift; sourceTree = "<group>"; };
-		A1000001000000000000007D /* WageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WageCard.swift; sourceTree = "<group>"; };
-		A1000001000000000000007F /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
-		A1000001000000000000008B /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
-		A1000001000000000000008D /* OnboardingCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinatorView.swift; sourceTree = "<group>"; };
-		A1000001000000000000008F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		A1000001000000000000009B /* ProofsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofsView.swift; sourceTree = "<group>"; };
-		A1000001000000000000009D /* WorkSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSessionView.swift; sourceTree = "<group>"; };
-		A1000001000000000000009F /* ZKProofGenerationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKProofGenerationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,27 +94,164 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		FIX0000100000000000000DD /* Main Group */ = {
+		0DD18EDA2E7FBB1900A893D7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A1000001000000000000000D /* StreamApp */,
-				FIX0000100000000000000EE /* Products */,
+				0DD18ED72E7FBB1900A893D7 /* verification_key.json */,
+				0DD18ED82E7FBB1900A893D7 /* wage_proof.wasm */,
+				0DD18ED92E7FBB1900A893D7 /* zkproof_service.js */,
 			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
-		A1000001000000000000000D /* StreamApp */ = {
+		0DD18EDD2E7FBB1900A893D7 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				A1000001000000000000000F /* App */,
-				A1000001000000000000001A /* Core */,
-				A1000001000000000000002A /* Models */,
-				A1000001000000000000002E /* Network */,
-				A1000001000000000000003A /* Resources */,
-				A1000001000000000000003E /* Security */,
-				A1000001000000000000005A /* ViewModels */,
-				A1000001000000000000006A /* Views */,
+				0DD18EDB2E7FBB1900A893D7 /* ContentView.swift */,
+				0DD18EDC2E7FBB1900A893D7 /* StreamApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		0DD18EDF2E7FBB1900A893D7 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EDE2E7FBB1900A893D7 /* AppCoordinator.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		0DD18EE32E7FBB1900A893D7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EE02E7FBB1900A893D7 /* Attestation.swift */,
+				0DD18EE12E7FBB1900A893D7 /* OnboardingPage.swift */,
+				0DD18EE22E7FBB1900A893D7 /* WorkScenario.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0DD18EE52E7FBB1900A893D7 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EE42E7FBB1900A893D7 /* APIService.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		0DD18EE82E7FBB1900A893D7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EE62E7FBB1900A893D7 /* StreamColors.swift */,
+				0DD18EE72E7FBB1900A893D7 /* StreamFonts.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		0DD18EEE2E7FBB1900A893D7 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EE92E7FBB1900A893D7 /* BiometricAuthService.swift */,
+				0DD18EEA2E7FBB1900A893D7 /* KeychainSecureStorage.swift */,
+				0DD18EEB2E7FBB1900A893D7 /* WalletManager.swift */,
+				0DD18EEC2E7FBB1900A893D7 /* Web3Service.swift */,
+				0DD18EED2E7FBB1900A893D7 /* ZKProofService.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
+		0DD18EF32E7FBB1900A893D7 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EEF2E7FBB1900A893D7 /* DashboardViewModel.swift */,
+				0DD18EF02E7FBB1900A893D7 /* ProofsViewModel.swift */,
+				0DD18EF12E7FBB1900A893D7 /* WorkSessionViewModel.swift */,
+				0DD18EF22E7FBB1900A893D7 /* ZKProofGenerationViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		0DD18EF62E7FBB1900A893D7 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EF42E7FBB1900A893D7 /* AuthenticationView.swift */,
+				0DD18EF52E7FBB1900A893D7 /* WalletConnectView.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		0DD18EF92E7FBB1900A893D7 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EF72E7FBB1900A893D7 /* LoadingView.swift */,
+				0DD18EF82E7FBB1900A893D7 /* WageCard.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		0DD18EFC2E7FBB1900A893D7 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EFA2E7FBB1900A893D7 /* OnboardingCoordinatorView.swift */,
+				0DD18EFB2E7FBB1900A893D7 /* OnboardingPageView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		0DD18F032E7FBB1900A893D7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EF62E7FBB1900A893D7 /* Authentication */,
+				0DD18EF92E7FBB1900A893D7 /* Components */,
+				0DD18EFC2E7FBB1900A893D7 /* Onboarding */,
+				0DD18EFD2E7FBB1900A893D7 /* DashboardView.swift */,
+				0DD18EFE2E7FBB1900A893D7 /* MainTabView.swift */,
+				0DD18EFF2E7FBB1900A893D7 /* ProfileView.swift */,
+				0DD18F002E7FBB1900A893D7 /* ProofsView.swift */,
+				0DD18F012E7FBB1900A893D7 /* WorkSessionView.swift */,
+				0DD18F022E7FBB1900A893D7 /* ZKProofGenerationView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0DD18F042E7FBB1900A893D7 /* StreamApp */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EDD2E7FBB1900A893D7 /* App */,
+				0DD18EDF2E7FBB1900A893D7 /* Core */,
+				0DD18EE32E7FBB1900A893D7 /* Models */,
+				0DD18EE52E7FBB1900A893D7 /* Network */,
+				0DD18EE82E7FBB1900A893D7 /* Resources */,
+				0DD18EEE2E7FBB1900A893D7 /* Security */,
+				0DD18EF32E7FBB1900A893D7 /* ViewModels */,
+				0DD18F032E7FBB1900A893D7 /* Views */,
 			);
 			path = StreamApp;
+			sourceTree = "<group>";
+		};
+		0DD18F072E7FBB1900A893D7 /* StreamApp */ = {
+			isa = PBXGroup;
+			children = (
+				0DD18EDA2E7FBB1900A893D7 /* Resources */,
+				0DD18F042E7FBB1900A893D7 /* StreamApp */,
+				0DD18F052E7FBB1900A893D7 /* Assets.xcassets */,
+				0DD18F062E7FBB1900A893D7 /* Info.plist */,
+			);
+			path = StreamApp;
+			sourceTree = "<group>";
+		};
+		0DD18F092E7FBB1900A893D7 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FIX0000100000000000000DD = {
+			isa = PBXGroup;
+			children = (
+				0DD18F072E7FBB1900A893D7 /* StreamApp */,
+				0DD18F082E7FBB1900A893D7 /* StreamApp.xcodeproj */,
+				FIX0000100000000000000EE /* Products */,
+			);
 			sourceTree = "<group>";
 		};
 		FIX0000100000000000000EE /* Products */ = {
@@ -107,113 +260,6 @@
 				FIX00001000000000000000A /* StreamApp.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		A1000001000000000000000F /* App */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001000000000000001B /* StreamApp.swift */,
-				A1000001000000000000001D /* ContentView.swift */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
-		A1000001000000000000001A /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001000000000000001F /* AppCoordinator.swift */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		A1000001000000000000002A /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001000000000000002B /* Attestation.swift */,
-				A1000001000000000000002D /* WorkScenario.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		A1000001000000000000002E /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001000000000000002F /* APIService.swift */,
-			);
-			path = Network;
-			sourceTree = "<group>";
-		};
-		A1000001000000000000003A /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001000000000000003B /* StreamColors.swift */,
-				A1000001000000000000003D /* StreamFonts.swift */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		A1000001000000000000003E /* Security */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001000000000000003F /* BiometricAuthService.swift */,
-				A1000001000000000000004B /* KeychainSecureStorage.swift */,
-				A1000001000000000000004D /* WalletManager.swift */,
-				A1000001000000000000004F /* Web3Service.swift */,
-				A1000001000000000000005B /* ZKProofService.swift */,
-			);
-			path = Security;
-			sourceTree = "<group>";
-		};
-		A1000001000000000000005A /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001000000000000005D /* DashboardViewModel.swift */,
-				A1000001000000000000005F /* ProofsViewModel.swift */,
-				A1000001000000000000006B /* WorkSessionViewModel.swift */,
-				A1000001000000000000006D /* ZKProofGenerationViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		A1000001000000000000006A /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001000000000000006E /* Authentication */,
-				A1000001000000000000007A /* Components */,
-				A1000001000000000000008A /* Onboarding */,
-				A1000001000000000000007F /* DashboardView.swift */,
-				A1000001000000000000008B /* MainTabView.swift */,
-				A1000001000000000000008F /* ProfileView.swift */,
-				A1000001000000000000009B /* ProofsView.swift */,
-				A1000001000000000000009D /* WorkSessionView.swift */,
-				A1000001000000000000009F /* ZKProofGenerationView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		A1000001000000000000006E /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001000000000000006F /* AuthenticationView.swift */,
-				A1000001000000000000007B /* WalletConnectView.swift */,
-			);
-			path = Authentication;
-			sourceTree = "<group>";
-		};
-		A1000001000000000000007A /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001000000000000007D /* WageCard.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		A1000001000000000000008A /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001000000000000008D /* OnboardingCoordinatorView.swift */,
-			);
-			path = Onboarding;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,6 +308,12 @@
 			mainGroup = FIX0000100000000000000DD;
 			productRefGroup = FIX0000100000000000000EE /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 0DD18F092E7FBB1900A893D7 /* Products */;
+					ProjectRef = 0DD18F082E7FBB1900A893D7 /* StreamApp.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				FIX0000100000000000000AA /* StreamApp */,
@@ -274,6 +326,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DD18F0B2E7FBB1900A893D7 /* Assets.xcassets in Resources */,
+				0DD18F0C2E7FBB1900A893D7 /* wage_proof.wasm in Resources */,
+				0DD18F0D2E7FBB1900A893D7 /* zkproof_service.js in Resources */,
+				0DD18F0F2E7FBB1900A893D7 /* verification_key.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,33 +340,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1000001000000000000001C /* ContentView.swift in Sources */,
-				A1000001000000000000001A /* StreamApp.swift in Sources */,
-				A1000001000000000000001E /* AppCoordinator.swift in Sources */,
-				A1000001000000000000002A /* Attestation.swift in Sources */,
-				A1000001000000000000002C /* WorkScenario.swift in Sources */,
-				A1000001000000000000002E /* APIService.swift in Sources */,
-				A1000001000000000000003A /* StreamColors.swift in Sources */,
-				A1000001000000000000003C /* StreamFonts.swift in Sources */,
-				A1000001000000000000003E /* BiometricAuthService.swift in Sources */,
-				A1000001000000000000004A /* KeychainSecureStorage.swift in Sources */,
-				A1000001000000000000004C /* WalletManager.swift in Sources */,
-				A1000001000000000000004E /* Web3Service.swift in Sources */,
-				A1000001000000000000005A /* ZKProofService.swift in Sources */,
-				A1000001000000000000005C /* DashboardViewModel.swift in Sources */,
-				A1000001000000000000005E /* ProofsViewModel.swift in Sources */,
-				A1000001000000000000006A /* WorkSessionViewModel.swift in Sources */,
-				A1000001000000000000006C /* ZKProofGenerationViewModel.swift in Sources */,
-				A1000001000000000000006E /* AuthenticationView.swift in Sources */,
-				A1000001000000000000007A /* WalletConnectView.swift in Sources */,
-				A1000001000000000000007C /* WageCard.swift in Sources */,
-				A1000001000000000000007E /* DashboardView.swift in Sources */,
-				A1000001000000000000008A /* MainTabView.swift in Sources */,
-				A1000001000000000000008C /* OnboardingCoordinatorView.swift in Sources */,
-				A1000001000000000000008E /* ProfileView.swift in Sources */,
-				A1000001000000000000009A /* ProofsView.swift in Sources */,
-				A1000001000000000000009C /* WorkSessionView.swift in Sources */,
-				A1000001000000000000009E /* ZKProofGenerationView.swift in Sources */,
+				0DD18F102E7FBB1900A893D7 /* StreamApp.swift in Sources */,
+				0DD18F112E7FBB1900A893D7 /* BiometricAuthService.swift in Sources */,
+				0DD18F122E7FBB1900A893D7 /* KeychainSecureStorage.swift in Sources */,
+				0DD18F132E7FBB1900A893D7 /* WorkScenario.swift in Sources */,
+				0DD18F142E7FBB1900A893D7 /* OnboardingPage.swift in Sources */,
+				0DD18F152E7FBB1900A893D7 /* ProofsViewModel.swift in Sources */,
+				0DD18F162E7FBB1900A893D7 /* WorkSessionView.swift in Sources */,
+				0DD18F172E7FBB1900A893D7 /* ProfileView.swift in Sources */,
+				0DD18F182E7FBB1900A893D7 /* ContentView.swift in Sources */,
+				0DD18F192E7FBB1900A893D7 /* APIService.swift in Sources */,
+				0DD18F1A2E7FBB1900A893D7 /* WalletConnectView.swift in Sources */,
+				0DD18F1B2E7FBB1900A893D7 /* ZKProofGenerationViewModel.swift in Sources */,
+				0DD18F1C2E7FBB1900A893D7 /* OnboardingPageView.swift in Sources */,
+				0DD18F1D2E7FBB1900A893D7 /* Web3Service.swift in Sources */,
+				0DD18F1E2E7FBB1900A893D7 /* LoadingView.swift in Sources */,
+				0DD18F1F2E7FBB1900A893D7 /* WageCard.swift in Sources */,
+				0DD18F202E7FBB1900A893D7 /* ProofsView.swift in Sources */,
+				0DD18F212E7FBB1900A893D7 /* StreamColors.swift in Sources */,
+				0DD18F222E7FBB1900A893D7 /* ZKProofGenerationView.swift in Sources */,
+				0DD18F232E7FBB1900A893D7 /* DashboardView.swift in Sources */,
+				0DD18F242E7FBB1900A893D7 /* StreamFonts.swift in Sources */,
+				0DD18F252E7FBB1900A893D7 /* AuthenticationView.swift in Sources */,
+				0DD18F262E7FBB1900A893D7 /* MainTabView.swift in Sources */,
+				0DD18F272E7FBB1900A893D7 /* WalletManager.swift in Sources */,
+				0DD18F282E7FBB1900A893D7 /* OnboardingCoordinatorView.swift in Sources */,
+				0DD18F292E7FBB1900A893D7 /* WorkSessionViewModel.swift in Sources */,
+				0DD18F2A2E7FBB1900A893D7 /* AppCoordinator.swift in Sources */,
+				0DD18F2B2E7FBB1900A893D7 /* Attestation.swift in Sources */,
+				0DD18F2C2E7FBB1900A893D7 /* ZKProofService.swift in Sources */,
+				0DD18F2D2E7FBB1900A893D7 /* DashboardViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,9 +502,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5A6JT4D3P5;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = StreamApp/Info.plist;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Stream uses Face ID to securely authenticate and protect your wallet and earnings data.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -472,9 +532,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5A6JT4D3P5;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = StreamApp/Info.plist;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Stream uses Face ID to securely authenticate and protect your wallet and earnings data.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -497,20 +558,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FIX0000100000000000001BB /* Build configuration list for PBXProject "StreamApp" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FIX0000100000000000001CC /* Debug */,
-				FIX0000100000000000001DD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		FIX0000100000000000001AA /* Build configuration list for PBXNativeTarget "StreamApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FIX0000100000000000001EE /* Debug */,
 				FIX0000100000000000001FF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FIX0000100000000000001BB /* Build configuration list for PBXProject "StreamApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FIX0000100000000000001CC /* Debug */,
+				FIX0000100000000000001DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -42,6 +42,11 @@ extension Text {
             .foregroundColor(StreamColors.textPrimary)
     }
 
+    func streamTitle3() -> some View {
+        self.font(StreamFonts.title3)
+            .foregroundColor(StreamColors.textPrimary)
+    }
+
     func streamHeadline() -> some View {
         self.font(StreamFonts.headline)
             .foregroundColor(StreamColors.textPrimary)
@@ -57,6 +62,11 @@ extension Text {
             .foregroundColor(StreamColors.textSecondary)
     }
 
+    func streamCallout() -> some View {
+        self.font(StreamFonts.callout)
+            .foregroundColor(StreamColors.textPrimary)
+    }
+    
     func streamCaption() -> some View {
         self.font(StreamFonts.caption)
             .foregroundColor(StreamColors.textSecondary)

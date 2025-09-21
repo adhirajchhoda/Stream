@@ -261,7 +261,7 @@ struct AuthenticationFooter: View {
 
 // MARK: - Loading View
 
-struct LoadingView: View {
+struct AuthenticationLoadingView: View {
     var body: some View {
         VStack(spacing: 24) {
             ProgressView()
@@ -282,6 +282,6 @@ struct LoadingView: View {
             .environmentObject(BiometricAuthService())
             .environmentObject(AppCoordinator())
 
-        LoadingView()
+        AuthenticationLoadingView()
     }
 }

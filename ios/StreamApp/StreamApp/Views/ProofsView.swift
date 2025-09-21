@@ -179,7 +179,7 @@ struct ProofCard: View {
             VStack(spacing: 16) {
                 // Header
                 HStack {
-                    ProofTypeIcon(proof.proofType)
+                    ProofTypeIcon(proofType: proof.proofType)
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text(proof.title)
@@ -199,7 +199,7 @@ struct ProofCard: View {
                 HStack {
                     ProofDetailItem(
                         label: "Amount",
-                        value: "$\(proof.amount, specifier: "%.2f")"
+                        value: String(format: "$%.2f", proof.amount)
                     )
 
                     Spacer()
@@ -361,7 +361,7 @@ struct ProofDetailHeader: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            ProofTypeIcon(proof.proofType)
+            ProofTypeIcon(proofType: proof.proofType)
                 .scaleEffect(1.5)
 
             VStack(spacing: 8) {
@@ -375,7 +375,7 @@ struct ProofDetailHeader: View {
                 VStack(spacing: 4) {
                     Text("Amount")
                         .streamCaption()
-                    Text("$\(proof.amount, specifier: "%.2f")")
+                    Text(String(format: "$%.2f", proof.amount))
                         .streamTitle3()
                 }
 
@@ -383,7 +383,6 @@ struct ProofDetailHeader: View {
                     Text("Circuit")
                         .streamCaption()
                     Text(proof.circuitId)
-                        .streamCallout()
                         .streamMonospace()
                 }
             }
@@ -404,7 +403,7 @@ struct ProofTechnicalDetails: View {
 
             VStack(spacing: 12) {
                 DetailRow(label: "Proof ID", value: proof.id)
-                DetailRow(label: "Generation Time", value: "\(proof.generationTime, specifier: "%.2f")s")
+                DetailRow(label: "Generation Time", value: String(format: "%.2fs", proof.generationTime))
                 DetailRow(label: "Circuit Version", value: proof.circuitVersion)
                 DetailRow(label: "Public Signals", value: "\(proof.publicSignalsCount)")
             }

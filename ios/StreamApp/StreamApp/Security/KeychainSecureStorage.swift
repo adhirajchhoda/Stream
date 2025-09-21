@@ -129,7 +129,7 @@ class KeychainSecureStorage: SecureStorageProtocol {
             return result as? Data
         case errSecItemNotFound:
             return nil
-        case errSecUserCancel:
+        case errSecUserCanceled:
             throw KeychainError.userCancelled
         case errSecAuthFailed:
             throw KeychainError.authenticationFailed

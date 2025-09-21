@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DashboardView: View {
-    @StateObject private var viewModel = DashboardViewModel()
+    @StateObject private var viewModel = DashboardViewModel(walletManager: WalletManager())
     @State private var showingProofGeneration = false
     @State private var selectedScenario: WorkScenario?
 
@@ -12,6 +12,7 @@ struct DashboardView: View {
                     // Header section
                     DashboardHeader(
                         totalBalance: viewModel.totalAvailableWages,
+                        claimedBalance: viewModel.totalClaimedBalance,
                         pendingClaims: viewModel.pendingClaims
                     )
 
@@ -21,11 +22,14 @@ struct DashboardView: View {
                     // Work scenarios
                     WorkScenariosSection(
                         scenarios: viewModel.workScenarios,
+                        claimedScenarios: viewModel.claimedScenarios,
                         onScenarioTapped: { scenario in
                             selectedScenario = scenario
                             startWorkSession(for: scenario)
                         },
                         onClaimTapped: { scenario in
+                            // Only allow claiming if not already claimed
+                            guard !viewModel.isScenarioClaimed(scenario.id) else { return }
                             selectedScenario = scenario
                             showingProofGeneration = true
                         }
@@ -53,7 +57,28 @@ struct DashboardView: View {
         }
         .sheet(isPresented: $showingProofGeneration) {
             if let scenario = selectedScenario {
-                ZKProofGenerationView(scenario: scenario)
+                ZKProofGenerationView(scenario: scenario) { claimedAmount in
+                    Task {
+                        await viewModel.claimMoney(amount: claimedAmount, scenarioId: scenario.id)
+                        // Reset selected scenario to prevent issues
+                        await MainActor.run {
+                            selectedScenario = nil
+                        }
+                    }
+                }
+            } else {
+                // Fallback view to prevent blank screen
+                VStack {
+                    Text("Loading...")
+                        .foregroundColor(.secondary)
+                    ProgressView()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(StreamColors.background)
+                .onAppear {
+                    // If we get here, dismiss the sheet
+                    showingProofGeneration = false
+                }
             }
         }
         .onAppear {
@@ -73,6 +98,7 @@ struct DashboardView: View {
 
 struct DashboardHeader: View {
     let totalBalance: Double
+    let claimedBalance: Double
     let pendingClaims: Int
 
     var body: some View {
@@ -89,6 +115,14 @@ struct DashboardHeader: View {
                     }
 
                     Spacer()
+                    
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("Claimed Balance")
+                            .streamCaption()
+                        Text("$\(claimedBalance, specifier: "%.2f")")
+                            .streamTitle3()
+                            .foregroundColor(StreamColors.success)
+                    }
 
                     NotificationButton()
                 }
@@ -245,6 +279,7 @@ struct QuickActionButton: View {
 
 struct WorkScenariosSection: View {
     let scenarios: [WorkScenario]
+    let claimedScenarios: Set<String>
     let onScenarioTapped: (WorkScenario) -> Void
     let onClaimTapped: (WorkScenario) -> Void
 
@@ -268,7 +303,7 @@ struct WorkScenariosSection: View {
                     WageCard(
                         scenario: scenario,
                         amount: scenario.totalWage,
-                        status: .available,
+                        status: claimedScenarios.contains(scenario.id) ? .completed : .available,
                         onClaimTapped: {
                             onClaimTapped(scenario)
                         }
@@ -276,6 +311,18 @@ struct WorkScenariosSection: View {
                     .onTapGesture {
                         onScenarioTapped(scenario)
                     }
+                    .opacity(claimedScenarios.contains(scenario.id) ? 0.6 : 1.0)
+                    .overlay(
+                        // Add claimed indicator
+                        claimedScenarios.contains(scenario.id) ?
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(StreamColors.success, lineWidth: 2)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(StreamColors.success.opacity(0.1))
+                            )
+                        : nil
+                    )
                 }
             }
         }

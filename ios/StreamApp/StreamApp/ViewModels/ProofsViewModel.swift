@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Combine
 
 @MainActor
@@ -11,15 +12,23 @@ class ProofsViewModel: ObservableObject {
     private let apiService: APIServiceProtocol
     private let zkProofService: ZKProofServiceProtocol
     private var cancellables = Set<AnyCancellable>()
+    
+    // Background processing queue for stats calculations
+    private let statsQueue = DispatchQueue(label: "com.stream.proofs.stats", qos: .utility)
 
     init(
         apiService: APIServiceProtocol = APIService(),
-        zkProofService: ZKProofServiceProtocol = ZKProofService()
+        zkProofService: ZKProofServiceProtocol = try! ZKProofService()
     ) {
         self.apiService = apiService
         self.zkProofService = zkProofService
 
         loadSampleData()
+    }
+    
+    deinit {
+        // Ensure all subscriptions are cancelled
+        cancellables.removeAll()
     }
 
     func loadProofs() async {
@@ -27,7 +36,7 @@ class ProofsViewModel: ObservableObject {
 
         // In production, load from API
         // For demo, use sample data
-        loadSampleData()
+        await loadSampleDataAsync()
 
         isLoading = false
     }
@@ -49,19 +58,53 @@ class ProofsViewModel: ObservableObject {
             proof.status == .verified || proof.status == .failed
         }
 
-        updateStats()
+        Task {
+            await updateStats()
+        }
+    }
+    
+    private func loadSampleDataAsync() async {
+        return await withCheckedContinuation { continuation in
+            statsQueue.async {
+                let sampleProofs = ZKProofRecord.sampleProofs
+
+                let active = sampleProofs.filter { proof in
+                    proof.status == .generating || proof.status == .pending
+                }
+
+                let recent = sampleProofs.filter { proof in
+                    proof.status == .verified || proof.status == .failed
+                }
+                
+                Task { @MainActor in
+                    self.activeProofs = active
+                    self.recentProofs = recent
+                    await self.updateStats()
+                    continuation.resume()
+                }
+            }
+        }
     }
 
-    private func updateStats() {
-        let allProofs = activeProofs + recentProofs
-
-        proofStats = ProofStats(
-            totalGenerated: allProofs.count,
-            verified: allProofs.filter { $0.status == .verified }.count,
-            pending: allProofs.filter { $0.status == .pending || $0.status == .generating }.count,
-            failed: allProofs.filter { $0.status == .failed }.count,
-            successRate: allProofs.isEmpty ? 0 : Double(allProofs.filter { $0.status == .verified }.count) / Double(allProofs.count) * 100
-        )
+    private func updateStats() async {
+        return await withCheckedContinuation { continuation in
+            statsQueue.async {
+                let allProofs = self.activeProofs + self.recentProofs
+                
+                let stats = ProofStats(
+                    totalGenerated: allProofs.count,
+                    verified: allProofs.filter { $0.status == .verified }.count,
+                    pending: allProofs.filter { $0.status == .pending || $0.status == .generating }.count,
+                    failed: allProofs.filter { $0.status == .failed }.count,
+                    successRate: allProofs.isEmpty ? 0 : Double(allProofs.filter { $0.status == .verified }.count) / Double(allProofs.count) * 100
+                )
+                
+                Task { @MainActor in
+                    self.proofStats = stats
+                    continuation.resume()
+                }
+            }
+        }
     }
 }
 
@@ -175,7 +218,7 @@ enum ProofType {
         }
     }
 
-    var color: Color {
+    var color: SwiftUI.Color {
         switch self {
         case .wageAttestation: return StreamColors.streamGreen
         case .identityProof: return StreamColors.streamBlue
@@ -199,7 +242,7 @@ enum ProofStatus {
         }
     }
 
-    var color: Color {
+    var color: SwiftUI.Color {
         switch self {
         case .generating: return StreamColors.streamBlue
         case .pending: return StreamColors.warning
