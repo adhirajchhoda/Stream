@@ -7,9 +7,11 @@ class DashboardViewModel: ObservableObject {
     @Published var workScenarios: [WorkScenario] = []
     @Published var recentAttestations: [AttestationResponse] = []
     @Published var totalAvailableWages: Double = 0
+    @Published var totalClaimedBalance: Double = 0
     @Published var pendingClaims: Int = 0
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var claimedScenarios: Set<String> = []
 
     private let apiService: APIServiceProtocol
     private let walletManager: WalletManager
@@ -23,6 +25,7 @@ class DashboardViewModel: ObservableObject {
         self.walletManager = walletManager
 
         setupBindings()
+        loadClaimedBalance()
     }
     
     deinit {
@@ -60,6 +63,47 @@ class DashboardViewModel: ObservableObject {
 
     func refresh() async {
         await loadData()
+    }
+    
+    func claimMoney(amount: Double, scenarioId: String) async {
+        // Add claimed amount to total balance
+        totalClaimedBalance += amount
+        
+        // Mark scenario as claimed
+        claimedScenarios.insert(scenarioId)
+        
+        // Save to persistent storage
+        saveClaimedBalance()
+        saveClaimedScenarios()
+        
+        // Refresh data to update UI
+        await loadData()
+    }
+    
+    func isScenarioClaimed(_ scenarioId: String) -> Bool {
+        return claimedScenarios.contains(scenarioId)
+    }
+    
+    func loadClaimedBalance() {
+        totalClaimedBalance = UserDefaults.standard.double(forKey: "total_claimed_balance")
+        loadClaimedScenarios()
+    }
+    
+    private func saveClaimedBalance() {
+        UserDefaults.standard.set(totalClaimedBalance, forKey: "total_claimed_balance")
+    }
+    
+    private func loadClaimedScenarios() {
+        if let data = UserDefaults.standard.data(forKey: "claimed_scenarios"),
+           let scenarios = try? JSONDecoder().decode(Set<String>.self, from: data) {
+            claimedScenarios = scenarios
+        }
+    }
+    
+    private func saveClaimedScenarios() {
+        if let data = try? JSONEncoder().encode(claimedScenarios) {
+            UserDefaults.standard.set(data, forKey: "claimed_scenarios")
+        }
     }
 
     // MARK: - Private Methods

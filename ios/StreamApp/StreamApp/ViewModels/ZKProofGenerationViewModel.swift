@@ -38,10 +38,10 @@ class ZKProofGenerationViewModel: ObservableObject {
     }
     
     deinit {
-        // Clean up resources
-        Task { @MainActor in
-            cleanup()
-        }
+        // Clean up resources immediately - don't create new tasks in deinit
+        currentTask?.cancel()
+        currentTask = nil
+        cancellables.removeAll()
     }
 
     func startProofGeneration(for scenario: WorkScenario) async {
@@ -51,25 +51,27 @@ class ZKProofGenerationViewModel: ObservableObject {
         currentScenario = scenario
         errorMessage = nil
 
-        currentTask = Task { @MainActor in
+        currentTask = Task { @MainActor [weak self] in
+            guard let self = self else { return }
+            
             // Always succeed in demo mode - simulate the process but always complete successfully
             print("🚀 PROOF GENERATION ALWAYS SUCCESSFUL - Demo mode")
             print("📊 Generating proof for: $\(scenario.totalWage) wage")
             
             // Stage 1: Generate Witness (always succeeds)
-            await transitionToStage(.generatingWitness)
+            await self.transitionToStage(.generatingWitness)
             try await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
-            progress = 0.25
+            self.progress = 0.25
             
             // Stage 2: Compute Proof (always succeeds)
-            await transitionToStage(.computingProof)
+            await self.transitionToStage(.computingProof)
             try await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
-            progress = 0.5
+            self.progress = 0.5
             
             // Stage 3: Verify Proof (always succeeds)
-            await transitionToStage(.verifying)
+            await self.transitionToStage(.verifying)
             try await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
-            progress = 0.75
+            self.progress = 0.75
             
             // Always generate a successful proof using our always-successful service
             let witnessData = WitnessData(
@@ -77,15 +79,15 @@ class ZKProofGenerationViewModel: ObservableObject {
                 hoursWorked: scenario.hours,
                 hourlyRate: scenario.hourlyRate,
                 timestamp: Date(),
-                nullifier: generateNullifier()
+                nullifier: self.generateNullifier()
             )
             
             let zkProofService = try! ZKProofService()
-            generatedProof = try await zkProofService.generateWageProof(witnessData)
+            self.generatedProof = try await zkProofService.generateWageProof(witnessData)
             
-            progress = 1.0
+            self.progress = 1.0
             print("✅ Proof generated successfully!")
-            await transitionToStage(.completed)
+            await self.transitionToStage(.completed)
         }
     }
 
@@ -93,7 +95,9 @@ class ZKProofGenerationViewModel: ObservableObject {
         guard let proof = generatedProof,
               let scenario = currentScenario else { return }
 
-        currentTask = Task { @MainActor in
+        currentTask = Task { @MainActor [weak self] in
+            guard let self = self else { return }
+            
             // Always succeed in demo mode - simulate the process but always complete successfully
             print("💰 MONEY CLAIMING ALWAYS SUCCESSFUL - Demo mode")
             print("✅ Proof submitted to smart contract successfully")
@@ -103,7 +107,7 @@ class ZKProofGenerationViewModel: ObservableObject {
             try await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds
             
             // Always transition to success
-            await transitionToStage(.completed)
+            await self.transitionToStage(.completed)
         }
     }
 

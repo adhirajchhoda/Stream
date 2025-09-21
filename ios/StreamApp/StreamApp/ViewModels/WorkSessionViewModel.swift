@@ -27,9 +27,10 @@ class WorkSessionViewModel: ObservableObject {
     }
     
     deinit {
-        Task { @MainActor in
-            cleanupSession()
-        }
+        // Clean up resources immediately - don't create new tasks in deinit
+        sessionTimer?.invalidate()
+        sessionTimer = nil
+        cancellables.removeAll()
     }
 
     func startSession(with scenario: WorkScenario) {
